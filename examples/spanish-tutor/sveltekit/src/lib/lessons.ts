@@ -6,12 +6,12 @@ export type Lesson = {
 	description: string;
 	level: LessonLevel;
 	goal: string;
-	/** Shared Liforma Demos roleplay experience — mint with `language: 'es'`. */
+	/** Liforma experience id from the project catalog or static fallback. */
 	experienceId: string;
 };
 
-/** Six B1 roleplay scenarios from Liforma Demos (Spanish via mint-time language). */
-export const lessons: Lesson[] = [
+/** Static fallback when catalog env vars are missing or the API is unreachable. */
+export const fallbackLessons: Lesson[] = [
 	{
 		id: 'coffee-barista',
 		title: 'Coffee Shop Barista',
@@ -62,8 +62,18 @@ export const lessons: Lesson[] = [
 	}
 ];
 
+export const lessonDetailsBySlug: Record<
+	string,
+	Pick<Lesson, 'description' | 'level' | 'goal'>
+> = Object.fromEntries(
+	fallbackLessons.map((lesson) => [
+		lesson.id,
+		{ description: lesson.description, level: lesson.level, goal: lesson.goal }
+	])
+);
+
 export const SPANISH_TUTOR_LANGUAGE = 'es' as const;
 
-export function getLesson(id: string): Lesson | undefined {
+export function getLesson(lessons: readonly Lesson[], id: string): Lesson | undefined {
 	return lessons.find((lesson) => lesson.id === id);
 }

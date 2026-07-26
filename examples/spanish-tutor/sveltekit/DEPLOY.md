@@ -34,13 +34,16 @@ Add custom domain: `spanish-tutor.examples.liforma.ai`
 
 ### Environment variables
 
-Usually **none required** — the Liforma SDK defaults to `https://api.liforma.ai` and `https://cdn.liforma.ai` in production.
-
-Optional overrides:
-
 | Variable | When to set |
 | --- | --- |
-| `PUBLIC_API_BASE_URL` | Staging API only |
+| `LIFORMA_API_KEY` | **Recommended** — loads published lessons from `GET /v1/projects/{projectId}/experiences` |
+| `LIFORMA_PROJECT_ID` | Optional — defaults to `seed_proj_spanish_tutor` |
+| `LIFORMA_API_URL` | Staging API only |
+| `PUBLIC_API_BASE_URL` | Override SDK API base for session mint (staging only) |
+
+Without `LIFORMA_API_KEY`, the app falls back to static lessons in `src/lib/lessons.ts`.
+
+The vanilla example fetches the same lesson list from `GET /api/lessons` on this app (no API key in the browser).
 
 ## Deploy
 

@@ -11,6 +11,7 @@ declare global {
 		interface IntrinsicElements {
 			'liforma-experience': import('svelte/elements').HTMLAttributes<HTMLElement> & {
 				'experience-id'?: string;
+				language?: string;
 			};
 		}
 	}

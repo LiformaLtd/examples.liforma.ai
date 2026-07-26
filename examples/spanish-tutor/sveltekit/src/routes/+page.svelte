@@ -1,22 +1,33 @@
 <script lang="ts">
 	import LiformaEmbed from '$lib/components/LiformaEmbed.svelte';
 	import LessonList from '$lib/components/LessonList.svelte';
-	import { getLesson, lessons } from '$lib/lessons';
+	import { getLesson } from '$lib/lessons';
+	import type { PageData } from './$types';
 
 	type SessionStatus = 'idle' | 'active';
 
-	let selectedLessonId = $state<string | null>(lessons[0]?.id ?? null);
+	let { data }: { data: PageData } = $props();
+
+	let selectedLessonId = $state<string | null>(null);
 	let sessionStatus = $state<SessionStatus>('idle');
 	let embedKey = $state(0);
 	let transcriptNotes = $state<string[]>([]);
 
+	$effect(() => {
+		if (!selectedLessonId && data.lessons.length > 0) {
+			selectedLessonId = data.lessons[0].id;
+		}
+	});
+
 	const selectedLesson = $derived(
-		selectedLessonId ? getLesson(selectedLessonId) : undefined
+		selectedLessonId ? getLesson(data.lessons, selectedLessonId) : undefined
 	);
 
 	const sessionActive = $derived(sessionStatus === 'active');
 
-	const experienceId = $derived(selectedLesson?.experienceId ?? lessons[0]?.experienceId ?? '');
+	const experienceId = $derived(
+		selectedLesson?.experienceId ?? data.lessons[0]?.experienceId ?? ''
+	);
 
 	function selectLesson(id: string): void {
 		if (sessionActive) return;
@@ -49,8 +60,13 @@
 <div class="layout">
 	<section class="sidebar" aria-label="Lessons">
 		<h2>Lessons</h2>
+		{#if data.catalogWarning}
+			<p class="catalog-note" role="status">{data.catalogWarning} Showing static fallback lessons.</p>
+		{:else if data.source === 'catalog'}
+			<p class="catalog-note" role="status">Lessons loaded from your Liforma project catalog.</p>
+		{/if}
 		<LessonList
-			{lessons}
+			lessons={data.lessons}
 			selectedId={selectedLessonId}
 			{sessionActive}
 			onselect={selectLesson}
@@ -134,6 +150,12 @@
 	.workspace h2 {
 		margin: 0 0 1rem;
 		font-size: 1.125rem;
+	}
+
+	.catalog-note {
+		margin: 0 0 0.75rem;
+		font-size: 0.8125rem;
+		color: var(--text-muted);
 	}
 
 	.goal-card {

@@ -27,8 +27,9 @@ npm run verify
 
 ## Customise
 
-- `src/lib/lessons.ts` — lesson content and per-lesson `experienceId` values
+- `src/lib/loadLessons.ts` — fetches `GET /v1/projects/{projectId}/experiences` server-side
+- `src/lib/lessons.ts` — static fallback lesson copy keyed by slug
 - `src/routes/+page.svelte` — main lesson UI
 - `src/lib/components/LiformaEmbed.svelte` — SDK + web component
 
-No `.env` file is required for Phase 1. Experience IDs live on each lesson record (the same shape you'd use from a database or CMS).
+Set `LIFORMA_API_KEY` (see `.env.example`) to load lessons from your Liforma project catalog. Without it, the app uses the static fallback list in `lessons.ts`.

@@ -13,7 +13,7 @@
  */
 
 /** @type {Lesson[]} */
-export const lessons = [
+export const fallbackLessons = [
 	{
 		id: 'coffee-barista',
 		title: 'Coffee Shop Barista',

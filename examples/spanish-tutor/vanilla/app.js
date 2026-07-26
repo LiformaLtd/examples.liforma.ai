@@ -1,6 +1,8 @@
-import { lessons } from './lessons.js';
+import { fallbackLessons } from './lessons.js';
+import { loadLessons } from './lessonsLoader.js';
 
 const lessonListEl = document.getElementById('lesson-list');
+const catalogNoteEl = document.getElementById('catalog-note');
 const lockNoteEl = document.getElementById('lock-note');
 const lessonTitleEl = document.getElementById('lesson-title');
 const lessonGoalEl = document.getElementById('lesson-goal');
@@ -10,6 +12,9 @@ const embedRegionEl = document.getElementById('embed-region');
 const avatarPlaceholderEl = document.getElementById('avatar-placeholder');
 const experienceIdLabelEl = document.getElementById('experience-id-label');
 const transcriptListEl = document.getElementById('transcript-list');
+
+/** @type {import('./lessons.js').Lesson[]} */
+let lessons = [...fallbackLessons];
 
 /** @type {string | null} */
 let selectedLessonId = lessons[0]?.id ?? null;
@@ -25,6 +30,17 @@ function addTranscriptLine(text) {
 	const li = document.createElement('li');
 	li.textContent = text;
 	transcriptListEl?.appendChild(li);
+}
+
+function setCatalogNote(message) {
+	if (!catalogNoteEl) return;
+	if (!message) {
+		catalogNoteEl.classList.add('hidden');
+		catalogNoteEl.textContent = '';
+		return;
+	}
+	catalogNoteEl.textContent = message;
+	catalogNoteEl.classList.remove('hidden');
 }
 
 function renderLessonList() {
@@ -150,10 +166,26 @@ function updateUi() {
 	updateSessionControls();
 }
 
+async function bootstrapLessons() {
+	try {
+		const loadedLessons = await loadLessons();
+		lessons = loadedLessons;
+		selectedLessonId = lessons[0]?.id ?? null;
+		if (loadedLessons.length > 0) {
+			setCatalogNote('Lessons loaded from your Liforma project catalog.');
+		}
+	} catch (error) {
+		console.warn('Using fallback lessons', error);
+		setCatalogNote('Could not load project catalog. Showing static fallback lessons.');
+	}
+	updateUi();
+}
+
 sessionBtnEl?.addEventListener('click', handleSessionButtonClick);
-updateUi();
 
 if (transcriptListEl) {
 	transcriptListEl.innerHTML = '';
 	addTranscriptLine('Conversation notes and transcript lines appear here during a session.');
 }
+
+bootstrapLessons();
