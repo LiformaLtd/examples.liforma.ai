@@ -1,3 +1,32 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Liforma">
-	<image href="data:image/png;base64,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" width="32" height="32" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 73.01 72.94" width="32" height="32" role="img" aria-label="Liforma">
+<defs>
+    <style>
+      .cls-1 {
+        fill: url(#linear-gradient-2);
+      }
+
+      .cls-2 {
+        fill: url(#linear-gradient);
+      }
+    </style>
+    <linearGradient id="linear-gradient" x1="47.45" y1="8.07" x2="47.45" y2="21.4" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ff7c3e"/>
+      <stop offset=".5" stop-color="#fd5660"/>
+      <stop offset="1" stop-color="#fc2a85"/>
+    </linearGradient>
+    <linearGradient id="linear-gradient-2" x1="1.76" y1="51.43" x2="72.19" y2="20.07" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#0177fb"/>
+      <stop offset=".2" stop-color="#1770ff"/>
+      <stop offset=".4" stop-color="#595fff"/>
+      <stop offset=".6" stop-color="#a643ee"/>
+      <stop offset=".8" stop-color="#d739c2"/>
+      <stop offset="1" stop-color="#fd2789"/>
+    </linearGradient>
+  </defs>
+  <g id="Layer_1-2" data-name="Layer 1">
+    <g>
+      <path class="cls-2" d="M51.04,20.29c-2.05,1.36-4.63,1.49-6.81.3-1.94-1.06-3.27-3.13-3.37-5.48-.09-2.06.72-4.06,2.31-5.42,2.1-1.79,5.1-2.14,7.5-.8,1.51.85,2.62,2.19,3.1,3.85.83,2.84-.21,5.9-2.72,7.55Z"/>
+      <path class="cls-1" d="M72.89,21.65c-.17-.28-.52-.47-.9-.37l-3.89,1.1-4.23,1.29-5.19,1.51-3.74.94c-1.92.48-3.82.76-5.81.87-2.62.15-5.21-.43-7.35-1.91-2.17-1.5-3.95-3.59-5.55-5.71-1.76-2.34-3.37-4.71-4.94-7.18l-2.55-4-.7-1.09-.83-1.28-2.61-3.92-1.04-1.5c-.26-.38-.68-.51-1.05-.32-.35.18-.54.58-.42,1.01l.99,3.34,1.07,3.34c1.47,4.59,3.1,9.83,3.7,14.58.43,3.41.13,6.75-1.96,9.54-.84,1.12-1.82,2.09-2.97,2.89l-1.99,1.39c-2.25,1.42-4.55,2.66-6.94,3.84l-4.38,2.17-3.29,1.56-1.76.84-2.65,1.3-1.52.8c-.35.18-.48.62-.34.93.15.32.48.54.89.48l10.41-1.49c3.35-.4,6.64-.59,9.99-.4,2.16.12,4.21.45,6.27,1.13,2.12.69,3.95,1.96,5.51,3.54l1.3,1.47,1.54,2.08,1.14,1.7,1.9,3.03,5.29,8.78,2.79,4.51c.23.37.59.62,1.01.47.39-.14.59-.5.49-1.01-.74-3.73-1.46-7.36-1.94-11.09-.21-1.65-.32-3.2-.38-4.86-.1-2.8.12-5.53.85-8.24l1.07-3c.64-1.21,1.21-2.39,2.08-3.43l2.1-2.52,2.08-2.08,3.59-3.12c2.47-2.02,4.99-3.87,7.58-5.75l7.17-5.19c.31-.23.29-.69.13-.95ZM44.44,37.54l-.9.9-1.18,1.57c-.82,1.09-1.3,2.26-1.77,3.58-.62,1.74-.8,3.47-.75,5.36l-.88-1.6-.84-1.31c-.42-.66-.89-1.22-1.41-1.81-.65-.74-1.36-1.35-2.16-1.95-2.15-1.63-4.92-2.62-7.63-2.7,1.64-.55,2.89-1.31,4.16-2.42,3.28-2.87,4.42-6.97,4.02-11.24l.89,1.59.88,1.36,1.1,1.36,1.09,1.08,1.22,1.02c.6.5,1.25.84,1.95,1.19,1.85.94,3.84,1.45,5.97,1.49-1.45.66-2.68,1.45-3.77,2.54Z"/>
+    </g>
+  </g>
 </svg>
