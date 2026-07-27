@@ -36,3 +36,5 @@ Phase 1 uses the CDN web component only — not `@liforma/client` npm (unpublish
 ## Mobile
 
 Single-column layout below 800px. Embed min-height 420px on desktop.
+
+<!-- deploy verify: Vercel Pro org deploy, 2026-07-27 -->
