@@ -1,5 +1,5 @@
 /** Bump when the CDN bundle changes materially (avatar paths, API, etc.). */
-const SDK_BUILD = '7';
+const SDK_BUILD = '10';
 
 const SDK_MARKER = 'data-liforma-sdk';
 
@@ -35,6 +35,9 @@ type LiformaExperienceClass = NonNullable<Window['Liforma']>['Experience'];
 export type LiformaExperience = Awaited<ReturnType<LiformaExperienceClass['startSession']>>;
 
 function experienceClassHasSpeakApi(Experience: LiformaExperienceClass | undefined): boolean {
+	if (window.Liforma?.features?.speakApi === true) {
+		return true;
+	}
 	return (
 		typeof Experience?.prototype?.speak === 'function' &&
 		typeof Experience?.prototype?.startListening === 'function' &&

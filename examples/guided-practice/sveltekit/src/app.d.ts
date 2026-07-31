@@ -24,6 +24,7 @@ declare global {
 				};
 			};
 			sdkVersion: 'v2';
+			features?: { speakApi?: boolean };
 		};
 	}
 

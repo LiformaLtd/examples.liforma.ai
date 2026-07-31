@@ -48,6 +48,9 @@ export function sdkClientUrl(build) {
 }
 
 export function experienceClassHasSpeakApi(Experience) {
+	if (typeof window !== 'undefined' && window.Liforma?.features?.speakApi === true) {
+		return true;
+	}
 	return (
 		typeof Experience?.prototype?.speak === 'function' &&
 		typeof Experience?.prototype?.startListening === 'function' &&
