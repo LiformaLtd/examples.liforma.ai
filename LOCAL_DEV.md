@@ -15,7 +15,7 @@ From the examples repo (inside the monorepo):
 This:
 
 1. Starts **api** (`:3001`), **player** (`:3002`), and **cdn** SDK preview (`:3010`) from the parent monorepo when not already running.
-2. Starts gallery + examples on **4000**–**4002** with the local stack injected (`window.__LIFORMA_STACK = 'local'` for vanilla, `VITE_LIFORMA_STACK=local` for SvelteKit).
+2. Starts gallery + examples on **4000**–**4003** with the local stack injected (`window.__LIFORMA_STACK = 'local'` for vanilla, `VITE_LIFORMA_STACK=local` for SvelteKit).
 
 Check status:
 

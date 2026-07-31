@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Speak playground — Liforma example</title>
+		<meta
+			name="description"
+			content="Type text and hear the avatar speak it. Toggle enqueue vs interrupt on Experience.speak()."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>Speak playground</h1>
+						<p class="lede">
+							Type a line and press <strong>Enter</strong> to call
+							<code>experience.speak()</code>. Toggle <strong>Enqueue</strong> vs
+							<strong>Interrupt</strong> and fire several lines quickly to see the difference.
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://examples.liforma.ai/examples/speak-playground"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Example docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="Speak playground">
+						<div class="avatar-panel">
+							<div id="avatar-host" aria-label="Liforma avatar embed"></div>
+						</div>
+
+						<div class="control-card">
+							<h2>Speech behavior</h2>
+							<p>
+								<strong>Enqueue</strong> waits for the current line to finish.
+								<strong>Interrupt</strong> stops active speech and clears the queue before the
+								new line.
+							</p>
+							<div class="behavior-toggle" role="radiogroup" aria-label="Speak behavior">
+								<label class="behavior-option is-selected" id="label-enqueue">
+									<input
+										type="radio"
+										name="behavior"
+										id="behavior-enqueue"
+										value="enqueue"
+										checked
+									/>
+									Enqueue
+								</label>
+								<label class="behavior-option" id="label-interrupt">
+									<input type="radio" name="behavior" id="behavior-interrupt" value="interrupt" />
+									Interrupt
+								</label>
+							</div>
+
+							<form class="speak-form" id="speak-form">
+								<input
+									type="text"
+									id="speak-input"
+									class="speak-input"
+									placeholder="Type something for the avatar to say…"
+									autocomplete="off"
+									disabled
+								/>
+								<button type="submit" class="btn btn-primary" id="btn-speak" disabled>Speak</button>
+							</form>
+
+							<div class="demo-actions">
+								<button type="button" class="btn" id="btn-burst" disabled>Fire 3 lines quickly</button>
+							</div>
+
+							<p class="meta">
+								<span id="status-pill" class="status-pill">Loading…</span>
+								· Experience: <code id="experience-id-label"></code>
+							</p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

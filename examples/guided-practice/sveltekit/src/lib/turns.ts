@@ -1,4 +1,4 @@
-export const PRACTICE_EXPERIENCE_ID = 'exp_01MEET_COFFEE_BARISTA';
+export const PRACTICE_EXPERIENCE_ID = 'exp_01EXAMPLES_COFFEE_BARISTA';
 
 export const practiceScenario = {
 	title: 'Café ordering',

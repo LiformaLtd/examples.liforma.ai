@@ -25,7 +25,7 @@ Modes:
 
 Options:
   --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
-              Starts those services from the monorepo when this repo lives inside it.
+              Starts those services and restarts examples to apply local URLs.
   --restart   Kill listeners on example ports before starting
   --status    Show which services are listening
   -h, --help  Show this help
@@ -33,7 +33,8 @@ Options:
 Ports:
   4000  Gallery (this repo)
   4001  Spanish Tutor (vanilla or SvelteKit)
-  4002  Guided practice (vanilla)
+  4002  Guided practice (vanilla or SvelteKit)
+  4003  Speak playground (vanilla or SvelteKit)
 
 Examples:
   ./start
@@ -102,17 +103,13 @@ start_on_port() {
 	local cmd="$4"
 	local log_file="$LOG_DIR/$name.log"
 
-	if [[ "$RESTART" == true ]] && is_port_in_use "$port"; then
+	if [[ "$RESTART" == true || "$USE_LOCAL_STACK" == true ]] && is_port_in_use "$port"; then
 		echo "restart $name (:$port)"
 		kill_port "$port"
 	fi
 
 	if is_port_in_use "$port"; then
-		if [[ "$USE_LOCAL_STACK" == true ]]; then
-			echo "skip $name — already running on http://localhost:$port (use --restart to apply --local)" >&2
-		else
-			echo "skip $name — already running on http://localhost:$port"
-		fi
+		echo "skip $name — already running on http://localhost:$port"
 		return 0
 	fi
 
@@ -146,9 +143,8 @@ fi
 if [[ "$RESTART" == true ]]; then
 	kill_port "$GALLERY_PORT"
 	kill_port 4001
-	if [[ "$MODE" == "vanilla" ]]; then
-		kill_port 4002
-	fi
+	kill_port 4002
+	kill_port 4003
 fi
 
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
@@ -165,6 +161,8 @@ if [[ "$MODE" == "vanilla" ]]; then
 		"${vanilla_stack_env}PORT=4001 node scripts/serve-example.mjs examples/spanish-tutor/vanilla"
 	start_on_port guided-practice 4002 "$ROOT" \
 		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/guided-practice/vanilla"
+	start_on_port speak-playground 4003 "$ROOT" \
+		"${vanilla_stack_env}PORT=4003 node scripts/serve-example.mjs examples/speak-playground/vanilla"
 else
 	if [[ ! -d "$ROOT/examples/spanish-tutor/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/spanish-tutor/sveltekit && npm install" >&2
@@ -174,8 +172,13 @@ else
 		echo "Run: cd examples/guided-practice/sveltekit && npm install" >&2
 		exit 1
 	fi
+	if [[ ! -d "$ROOT/examples/speak-playground/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/speak-playground/sveltekit && npm install" >&2
+		exit 1
+	fi
 	start_on_port spanish-tutor 4001 "$ROOT/examples/spanish-tutor/sveltekit" "$sveltekit_cmd"
 	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/sveltekit" "$sveltekit_cmd"
+	start_on_port speak-playground 4003 "$ROOT/examples/speak-playground/sveltekit" "$sveltekit_cmd"
 fi
 
 echo ""

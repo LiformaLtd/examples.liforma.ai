@@ -50,6 +50,19 @@ export const examples: ExampleMetadata[] = [
 		localPort: 4002,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/guided-practice/spec.md'
+	},
+	{
+		slug: 'speak-playground',
+		title: 'Speak playground',
+		description:
+			'Type text and press Enter — the avatar speaks it. Toggle enqueue vs interrupt on speak().',
+		category: 'Integration',
+		frameworks: ['sveltekit', 'vanilla'],
+		features: ['Avatar Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
+		githubPath: 'examples/speak-playground',
+		localPort: 4003,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/speak-playground/spec.md'
 	}
 ];
 

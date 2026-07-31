@@ -17,8 +17,8 @@ type CatalogDetailResponse = {
 	readonly experience: CatalogExperience;
 };
 
-/** Seeded Spanish Tutor demo project — stable across environments. */
-export const DEFAULT_PROJECT_ID = 'seed_proj_spanish_tutor';
+/** Seeded Examples project — stable across environments. */
+export const DEFAULT_PROJECT_ID = 'seed_proj_examples';
 
 function apiBaseUrl(): string {
 	return (env.LIFORMA_API_URL ?? 'https://api.liforma.ai').replace(/\/$/, '');

@@ -22,6 +22,7 @@ npm install
 | Gallery (browse examples, copy prompts) | http://localhost:4000 |
 | Spanish Tutor (vanilla) | http://localhost:4001 |
 | Guided practice — Speak API (vanilla) | http://localhost:4002 |
+| Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4003 |
 
 To run SvelteKit implementations instead of vanilla:
 
@@ -29,7 +30,7 @@ To run SvelteKit implementations instead of vanilla:
 ./start sveltekit
 ```
 
-That starts the gallery on **4000** and Spanish Tutor SvelteKit on **4001** (guided practice is vanilla-only today).
+That starts the gallery on **4000**, Spanish Tutor on **4001**, guided practice on **4002**, and speak playground on **4003**.
 
 Other useful commands:
 
@@ -65,13 +66,27 @@ cd examples/guided-practice/vanilla
 npx serve . -l tcp://localhost:4002
 ```
 
+**Speak playground (vanilla)** — port 4003:
+
+```bash
+PORT=4003 node scripts/serve-example.mjs examples/speak-playground/vanilla
+```
+
+**Speak playground (SvelteKit)** — port 4003:
+
+```bash
+cd examples/speak-playground/sveltekit
+npm install
+npm run dev
+```
+
 Use **http://localhost:** ports (not a LAN IP) so WebGPU and microphone APIs work in the browser.
 
 ## Allowlisted origins
 
 Public mint and embeds require your browser `Origin` on the project allowlist. Liforma demo experiences include:
 
-- `http://localhost:4000`–`http://localhost:4002` (gallery + examples)
+- `http://localhost:4000`–`http://localhost:4003` (gallery + examples)
 - Hosted demos on `*.examples.liforma.ai`
 
 For your own `exp_…` experiences, add the same origins in [app.liforma.ai](https://app.liforma.ai) → your project → **Origins**.
@@ -81,6 +96,7 @@ For your own `exp_…` experiences, add the same origins in [app.liforma.ai](htt
 ```bash
 npm run verify
 cd examples/guided-practice/sveltekit && npm run verify
+cd examples/speak-playground/sveltekit && npm run verify
 ```
 
 ## Liforma engineers (local stack override)

@@ -8,6 +8,7 @@ EXAMPLE_SERVICES=(
 	"gallery|4000"
 	"spanish-tutor|4001"
 	"guided-practice|4002"
+	"speak-playground|4003"
 )
 
 # Liforma monorepo stack (api, player, CDN SDK preview) — used with ./start --local
