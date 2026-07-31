@@ -100,3 +100,5 @@ See [`LOCAL_DEV.md`](LOCAL_DEV.md) for details and manual overrides.
 - [Spanish Tutor live demo](https://spanish-tutor.examples.liforma.ai/)
 - [Docs: Quick Start](https://docs.liforma.ai/getting-started/quick-start)
 - [GitHub](https://github.com/charlesatliforma/examples.liforma.ai)
+
+<!-- deploy verify: git reconnect probe, 2026-07-31 -->
