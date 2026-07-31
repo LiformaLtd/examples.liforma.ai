@@ -170,7 +170,12 @@ else
 		echo "Run: cd examples/spanish-tutor/sveltekit && npm install" >&2
 		exit 1
 	fi
+	if [[ ! -d "$ROOT/examples/guided-practice/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/guided-practice/sveltekit && npm install" >&2
+		exit 1
+	fi
 	start_on_port spanish-tutor 4001 "$ROOT/examples/spanish-tutor/sveltekit" "$sveltekit_cmd"
+	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/sveltekit" "$sveltekit_cmd"
 fi
 
 echo ""

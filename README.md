@@ -80,7 +80,7 @@ For your own `exp_…` experiences, add the same origins in [app.liforma.ai](htt
 
 ```bash
 npm run verify
-cd examples/spanish-tutor/sveltekit && npm run verify
+cd examples/guided-practice/sveltekit && npm run verify
 ```
 
 ## Liforma engineers (local stack override)

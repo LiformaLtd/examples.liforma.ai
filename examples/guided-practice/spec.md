@@ -54,4 +54,4 @@ Default: `exp_01MEET_COFFEE_BARISTA` (Meet coffee barista). Presenter mode does 
 
 ## Frameworks
 
-Phase 1 ships **vanilla** only. SvelteKit port can mirror this flow with the same API calls.
+**Vanilla** (`vanilla/`) and **SvelteKit** (`sveltekit/`) — same Experience API calls and turn flow.
