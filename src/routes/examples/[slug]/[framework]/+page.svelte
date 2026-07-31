@@ -3,6 +3,7 @@
 	import CopyPrompt from '$lib/components/CopyPrompt.svelte';
 	import { DEMO_EXPERIENCE_ID, githubTreePath, externalLinks } from '$lib/constants';
 	import { implementationSourcePath } from '$lib/examples';
+	import { exampleLocalUrl } from '$lib/examplePorts';
 	import {
 		genericPortPrompt,
 		sveltekitAgentPrompt,
@@ -33,17 +34,20 @@
 <!-- experience-id comes from the selected lesson -->
 <liforma-experience experience-id="\${lesson.experienceId}"></liforma-experience>`;
 
-	const runCommands =
+	const runCommands = $derived.by(() =>
 		framework.slug === 'sveltekit'
 			? `cd ${sourcePath}
 npm install
 npm run dev
-# http://localhost:3007`
+# http://localhost:${example.localPort}`
 			: framework.slug === 'vanilla'
 				? `cd ${sourcePath}
-npx serve . -l 3008
-# http://localhost:3008`
-				: '';
+npx serve . -l tcp://localhost:${example.localPort}
+# http://localhost:${example.localPort}`
+				: ''
+	);
+
+	const localUrl = $derived(exampleLocalUrl(example.slug));
 </script>
 
 <svelte:head>
@@ -76,7 +80,14 @@ npx serve . -l 3008
 		</p>
 
 		<h2>Run locally</h2>
+		<p>
+			From the repo root, <code>./start</code> runs all examples (or <code>./start sveltekit</code> for
+			SvelteKit apps). To run only this one:
+		</p>
 		<CodeBlock code={runCommands} lang="bash" filename="terminal" />
+		{#if localUrl}
+			<p>Local URL: <a href={localUrl}>{localUrl}</a></p>
+		{/if}
 
 		<h2>Lesson data</h2>
 		<p>

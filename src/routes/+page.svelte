@@ -25,6 +25,11 @@
 			View on GitHub
 		</a>
 	</div>
+	<p class="run-hint">
+		Clone the repo and run <code>./start</code> to open the gallery on
+		<code>localhost:4000</code> plus runnable demos on <code>4001</code> and <code>4002</code>.
+		See the <a href={GITHUB_REPO}>README</a> for single-example commands.
+	</p>
 </section>
 
 <section class="page-shell" aria-label="Featured examples">
@@ -99,6 +104,13 @@
 		flex-wrap: wrap;
 		gap: 0.75rem;
 		margin-top: 1.5rem;
+	}
+
+	.run-hint {
+		margin-top: 1.25rem;
+		font-size: 0.9375rem;
+		color: var(--text-muted);
+		max-width: 42rem;
 	}
 
 	.section-lead {

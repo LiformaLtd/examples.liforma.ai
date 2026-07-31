@@ -4,6 +4,7 @@ const SDK_BUILD = '6';
 const SDK_MARKER = 'data-liforma-sdk';
 
 const PRODUCTION_CDN_BASE_URL = 'https://cdn.liforma.ai';
+const LOCAL_CDN_BASE_URL = 'http://localhost:3010';
 const LOCAL_API_BASE_URL = 'http://localhost:3001';
 const LOCAL_PLAYER_EMBED_URL = 'http://localhost:3002/embed';
 
@@ -11,8 +12,18 @@ const SDK_LOAD_TIMEOUT_MS = 20_000;
 
 let loadPromise: Promise<void> | null = null;
 
+function useLocalStack(): boolean {
+	const viteStack = import.meta.env.VITE_LIFORMA_STACK;
+	if (viteStack === 'local') return true;
+	if (typeof window === 'undefined') return false;
+	const params = new URLSearchParams(window.location.search);
+	if (params.get('stack') === 'local') return true;
+	return window.__LIFORMA_STACK === 'local';
+}
+
 function sdkUrl(): string {
-	return `${PRODUCTION_CDN_BASE_URL.replace(/\/$/, '')}/sdk/v2/client.js?b=${SDK_BUILD}`;
+	const base = useLocalStack() ? LOCAL_CDN_BASE_URL : PRODUCTION_CDN_BASE_URL;
+	return `${base.replace(/\/$/, '')}/sdk/v2/client.js?b=${SDK_BUILD}`;
 }
 
 function isSdkReady(): boolean {
@@ -26,11 +37,10 @@ function existingSdkScript(): HTMLScriptElement | null {
 }
 
 function sdkLoadError(url: string): Error {
-	if (import.meta.env.DEV) {
+	if (useLocalStack()) {
 		return new Error(
 			`Failed to load Liforma SDK from ${url}. ` +
-				'Ensure api (:3001) and player (:3002) are running for local embed. ' +
-				'Use cdn.liforma.ai npm run dev (:3010) only when testing unpublished SDK changes.'
+				'Start api (:3001), player (:3002), and optional cdn preview (:3010).'
 		);
 	}
 	return new Error(
@@ -64,7 +74,7 @@ export function loadLiformaSdk(): Promise<void> {
 		script.setAttribute(SDK_MARKER, 'true');
 		script.async = true;
 
-		if (import.meta.env.DEV) {
+		if (useLocalStack()) {
 			script.dataset.apiBaseUrl = LOCAL_API_BASE_URL;
 			script.dataset.playerEmbedUrl = LOCAL_PLAYER_EMBED_URL;
 		}

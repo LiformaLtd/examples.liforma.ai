@@ -1,3 +1,4 @@
+import { loadLiformaSdk } from './shared/loadLiformaSdk.js';
 import { fallbackLessons } from './lessons.js';
 import { loadLessons } from './lessonsLoader.js';
 
@@ -167,6 +168,7 @@ function updateUi() {
 }
 
 async function bootstrapLessons() {
+	await loadLiformaSdk({ build: '6' });
 	try {
 		const loadedLessons = await loadLessons();
 		lessons = loadedLessons;

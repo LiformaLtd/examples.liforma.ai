@@ -16,7 +16,8 @@ When working in this repository:
 
 ## Gallery site
 
-- Port **3006**, `strictPort: true`
+- Port **4000**, `strictPort: true`
+- `./start` runs gallery + runnable examples (see root `README.md`)
 - Metadata in `src/lib/examples.ts` and `src/lib/frameworks.ts`
 - Only mark frameworks `available: true` when source exists in the repo
 

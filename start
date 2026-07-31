@@ -1,0 +1,182 @@
+#!/usr/bin/env bash
+# Start the examples gallery and runnable demos (production Liforma APIs by default).
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=scripts/lib/dev-services.sh
+source "$ROOT/scripts/lib/dev-services.sh"
+LOG_DIR="$ROOT/.local-dev/logs"
+mkdir -p "$LOG_DIR"
+
+MODE="vanilla"
+RESTART=false
+STATUS_ONLY=false
+USE_LOCAL_STACK=false
+
+usage() {
+	cat <<'EOF'
+Usage: ./start [mode] [options]
+
+Start the examples gallery and runnable apps. Uses production Liforma APIs by default.
+
+Modes:
+  vanilla     Gallery + all vanilla examples (default)
+  sveltekit   Gallery + SvelteKit examples (same ports per example)
+
+Options:
+  --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
+              Starts those services from the monorepo when this repo lives inside it.
+  --restart   Kill listeners on example ports before starting
+  --status    Show which services are listening
+  -h, --help  Show this help
+
+Ports:
+  4000  Gallery (this repo)
+  4001  Spanish Tutor (vanilla or SvelteKit)
+  4002  Guided practice (vanilla)
+
+Examples:
+  ./start
+  ./start vanilla
+  ./start sveltekit
+  ./start --local
+  ./start --local --restart
+  ./start --status
+  ./stop
+  ./stop spanish-tutor
+  ./stop --status
+EOF
+}
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		vanilla|sveltekit)
+			MODE="$1"
+			shift
+			;;
+		--local)
+			USE_LOCAL_STACK=true
+			shift
+			;;
+		--restart)
+			RESTART=true
+			shift
+			;;
+		--status)
+			STATUS_ONLY=true
+			shift
+			;;
+		-h|--help)
+			usage
+			exit 0
+			;;
+		*)
+			echo "error: unknown argument: $1" >&2
+			usage >&2
+			exit 1
+			;;
+	esac
+done
+
+START_MODE="$MODE"
+
+if [[ "$STATUS_ONLY" == true ]]; then
+	print_status
+	if [[ "$USE_LOCAL_STACK" == true ]]; then
+		echo ""
+		echo "Platform stack (--local):"
+		print_platform_stack_status
+	fi
+	exit 0
+fi
+
+if [[ ! -d "$ROOT/node_modules" ]]; then
+	echo "Run npm install first." >&2
+	exit 1
+fi
+
+start_on_port() {
+	local name="$1"
+	local port="$2"
+	local dir="$3"
+	local cmd="$4"
+	local log_file="$LOG_DIR/$name.log"
+
+	if [[ "$RESTART" == true ]] && is_port_in_use "$port"; then
+		echo "restart $name (:$port)"
+		kill_port "$port"
+	fi
+
+	if is_port_in_use "$port"; then
+		if [[ "$USE_LOCAL_STACK" == true ]]; then
+			echo "skip $name — already running on http://localhost:$port (use --restart to apply --local)" >&2
+		else
+			echo "skip $name — already running on http://localhost:$port"
+		fi
+		return 0
+	fi
+
+	local stack_label="production Liforma APIs"
+	if [[ "$USE_LOCAL_STACK" == true ]]; then
+		stack_label="local stack (:3001 api, :3002 player, :3010 cdn)"
+	fi
+
+	echo "start $name → http://localhost:$port ($stack_label; log: .local-dev/logs/$name.log)"
+	nohup bash -c "cd $(printf '%q' "$dir") && $cmd" >"$log_file" 2>&1 &
+	disown -h "$!" 2>/dev/null || true
+
+	local i
+	for i in $(seq 1 30); do
+		if is_port_in_use "$port"; then
+			echo "  ready $name"
+			return 0
+		fi
+		sleep 0.5
+	done
+	echo "  warning $name — port $port not listening yet; check $log_file" >&2
+}
+
+if [[ "$USE_LOCAL_STACK" == true ]]; then
+	echo "Local Liforma stack mode — examples use api :3001, player :3002, cdn :3010"
+	echo ""
+	start_platform_stack_if_available "$ROOT"
+	echo ""
+fi
+
+if [[ "$RESTART" == true ]]; then
+	kill_port "$GALLERY_PORT"
+	kill_port 4001
+	if [[ "$MODE" == "vanilla" ]]; then
+		kill_port 4002
+	fi
+fi
+
+start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
+
+vanilla_stack_env=""
+sveltekit_cmd="npm run dev"
+if [[ "$USE_LOCAL_STACK" == true ]]; then
+	vanilla_stack_env="LIFORMA_STACK=local "
+	sveltekit_cmd="npm run dev:local"
+fi
+
+if [[ "$MODE" == "vanilla" ]]; then
+	start_on_port spanish-tutor 4001 "$ROOT" \
+		"${vanilla_stack_env}PORT=4001 node scripts/serve-example.mjs examples/spanish-tutor/vanilla"
+	start_on_port guided-practice 4002 "$ROOT" \
+		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/guided-practice/vanilla"
+else
+	if [[ ! -d "$ROOT/examples/spanish-tutor/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/spanish-tutor/sveltekit && npm install" >&2
+		exit 1
+	fi
+	start_on_port spanish-tutor 4001 "$ROOT/examples/spanish-tutor/sveltekit" "$sveltekit_cmd"
+fi
+
+echo ""
+print_status
+if [[ "$USE_LOCAL_STACK" == true ]]; then
+	echo ""
+	echo "Platform stack:"
+	print_platform_stack_status
+fi

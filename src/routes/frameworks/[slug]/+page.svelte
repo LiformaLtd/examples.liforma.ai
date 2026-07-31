@@ -38,6 +38,7 @@
 					<a href="/examples/{example.slug}/{framework.slug}">{example.title}</a>
 					—
 					<a href={githubTreePath(implementationSourcePath(example, framework.slug))}>source</a>
+					· <code>http://localhost:{example.localPort}</code>
 					{#if example.liveAppUrl && framework.slug === 'sveltekit'}
 						·
 						<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer">live demo</a>
@@ -45,12 +46,6 @@
 				</li>
 			{/each}
 		</ul>
-
-		{#if framework.localPort}
-			<p>
-				Local dev port: <code>{framework.localPort}</code>
-			</p>
-		{/if}
 	{:else}
 		<p>
 			This framework port is not runnable yet. Start from the SvelteKit or vanilla Spanish Tutor

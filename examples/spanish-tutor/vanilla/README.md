@@ -1,37 +1,23 @@
-# Spanish Tutor — Vanilla HTML
+# Spanish Tutor (vanilla)
 
-Minimal copy-paste example using the Liforma CDN web component.
+Static HTML/CSS/JS lesson picker with the Liforma web component.
 
 ## Run
 
-```bash
-npx serve . -l 3008
-```
-
-http://localhost:3008
-
-## Files
-
-- `index.html` — structure + CDN script tag
-- `lessons.js` — static fallback lesson data
-- `lessonsLoader.js` — fetches lessons from the SvelteKit `/api/lessons` endpoint
-- `app.js` — UI state, close-before-switch, embed mount
-- `styles.css` — layout (no build step)
-
-## Run with catalog
-
-Start the SvelteKit app on port 3007 with `LIFORMA_API_KEY` set, then serve vanilla on 3008:
+From repo root:
 
 ```bash
-# terminal 1
-cd ../sveltekit && LIFORMA_API_KEY=lfm_test_… npm run dev
-
-# terminal 2
-npx serve . -l 3008
+./start
 ```
 
-Vanilla loads lessons from `http://localhost:3007/api/lessons` automatically when served on port 3008.
+Or only this example:
 
-## Customise
+```bash
+npx serve . -l tcp://localhost:4001
+```
 
-Publish experiences in Studio for your project. Optional slug-specific copy still lives in the SvelteKit `lessonDetailsBySlug` map. Each lesson's `experienceId` is passed to `<liforma-experience>` when practice starts.
+http://localhost:4001
+
+## Live lesson catalog
+
+`./start` serves vanilla with static fallback lessons. `./start sveltekit` runs the SvelteKit app on the same port (**4001**) with the API-backed catalog — only one framework runs at a time.

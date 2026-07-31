@@ -1,5 +1,6 @@
 const PRODUCTION_LESSONS_API = 'https://spanish-tutor.examples.liforma.ai/api/lessons';
-const LOCAL_SVELTEKIT_LESSONS_API = 'http://localhost:3007/api/lessons';
+const LOCAL_SVELTEKIT_LESSONS_API = 'http://localhost:4001/api/lessons';
+const SPANISH_TUTOR_PORT = '4001';
 
 /**
  * @returns {string}
@@ -9,7 +10,7 @@ export function resolveLessonsApiUrl() {
 		return PRODUCTION_LESSONS_API;
 	}
 
-	if (window.location.port === '3008') {
+	if (window.location.port === SPANISH_TUTOR_PORT) {
 		return LOCAL_SVELTEKIT_LESSONS_API;
 	}
 

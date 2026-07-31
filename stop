@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# Stop the examples gallery and runnable demos started by ./start.
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "$0")" && pwd)"
+# shellcheck source=scripts/lib/dev-services.sh
+source "$ROOT/scripts/lib/dev-services.sh"
+
+usage() {
+	cat <<'EOF'
+Usage: ./stop [options] [target...]
+
+Stop example services started by ./start. Port occupancy is the source of truth.
+With no targets, stops every known service.
+
+Targets (one or more):
+  gallery, spanish-tutor, guided-practice
+  4000, 4001, 4002
+  Comma-separated lists are accepted (e.g. spanish-tutor,guided-practice)
+
+Options:
+  --status   Show which services are listening (does not stop anything)
+  -h, --help Show this help
+
+Examples:
+  ./stop
+  ./stop spanish-tutor
+  ./stop 4001 4002
+  ./stop gallery,spanish-tutor,guided-practice
+  ./stop --status
+EOF
+}
+
+stop_all_services() {
+	echo "Stopping example services…"
+	for entry in "${EXAMPLE_SERVICES[@]}"; do
+		IFS='|' read -r name port <<<"$entry"
+		stop_service_by_port "$name" "$port"
+	done
+	echo "Done."
+}
+
+stop_targets() {
+	local targets=("$@")
+	local target part
+	local resolved_any=false
+
+	echo "Stopping example service(s)…"
+	for target in "${targets[@]}"; do
+		IFS=',' read -ra parts <<<"$target"
+		for part in "${parts[@]}"; do
+			part="${part//[[:space:]]/}"
+			if [[ -z "$part" ]]; then
+				continue
+			fi
+			if ! resolve_service_target "$part"; then
+				if [[ "$part" =~ ^[0-9]+$ ]] && is_port_in_use "$part"; then
+					echo "stop unknown service on :$part"
+					kill_port "$part"
+					resolved_any=true
+					continue
+				fi
+				echo "error: unknown service or port: $part" >&2
+				echo "Known: $(known_service_names) (ports 4000–4002)" >&2
+				exit 1
+			fi
+			stop_service_by_port "$RESOLVED_SERVICE_NAME" "$RESOLVED_SERVICE_PORT"
+			resolved_any=true
+		done
+	done
+
+	if [[ "$resolved_any" == false ]]; then
+		echo "error: no valid targets" >&2
+		exit 1
+	fi
+	echo "Done."
+}
+
+STATUS_ONLY=false
+TARGETS=()
+
+while [[ $# -gt 0 ]]; do
+	case "$1" in
+		--status)
+			STATUS_ONLY=true
+			shift
+			;;
+		-h|--help)
+			usage
+			exit 0
+			;;
+		--)
+			shift
+			TARGETS+=("$@")
+			break
+			;;
+		-*)
+			echo "error: unknown option: $1" >&2
+			usage >&2
+			exit 1
+			;;
+		*)
+			TARGETS+=("$1")
+			shift
+			;;
+	esac
+done
+
+if [[ "$STATUS_ONLY" == true ]]; then
+	print_status
+	exit 0
+fi
+
+if [[ ${#TARGETS[@]} -eq 0 ]]; then
+	stop_all_services
+else
+	stop_targets "${TARGETS[@]}"
+fi

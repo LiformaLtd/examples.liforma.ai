@@ -13,6 +13,7 @@ export default ts.config(
 			'.svelte-kit/**',
 			'**/.svelte-kit/**',
 			'.vercel/**',
+			'**/.vercel/**',
 			'build/**',
 			'node_modules/**',
 			'static/**'

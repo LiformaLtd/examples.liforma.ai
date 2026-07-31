@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Guided practice — Liforma example</title>
+		<meta
+			name="description"
+			content="Marvely-style scripted practice: avatar speaks canned lines; you control when to start and stop recording."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>Guided practice</h1>
+						<p class="lede">
+							Presenter mode with scripted <code>speak()</code> turns and a single button that
+							cycles Start → Stop → Next while the avatar speaks canned lines.
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://examples.liforma.ai/examples/guided-practice"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Example docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="Practice">
+						<div class="avatar-panel">
+							<div id="avatar-host" aria-label="Liforma avatar embed"></div>
+						</div>
+
+						<div class="turn-card">
+							<h2 id="turn-title">Café ordering</h2>
+							<p id="turn-hint"></p>
+							<p class="meta">
+								Experience: <code id="experience-id-label"></code> · modes:
+								<code id="mode-label">presenter / manual / manual</code>
+							</p>
+						</div>
+
+						<div class="controls">
+							<span id="status-pill" class="status-pill">Loading…</span>
+							<button
+								type="button"
+								id="btn-turn"
+								class="btn turn-btn state-disabled"
+								disabled
+								aria-live="polite"
+							>
+								Start
+							</button>
+						</div>
+
+						<div id="transcript-panel" class="transcript-panel hidden" aria-live="polite">
+							<h3>Your transcript</h3>
+							<p id="transcript-text"></p>
+						</div>
+
+						<div id="feedback-panel" class="feedback-panel hidden" aria-live="polite">
+							<h3 id="feedback-title">Feedback</h3>
+							<p id="feedback-detail"></p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

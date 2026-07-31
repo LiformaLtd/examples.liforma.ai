@@ -8,6 +8,8 @@ export type ExampleMetadata = {
 	frameworks: SupportedFramework[];
 	features: string[];
 	githubPath: string;
+	/** Local dev port (shared by vanilla and SvelteKit for this example). */
+	localPort: number;
 	/** Hosted runnable app (full lesson UI), when deployed. */
 	liveAppUrl?: string;
 	/** Hosted Meet page for the underlying avatar — not the full example app. */
@@ -25,9 +27,29 @@ export const examples: ExampleMetadata[] = [
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Avatar Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
 		githubPath: 'examples/spanish-tutor',
+		localPort: 4001,
 		liveAppUrl: 'https://spanish-tutor.examples.liforma.ai/',
 		meetExperienceUrl: 'https://www.liforma.ai/meet/demo-spanish-cafe',
 		specPath: 'examples/spanish-tutor/spec.md'
+	},
+	{
+		slug: 'guided-practice',
+		title: 'Guided practice',
+		description:
+			'Marvely-style scripted turns: presenter mode, speak() for tutor lines, manual Start/Stop listening, and host-side feedback.',
+		category: 'Education',
+		frameworks: ['vanilla'],
+		features: [
+			'Avatar Experience',
+			'speak()',
+			'Manual listening',
+			'Presenter mode',
+			'Host feedback'
+		],
+		githubPath: 'examples/guided-practice',
+		localPort: 4002,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/guided-practice/spec.md'
 	}
 ];
 

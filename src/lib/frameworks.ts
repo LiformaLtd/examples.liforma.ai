@@ -18,7 +18,6 @@ export type FrameworkMetadata = {
 	priority: 1 | 2 | 3 | 4 | 5 | 6 | 7;
 	implementationPhase: 1 | 2 | 3 | 4;
 	available: boolean;
-	localPort?: number;
 };
 
 export const frameworks: FrameworkMetadata[] = [
@@ -28,8 +27,7 @@ export const frameworks: FrameworkMetadata[] = [
 		description: 'Best native Liforma showcase — full lesson UI with TypeScript and Svelte 5.',
 		priority: 1,
 		implementationPhase: 1,
-		available: true,
-		localPort: 3007
+		available: true
 	},
 	{
 		slug: 'vanilla',
@@ -37,8 +35,7 @@ export const frameworks: FrameworkMetadata[] = [
 		description: 'CDN script + `<liforma-experience>` — copy-paste friendly for any site.',
 		priority: 2,
 		implementationPhase: 1,
-		available: true,
-		localPort: 3008
+		available: true
 	},
 	{
 		slug: 'nextjs',
