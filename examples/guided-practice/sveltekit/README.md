@@ -1,6 +1,8 @@
 # Guided practice (SvelteKit)
 
-Marvely-style scripted practice using the Experience `speak()` API and manual listening.
+Marvely-style scripted practice using the Svelte `<Experience />` component, its typed
+`ExperienceHandle`, and manual Start/Stop listening. The component owns session creation,
+attachment, subscriptions, restart, and cleanup; the page owns lesson state and feedback.
 
 From the examples repo root:
 

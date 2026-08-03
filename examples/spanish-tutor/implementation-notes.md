@@ -9,7 +9,7 @@
 
 Phase 1 uses the CDN web component only — not `@liforma/client` npm (unpublished).
 
-`LiformaEmbed.svelte` loads the SDK script once and mounts `<liforma-experience>`. Vanilla loads the script in `index.html`.
+`+page.svelte` mounts `<Experience />` from `@liforma/client/svelte`. Vanilla loads the v2 SDK script and `<liforma-experience>` in `index.html`.
 
 ## Session state
 

@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { buildPracticeFeedback, type PracticeFeedback } from '$lib/feedback';
-	import { getExperienceClass, loadLiformaSdk, type LiformaExperience } from '$lib/load-liforma-sdk';
-	import {
-		PRACTICE_EXPERIENCE_ID,
-		practiceTurns
-	} from '$lib/turns';
+	import { playerEmbedUrl } from '$lib/liforma-stack';
+	import { PRACTICE_EXPERIENCE_ID, practiceTurns } from '$lib/turns';
+	import type { ExperienceEvents, StartButtonOptions } from '@liforma/client';
+	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
 
 	type Phase =
 		| 'loading'
@@ -19,8 +17,7 @@
 
 	type StatusTone = 'default' | 'active' | 'good' | 'warn';
 
-	let avatarHost: HTMLDivElement | undefined = $state();
-	let experience: LiformaExperience | null = $state(null);
+	let avatar = $state<ExperienceHandle>();
 	let turnIndex = $state(0);
 	let lessonStarted = $state(false);
 	let busy = $state(false);
@@ -65,12 +62,28 @@
 
 	const turnButtonDisabled = $derived(
 		busy ||
+			!avatar ||
+			!lessonStarted ||
 			phase === 'loading' ||
 			phase === 'error' ||
 			phase === 'complete' ||
 			phase === 'await_begin' ||
 			phase === 'speaking'
 	);
+
+	const startButton: StartButtonOptions = {
+		label: 'Begin lesson',
+		ariaLabel: 'Begin guided practice lesson',
+		placement: 'bottom-center',
+		variant: 'primary',
+		appearance: {
+			backgroundColor: '#2563eb',
+			textColor: '#ffffff',
+			borderRadiusPx: 999,
+			size: 'large',
+			shadow: 'strong'
+		}
+	};
 
 	function pushLog(line: string): void {
 		logs = [...logs, line];
@@ -98,14 +111,14 @@
 
 	async function speakCurrentTutorLine(): Promise<void> {
 		const turn = currentTurn;
-		if (!experience || !turn) return;
+		if (!avatar || !turn) return;
 		feedback = null;
 		showTranscript = false;
 		transcriptText = '';
 		setPhase('speaking');
 		setStatus('Tutor speaking…', 'active');
 		pushLog(`Tutor: ${turn.tutorLine}`);
-		await experience.speak({ text: turn.tutorLine });
+		await avatar.speak({ text: turn.tutorLine });
 		setPhase('await_start');
 		setStatus('Tap Start when you are ready to speak', 'default');
 		pushLog('Your turn — tap Start, speak, then Stop.');
@@ -114,10 +127,10 @@
 	async function handleTurnButton(): Promise<void> {
 		if (phase === 'await_start') {
 			await withBusy(async () => {
-				if (!experience) return;
+				if (!avatar) return;
 				showTranscript = false;
 				transcriptText = '';
-				await experience.startListening();
+				await avatar.startListening();
 				setPhase('recording');
 				setStatus('Recording… tap Stop when finished', 'active');
 				pushLog('Listening…');
@@ -128,8 +141,8 @@
 		if (phase === 'recording') {
 			await withBusy(async () => {
 				const turn = currentTurn;
-				if (!experience || !turn) return;
-				const utterance = await experience.stopListening();
+				if (!avatar || !turn) return;
+				const utterance = await avatar.stopListening();
 				transcriptText = utterance.text.trim() || '(no speech detected)';
 				showTranscript = true;
 				feedback = buildPracticeFeedback(turn.hint, utterance.text);
@@ -156,105 +169,68 @@
 		}
 	}
 
-	onMount(() => {
-		void (async () => {
-			try {
-				setStatus('Loading avatar…', 'active');
-				await loadLiformaSdk();
-				const Experience = getExperienceClass();
+	function handleReady({ manifest }: ExperienceEvents['ready']): void {
+		modeLabel = `${manifest.experience.mode} / ${manifest.experience.responseMode} / ${manifest.experience.speechInputMode}`;
+		setPhase('await_begin');
+		setStatus('Tap Begin lesson in the player', 'default');
+		pushLog('Avatar ready. Use the player start button to begin the lesson.');
+	}
 
-				const session = await Experience.startSession({
-					experienceId: PRACTICE_EXPERIENCE_ID,
-					mode: 'presenter',
-					speechInputMode: 'manual',
-					startButton: {
-						label: 'Begin lesson',
-						ariaLabel: 'Begin guided practice lesson',
-						placement: 'bottom-center',
-						variant: 'primary',
-						appearance: {
-							backgroundColor: '#2563eb',
-							textColor: '#ffffff',
-							borderRadiusPx: 999,
-							size: 'large',
-							shadow: 'strong'
-						}
-					}
-				});
+	function handleTranscript(update: ExperienceEvents['userTranscript']): void {
+		if (recordingActive && update.text.trim()) {
+			transcriptText = update.text.trim();
+			showTranscript = true;
+		}
+	}
 
-				experience = session;
+	function handleStarted(): void {
+		if (lessonStarted) return;
+		lessonStarted = true;
+		void withBusy(async () => {
+			setStatus('Starting first tutor line…', 'active');
+			pushLog('Player unlocked audio and started the session.');
+			await speakCurrentTutorLine();
+		});
+	}
 
-				let readyHandled = false;
-				const handleReady = ({
-					manifest
-				}: {
-					manifest?: {
-						experience?: { mode?: string; responseMode?: string; speechInputMode?: string };
-					};
-				}) => {
-					if (readyHandled) return;
-					readyHandled = true;
-					if (manifest?.experience) {
-						modeLabel = `${manifest.experience.mode} / ${manifest.experience.responseMode} / ${manifest.experience.speechInputMode}`;
-					}
-					setPhase('await_begin');
-					setStatus('Tap Begin lesson in the player', 'default');
-					pushLog('Avatar ready. Use the player start button to begin the lesson.');
-				};
+	function handleStateUpdate(state: string): void {
+		if (state === 'error') {
+			setPhase('error');
+			setStatus('Avatar error', 'warn');
+		}
+	}
 
-				session.on('ready', handleReady as (payload: unknown) => void);
-				session.on('userTranscript', ((update: { text: string }) => {
-					if (recordingActive && update.text.trim()) {
-						transcriptText = update.text.trim();
-						showTranscript = true;
-					}
-				}) as (payload: unknown) => void);
-				session.on('started', () => {
-					if (lessonStarted) return;
-					lessonStarted = true;
-					void withBusy(async () => {
-						setStatus('Starting first tutor line…', 'active');
-						pushLog('Player unlocked audio and started the session.');
-						await speakCurrentTutorLine();
-					});
-				});
-
-				if (!avatarHost) throw new Error('Avatar host element missing.');
-
-				await session.attach({
-					container: avatarHost,
-					onStateUpdate: (state: string) => {
-						if (state === 'error') {
-							setPhase('error');
-							setStatus('Avatar error', 'warn');
-						}
-					}
-				});
-
-				if (!readyHandled) {
-					handleReady({ manifest: session.getManifest() ?? undefined });
-				}
-			} catch (err) {
-				console.error(err);
-				setPhase('error');
-				setStatus('Failed to load', 'warn');
-				const message = err instanceof Error ? err.message : String(err);
-				if (message === 'Failed to fetch' || message.includes('Failed to fetch')) {
-					pushLog(
-						'Could not reach the Liforma API. Add http://localhost:4002 to your project allowed origins.'
-					);
-				} else {
-					pushLog(message);
-				}
-			}
-		})();
-	});
+	function handleError(error: Error): void {
+		setPhase('error');
+		setStatus('Failed to load', 'warn');
+		if (error.message.includes('Failed to fetch')) {
+			pushLog(
+				'Could not reach the Liforma API. Add http://localhost:4002 to your project allowed origins.'
+			);
+		} else {
+			pushLog(error.message);
+		}
+	}
 </script>
 
 <div class="layout">
 	<section class="workspace" aria-label="Practice">
 		<div class="avatar-panel">
-			<div class="avatar-host" bind:this={avatarHost} aria-label="Liforma avatar embed"></div>
+			<div class="avatar-host" aria-label="Liforma avatar embed">
+				<Experience
+					bind:this={avatar}
+					experienceId={PRACTICE_EXPERIENCE_ID}
+					embedBaseUrl={playerEmbedUrl()}
+					mode="presenter"
+					speechInputMode="manual"
+					{startButton}
+					onReady={handleReady}
+					onStarted={handleStarted}
+					onUserTranscript={handleTranscript}
+					onStateUpdate={handleStateUpdate}
+					onError={handleError}
+				/>
+			</div>
 		</div>
 
 		<div class="turn-card">

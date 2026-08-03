@@ -1,7 +1,8 @@
 <script lang="ts">
-	import LiformaEmbed from '$lib/components/LiformaEmbed.svelte';
 	import LessonList from '$lib/components/LessonList.svelte';
 	import { getLesson } from '$lib/lessons';
+	import { playerEmbedUrl } from '$lib/liforma-stack';
+	import { Experience } from '@liforma/client/svelte';
 	import type { PageData } from './$types';
 
 	type SessionStatus = 'idle' | 'active';
@@ -10,17 +11,13 @@
 
 	let selectedLessonId = $state<string | null>(null);
 	let sessionStatus = $state<SessionStatus>('idle');
-	let embedKey = $state(0);
 	let transcriptNotes = $state<string[]>([]);
 
-	$effect(() => {
-		if (!selectedLessonId && data.lessons.length > 0) {
-			selectedLessonId = data.lessons[0].id;
-		}
-	});
-
+	const effectiveSelectedLessonId = $derived(
+		selectedLessonId ?? data.lessons[0]?.id ?? null
+	);
 	const selectedLesson = $derived(
-		selectedLessonId ? getLesson(data.lessons, selectedLessonId) : undefined
+		effectiveSelectedLessonId ? getLesson(data.lessons, effectiveSelectedLessonId) : undefined
 	);
 
 	const sessionActive = $derived(sessionStatus === 'active');
@@ -42,7 +39,6 @@
 			'Allow microphone access when prompted to speak with your tutor.',
 			'Transcript events from the SDK can be wired here in a production app.'
 		];
-		embedKey += 1;
 	}
 
 	function endSession(): void {
@@ -67,7 +63,7 @@
 		{/if}
 		<LessonList
 			lessons={data.lessons}
-			selectedId={selectedLessonId}
+			selectedId={effectiveSelectedLessonId}
 			{sessionActive}
 			onselect={selectLesson}
 		/>
@@ -102,15 +98,14 @@
 			</div>
 
 			{#if sessionActive}
-				{#key embedKey}
-					<LiformaEmbed
-						{experienceId}
-						onclose={handleEmbedClose}
-						onerror={() => {
-							transcriptNotes = [...transcriptNotes, 'Avatar failed to load.'];
-						}}
+				<div class="embed-shell">
+					<Experience
+						experienceId={experienceId}
+						language="es"
+						embedBaseUrl={playerEmbedUrl()}
+						onClose={handleEmbedClose}
 					/>
-				{/key}
+				</div>
 			{:else}
 				<div class="avatar-placeholder">
 					<p>Select a lesson and start practice to load your Spanish tutor avatar.</p>
@@ -242,6 +237,16 @@
 		border: 1px solid var(--warning-border);
 		font-size: 0.875rem;
 		color: var(--text-muted);
+	}
+
+	.embed-shell {
+		min-height: 420px;
+		border: 1px solid var(--border);
+		border-radius: var(--radius);
+		background: var(--bg-elevated);
+		overflow: hidden;
+		box-shadow: var(--shadow-sm);
+		margin-bottom: 1rem;
 	}
 
 	.avatar-placeholder {

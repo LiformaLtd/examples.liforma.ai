@@ -104,7 +104,7 @@ npx serve . -l tcp://localhost:${example.localPort}
 		<ul>
 			{#if framework.slug === 'sveltekit'}
 				<li><code>src/lib/lessons.ts</code> — lesson data and per-lesson <code>experienceId</code></li>
-				<li><code>src/lib/components/LiformaEmbed.svelte</code> — SDK loader + web component</li>
+				<li><code>src/routes/+page.svelte</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code></li>
 				<li><code>src/routes/+page.svelte</code> — lesson UI and close-before-switch flow</li>
 			{:else}
 				<li><code>lessons.js</code> — lesson data</li>

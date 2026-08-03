@@ -24,7 +24,7 @@ export const frameworks: FrameworkMetadata[] = [
 	{
 		slug: 'sveltekit',
 		title: 'SvelteKit',
-		description: 'Best native Liforma showcase — full lesson UI with TypeScript and Svelte 5.',
+		description: '`<Experience />` from `@liforma/client/svelte` — full lesson UI with TypeScript and Svelte 5.',
 		priority: 1,
 		implementationPhase: 1,
 		available: true

@@ -1,6 +1,6 @@
 # Spanish Tutor (SvelteKit)
 
-Full lesson-based app with API-backed catalog and `<liforma-experience>` embed.
+Full lesson-based app with API-backed catalog and `<Experience />` from `@liforma/client/svelte`.
 
 ## Run
 
