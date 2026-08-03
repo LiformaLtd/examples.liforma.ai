@@ -17,7 +17,7 @@
 
 	type StatusTone = 'default' | 'active' | 'good' | 'warn';
 
-	let avatar = $state<ExperienceHandle>();
+	let experience = $state<ExperienceHandle>();
 	let turnIndex = $state(0);
 	let lessonStarted = $state(false);
 	let busy = $state(false);
@@ -62,7 +62,7 @@
 
 	const turnButtonDisabled = $derived(
 		busy ||
-			!avatar ||
+			!experience ||
 			!lessonStarted ||
 			phase === 'loading' ||
 			phase === 'error' ||
@@ -111,14 +111,14 @@
 
 	async function speakCurrentTutorLine(): Promise<void> {
 		const turn = currentTurn;
-		if (!avatar || !turn) return;
+		if (!experience || !turn) return;
 		feedback = null;
 		showTranscript = false;
 		transcriptText = '';
 		setPhase('speaking');
 		setStatus('Tutor speaking…', 'active');
 		pushLog(`Tutor: ${turn.tutorLine}`);
-		await avatar.speak({ text: turn.tutorLine });
+		await experience.speak({ text: turn.tutorLine });
 		setPhase('await_start');
 		setStatus('Tap Start when you are ready to speak', 'default');
 		pushLog('Your turn — tap Start, speak, then Stop.');
@@ -127,10 +127,10 @@
 	async function handleTurnButton(): Promise<void> {
 		if (phase === 'await_start') {
 			await withBusy(async () => {
-				if (!avatar) return;
+				if (!experience) return;
 				showTranscript = false;
 				transcriptText = '';
-				await avatar.startListening();
+				await experience.startListening();
 				setPhase('recording');
 				setStatus('Recording… tap Stop when finished', 'active');
 				pushLog('Listening…');
@@ -141,8 +141,8 @@
 		if (phase === 'recording') {
 			await withBusy(async () => {
 				const turn = currentTurn;
-				if (!avatar || !turn) return;
-				const utterance = await avatar.stopListening();
+				if (!experience || !turn) return;
+				const utterance = await experience.stopListening();
 				transcriptText = utterance.text.trim() || '(no speech detected)';
 				showTranscript = true;
 				feedback = buildPracticeFeedback(turn.hint, utterance.text);
@@ -173,7 +173,7 @@
 		modeLabel = `${manifest.experience.mode} / ${manifest.experience.responseMode} / ${manifest.experience.speechInputMode}`;
 		setPhase('await_begin');
 		setStatus('Tap Begin lesson in the player', 'default');
-		pushLog('Avatar ready. Use the player start button to begin the lesson.');
+		pushLog('Experience ready. Use the player start button to begin the lesson.');
 	}
 
 	function handleTranscript(update: ExperienceEvents['userTranscript']): void {
@@ -196,7 +196,7 @@
 	function handleStateUpdate(state: string): void {
 		if (state === 'error') {
 			setPhase('error');
-			setStatus('Avatar error', 'warn');
+			setStatus('Experience error', 'warn');
 		}
 	}
 
@@ -216,9 +216,9 @@
 <div class="layout">
 	<section class="workspace" aria-label="Practice">
 		<div class="avatar-panel">
-			<div class="avatar-host" aria-label="Liforma avatar embed">
+			<div class="avatar-host" aria-label="Liforma experience embed">
 				<Experience
-					bind:this={avatar}
+					bind:this={experience}
 					experienceId={PRACTICE_EXPERIENCE_ID}
 					embedBaseUrl={playerEmbedUrl()}
 					mode="presenter"

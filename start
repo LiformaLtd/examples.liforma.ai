@@ -20,8 +20,10 @@ Usage: ./start [mode] [options]
 Start the examples gallery and runnable apps. Uses production Liforma APIs by default.
 
 Modes:
-  vanilla     Gallery + all vanilla examples (default)
-  sveltekit   Gallery + SvelteKit examples (same ports per example)
+  vanilla       Gallery + all vanilla examples (default)
+  sveltekit     Gallery + SvelteKit examples (same ports per example)
+  nextjs        Gallery + guided-practice Next.js (:4002)
+  react-vite    Gallery + guided-practice React (Vite) (:4002)
 
 Options:
   --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
@@ -163,6 +165,26 @@ if [[ "$MODE" == "vanilla" ]]; then
 		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/guided-practice/vanilla"
 	start_on_port speak-playground 4003 "$ROOT" \
 		"${vanilla_stack_env}PORT=4003 node scripts/serve-example.mjs examples/speak-playground/vanilla"
+elif [[ "$MODE" == "nextjs" ]]; then
+	if [[ ! -d "$ROOT/examples/guided-practice/nextjs/node_modules" ]]; then
+		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2
+		exit 1
+	fi
+	nextjs_cmd="npm run dev"
+	if [[ "$USE_LOCAL_STACK" == true ]]; then
+		nextjs_cmd="npm run dev:local"
+	fi
+	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/nextjs" "$nextjs_cmd"
+elif [[ "$MODE" == "react-vite" ]]; then
+	if [[ ! -d "$ROOT/examples/guided-practice/react-vite/node_modules" ]]; then
+		echo "Run: cd examples/guided-practice/react-vite && npm install" >&2
+		exit 1
+	fi
+	react_vite_cmd="npm run dev"
+	if [[ "$USE_LOCAL_STACK" == true ]]; then
+		react_vite_cmd="npm run dev:local"
+	fi
+	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/react-vite" "$react_vite_cmd"
 else
 	if [[ ! -d "$ROOT/examples/spanish-tutor/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/spanish-tutor/sveltekit && npm install" >&2

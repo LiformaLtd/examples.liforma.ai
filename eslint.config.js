@@ -15,7 +15,11 @@ export default ts.config(
 			'.vercel/**',
 			'**/.vercel/**',
 			'build/**',
-			'node_modules/**',
+			'**/node_modules/**',
+			'**/.next/**',
+			'**/dist/**',
+			'**/*.tsbuildinfo',
+			'**/next-env.d.ts',
 			'static/**'
 		]
 	},

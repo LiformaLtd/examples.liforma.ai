@@ -1,0 +1,112 @@
+:root {
+	color-scheme: light;
+	--font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+	--bg: #f6f4ef;
+	--bg-elevated: #ffffff;
+	--bg-subtle: #ebe6dc;
+	--text: #1a1814;
+	--text-muted: #5c574f;
+	--border: #ddd6ca;
+	--border-strong: #c9c0b0;
+	--accent: #5c4ae0;
+	--accent-hover: #4a3bc4;
+	--accent-subtle: rgba(92, 74, 224, 0.1);
+	--good: #0d7a5f;
+	--good-bg: rgba(13, 122, 95, 0.08);
+	--warn: #b45309;
+	--warn-bg: #fffbeb;
+	--radius: 12px;
+	--radius-sm: 8px;
+}
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+html {
+	font-family: var(--font-sans);
+	font-size: 16px;
+	line-height: 1.5;
+	background: var(--bg);
+	color: var(--text);
+	-webkit-font-smoothing: antialiased;
+}
+
+body {
+	margin: 0;
+	min-height: 100dvh;
+}
+
+button {
+	font: inherit;
+}
+
+code {
+	font-size: 0.875em;
+}
+
+.app-shell {
+	min-height: 100dvh;
+	display: flex;
+	flex-direction: column;
+}
+
+.app-header {
+	border-bottom: 1px solid var(--border);
+	background: var(--bg-elevated);
+}
+
+.header-inner {
+	max-width: 1080px;
+	margin: 0 auto;
+	padding: 1.25rem 1.5rem;
+	display: flex;
+	align-items: flex-end;
+	justify-content: space-between;
+	gap: 1rem;
+	flex-wrap: wrap;
+}
+
+.eyebrow {
+	margin: 0 0 0.25rem;
+	font-size: 0.75rem;
+	font-weight: 600;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	color: var(--accent);
+}
+
+.app-header h1 {
+	margin: 0;
+	font-size: 1.5rem;
+	letter-spacing: -0.02em;
+}
+
+.lede {
+	margin: 0.35rem 0 0;
+	max-width: 40rem;
+	color: var(--text-muted);
+	font-size: 0.9375rem;
+}
+
+.docs-link {
+	font-size: 0.875rem;
+	font-weight: 500;
+	text-decoration: none;
+}
+
+.docs-link:hover {
+	text-decoration: underline;
+}
+
+.app-main {
+	flex: 1;
+	max-width: 1080px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 1.5rem;
+}
+
+@import './practice.css';

@@ -40,18 +40,18 @@ export const frameworks: FrameworkMetadata[] = [
 	{
 		slug: 'nextjs',
 		title: 'Next.js',
-		description: 'Production app framework for the largest commercial audience.',
+		description: '`@liforma/client/react` plus optional App Router session route helper.',
 		priority: 3,
 		implementationPhase: 2,
-		available: false
+		available: true
 	},
 	{
 		slug: 'react-vite',
 		title: 'React (Vite)',
-		description: 'Simple client-side React — different from Next.js conventions.',
+		description: 'Client-side React with `@liforma/client/react` — no Next.js server.',
 		priority: 4,
 		implementationPhase: 2,
-		available: false
+		available: true
 	},
 	{
 		slug: 'vue',

@@ -38,7 +38,7 @@ export const examples: ExampleMetadata[] = [
 		description:
 			'Marvely-style scripted turns: presenter mode, speak() for tutor lines, manual Start/Stop listening, and host-side feedback.',
 		category: 'Education',
-		frameworks: ['sveltekit', 'vanilla'],
+		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],
 		features: [
 			'Avatar Experience',
 			'speak()',
