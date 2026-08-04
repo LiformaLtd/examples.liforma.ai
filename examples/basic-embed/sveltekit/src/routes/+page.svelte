@@ -5,9 +5,7 @@
 
 <div class="stage">
 	<p class="lede">
-		Canonical Svelte embed from the docs: one <code>Experience</code> component and one
-		<code>experienceId</code>. Conversation mode uses the player defaults — no host-side speak or
-		listen UI.
+		This example shows a simple Experience embedded in a div on a web page.
 	</p>
 	<div class="experience">
 		<Experience experienceId={BASIC_EMBED_EXPERIENCE_ID} />
