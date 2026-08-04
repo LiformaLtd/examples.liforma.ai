@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Experience } from '@liforma/client/svelte';
-	import { BASIC_EMBED_EXPERIENCE_ID } from '$lib/config';
 </script>
 
 <div class="stage">
@@ -8,7 +7,7 @@
 		This example shows a simple Experience embedded in a div on a web page.
 	</p>
 	<div class="experience">
-		<Experience experienceId={BASIC_EMBED_EXPERIENCE_ID} />
+		<Experience experienceId="exp_01EXAMPLES_COFFEE_BARISTA" />
 	</div>
 </div>
 

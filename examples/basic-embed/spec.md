@@ -24,11 +24,9 @@ The hello-world Liforma integration: mount a single experience with no host-side
 
 ### Vanilla
 
-```js
-await loadLiformaSdk();
-const embed = document.createElement('liforma-experience');
-embed.setAttribute('experience-id', 'exp_01EXAMPLES_COFFEE_BARISTA');
-host.append(embed);
+```html
+<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+<liforma-experience experience-id="exp_01EXAMPLES_COFFEE_BARISTA"></liforma-experience>
 ```
 
 ## Required UI

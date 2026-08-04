@@ -107,8 +107,7 @@ npx serve . -l tcp://localhost:${example.localPort}
 			<h2>Experience id</h2>
 			<p>
 				The demo uses a single public experience id
-				(<code>{DEMO_EXPERIENCE_ID}</code>) from <code>src/lib/config.ts</code> (SvelteKit) or
-				<code>config.js</code> (vanilla).
+				(<code>{DEMO_EXPERIENCE_ID}</code>) written directly in the page.
 			</p>
 		{/if}
 
@@ -127,12 +126,9 @@ npx serve . -l tcp://localhost:${example.localPort}
 		<h2>Key files</h2>
 		<ul>
 			{#if example.kind === 'embed' && framework.slug === 'sveltekit'}
-				<li><code>src/lib/config.ts</code> — public <code>experienceId</code></li>
 				<li><code>src/routes/+page.svelte</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code></li>
 			{:else if example.kind === 'embed'}
-				<li><code>config.js</code> — public <code>experienceId</code></li>
-				<li><code>app.js</code> — load SDK and mount <code>&lt;liforma-experience&gt;</code></li>
-				<li><code>index.html</code> — page shell</li>
+				<li><code>index.html</code> — CDN script + <code>&lt;liforma-experience&gt;</code></li>
 			{:else if example.kind === 'presenter' && framework.slug === 'sveltekit'}
 				<li><code>src/routes/+page.svelte</code> — host UI and Experience APIs</li>
 				<li><code>src/lib/</code> — turns / feedback helpers when present</li>

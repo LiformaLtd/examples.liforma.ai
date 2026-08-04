@@ -41,10 +41,15 @@
 					<p class="lede">
 						This example shows a simple Experience embedded in a div on a web page.
 					</p>
-					<div class="experience" aria-label="Liforma experience embed"></div>
+					<!-- Normally put this in <head>; kept here so the embed is one readable block. -->
+					<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+					<div class="experience" aria-label="Liforma experience embed">
+						<liforma-experience
+							experience-id="exp_01EXAMPLES_COFFEE_BARISTA"
+						></liforma-experience>
+					</div>
 				</div>
 			</main>
 		</div>
-		<script src="./app.js" type="module"></script>
 	</body>
 </html>
