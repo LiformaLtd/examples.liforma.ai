@@ -204,12 +204,12 @@ export function frameworkEmbedSnippet(kind: ExampleKind, frameworkSlug: string):
 	if (kind === 'widget') {
 		return `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
 
-<div class="widget-host">
-  <liforma-experience-widget
-    experience-id="${DEMO_EXPERIENCE_ID}"
-    alt="Talk to our barista"
-  ></liforma-experience-widget>
-</div>`;
+<liforma-experience-widget
+  experience-id="${DEMO_EXPERIENCE_ID}"
+  alt="Talk to our barista"
+  position="bottom-right"
+  offset="16"
+></liforma-experience-widget>`;
 	}
 
 	if (frameworkSlug === 'sveltekit') {

@@ -18,15 +18,16 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
 ```html
 <script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
 
-<div class="widget-host">
-  <liforma-experience-widget
-    experience-id="exp_01EXAMPLES_COFFEE_BARISTA"
-    alt="Talk to our barista"
-  ></liforma-experience-widget>
-</div>
+<liforma-experience-widget
+  experience-id="exp_01EXAMPLES_COFFEE_BARISTA"
+  alt="Talk to our barista"
+  position="bottom-right"
+  offset="16"
+  prefetch="idle"
+></liforma-experience-widget>
 ```
 
-Default `prefetch` is `onExpand` (preview images on mount; session mint on click). Optional `gallery-thumb` overrides the preview fetch when the host already has catalog URLs.
+Default `position` is `static` (fill the host). Use `bottom-right` / `bottom-left` for a self-positioned FAB. Default `prefetch` is `onExpand`; this demo uses `idle` for one-gesture expand. Optional `gallery-thumb` overrides the preview fetch when the host already has catalog URLs.
 
 ## Experience
 

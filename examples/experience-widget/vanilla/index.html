@@ -25,22 +25,23 @@
 			<h1>Experience widget</h1>
 			<p class="lede">
 				This page is ordinary marketing copy. The avatar in the corner is an
-				<code>&lt;liforma-experience-widget&gt;</code> with only an
-				<code>experience-id</code> — the SDK loads the thumb plates from the public preview API,
-				warms the player after idle, then opens the conversation on one click.
+				<code>&lt;liforma-experience-widget&gt;</code> with
+				<code>position="bottom-right"</code> — no host CSS required. The SDK loads thumb plates
+				from the public preview API, warms the player after idle, then opens the conversation on
+				one click.
 			</p>
 			<p>
-				Use this pattern for support, demos, or any site where you want a floating conversation
-				launcher without leaving the page.
+				Use <code>position="static"</code> (default) when you want to place the FAB yourself with
+				an enclosing div. Optional <code>offset</code> sets the corner inset (default 16).
 			</p>
 		</main>
 
-		<div class="widget-host" aria-label="Liforma experience widget">
-			<liforma-experience-widget
-				experience-id="exp_01EXAMPLES_COFFEE_BARISTA"
-				alt="Talk to our coffee barista"
-				prefetch="idle"
-			></liforma-experience-widget>
-		</div>
+		<liforma-experience-widget
+			experience-id="exp_01EXAMPLES_COFFEE_BARISTA"
+			alt="Talk to our coffee barista"
+			position="bottom-right"
+			offset="16"
+			prefetch="idle"
+		></liforma-experience-widget>
 	</body>
 </html>

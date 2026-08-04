@@ -57,11 +57,3 @@ code {
 	font-size: 0.9em;
 }
 
-.widget-host {
-	position: fixed;
-	right: 16px;
-	bottom: 16px;
-	width: 224px;
-	height: 224px;
-	z-index: 9999;
-}
