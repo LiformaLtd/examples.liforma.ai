@@ -45,7 +45,6 @@ Each lesson includes: `id`, `title`, `description`, `level`, `goal`, `experience
 - Start / End session controls
 - Microphone permission note
 - Session notes or transcript placeholder panel
-- Loading and error states for SDK load
 - Responsive layout (sidebar + workspace on desktop; stacked on mobile)
 
 ## Liforma integration
@@ -75,7 +74,6 @@ Adapt: branding, lesson content, experience IDs, transcript wiring, auth if need
 - [ ] Lessons disabled during active session
 - [ ] Embed mounts only when session starts
 - [ ] End session clears embed and re-enables lesson list
-- [ ] SDK load loading + error UI
 - [ ] Mobile-friendly layout
 - [ ] No API keys in client code
 - [ ] `npm run verify` passes (SvelteKit)

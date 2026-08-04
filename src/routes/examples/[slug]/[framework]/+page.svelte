@@ -133,8 +133,8 @@ npx serve . -l tcp://localhost:${example.localPort}
 				<li><code>src/routes/+page.svelte</code> — host UI and Experience APIs</li>
 				<li><code>src/lib/</code> — turns / feedback helpers when present</li>
 			{:else if example.kind === 'presenter'}
-				<li><code>app.js</code> — session attach, speak / listen flow</li>
-				<li><code>index.html</code> — page structure</li>
+				<li><code>index.html</code> — CDN script + page structure</li>
+				<li><code>app.js</code> — <code>Experience.startSession</code>, speak / listen flow</li>
 			{:else if framework.slug === 'sveltekit'}
 				<li><code>src/lib/lessons.ts</code> — lesson data and per-lesson <code>experienceId</code></li>
 				<li><code>src/routes/+page.svelte</code> — lesson UI, embed, and close-before-switch flow</li>

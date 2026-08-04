@@ -1,10 +1,4 @@
 import { DEMO_LINES, SPEAK_EXPERIENCE_ID } from './config.js';
-import {
-	experienceClassHasSpeakApi,
-	existingSdkScript,
-	loadLiformaSdk,
-	sdkUrl
-} from './sdk.js';
 
 const experienceHostEl = document.getElementById('experience-host');
 const statusPillEl = document.getElementById('status-pill');
@@ -54,17 +48,6 @@ function setInputEnabled(enabled) {
 	if (burstBtnEl) burstBtnEl.disabled = !enabled;
 }
 
-function verifySdkCapabilities() {
-	const Experience = window.Liforma?.Experience;
-	if (!experienceClassHasSpeakApi(Experience)) {
-		const loadedFrom = existingSdkScript()?.src ?? sdkUrl();
-		throw new Error(
-			`Loaded SDK from ${loadedFrom} does not include the presenter speech APIs. ` +
-				'Ensure cdn.liforma.ai has published a SDK build that includes the Speak API.'
-		);
-	}
-}
-
 function queueSpeak(text) {
 	if (!experience || !text.trim()) return;
 
@@ -95,9 +78,14 @@ function handleSubmit(text) {
 
 async function initExperience() {
 	setStatus('Loading experience…', 'active');
-	await loadLiformaSdk();
 
-	const { Experience } = window.Liforma;
+	const Experience = window.Liforma?.Experience;
+	if (!Experience) {
+		throw new Error(
+			'Liforma SDK not loaded. Ensure https://cdn.liforma.ai/sdk/v2/client.js is included in the page.'
+		);
+	}
+
 	experience = await Experience.startSession({
 		experienceId: SPEAK_EXPERIENCE_ID,
 		mode: 'presenter',
@@ -116,8 +104,6 @@ async function initExperience() {
 			}
 		}
 	});
-
-	verifySdkCapabilities();
 
 	if (!experienceHostEl) throw new Error('Experience host element missing.');
 
