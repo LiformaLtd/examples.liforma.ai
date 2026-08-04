@@ -7,7 +7,7 @@ import {
 import { buildPracticeFeedback } from './feedback.js';
 import { PRACTICE_EXPERIENCE_ID, practiceScenario, practiceTurns } from './turns.js';
 
-const avatarHostEl = document.getElementById('avatar-host');
+const experienceHostEl = document.getElementById('experience-host');
 const statusPillEl = document.getElementById('status-pill');
 const logListEl = document.getElementById('log-list');
 const feedbackPanelEl = document.getElementById('feedback-panel');
@@ -91,7 +91,7 @@ function setTurnButton() {
 
 	if (phase === 'speaking') {
 		turnBtn.disabled = true;
-		turnBtn.textContent = 'Avatar speaking…';
+		turnBtn.textContent = 'Speaking…';
 		turnBtn.classList.add('state-disabled');
 		return;
 	}
@@ -170,7 +170,7 @@ function verifySdkCapabilities() {
 }
 
 async function initExperience() {
-	setStatus('Loading avatar…', 'active');
+	setStatus('Loading experience…', 'active');
 	await loadLiformaSdk();
 
 	const { Experience } = window.Liforma;
@@ -201,7 +201,7 @@ async function initExperience() {
 
 	verifySdkCapabilities();
 
-	if (!avatarHostEl) throw new Error('Avatar host element missing.');
+	if (!experienceHostEl) throw new Error('Experience host element missing.');
 
 	let readyHandled = false;
 	const handleReady = ({ manifest }) => {
@@ -218,13 +218,13 @@ async function initExperience() {
 			manifest.experience.speechInputMode !== 'manual'
 		) {
 			log(
-				'Warning: manifest modes are not presenter/manual/manual — the avatar may run in conversation mode. Use local CDN SDK (:3010).'
+				'Warning: manifest modes are not presenter/manual/manual — the experience may run in conversation mode. Use local CDN SDK (:3010).'
 			);
 		}
 
 		setPhase('await_begin');
 		setStatus('Tap Begin lesson in the player', 'default');
-		log('Avatar ready. Use the player start button to begin the lesson.');
+		log('Experience ready. Use the player start button to begin the lesson.');
 	};
 
 	if (typeof experience.on === 'function') {
@@ -241,11 +241,11 @@ async function initExperience() {
 	}
 
 	await experience.attach({
-		container: avatarHostEl,
+		container: experienceHostEl,
 		onStateUpdate: (state) => {
 			if (state === 'error') {
 				setPhase('error');
-				setStatus('Avatar error', 'warn');
+				setStatus('Experience error', 'warn');
 			}
 		}
 	});

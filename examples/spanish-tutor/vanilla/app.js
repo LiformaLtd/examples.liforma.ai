@@ -10,7 +10,7 @@ const lessonGoalEl = document.getElementById('lesson-goal');
 const statusPillEl = document.getElementById('status-pill');
 const sessionBtnEl = document.getElementById('session-btn');
 const embedRegionEl = document.getElementById('embed-region');
-const avatarPlaceholderEl = document.getElementById('avatar-placeholder');
+const experiencePlaceholderEl = document.getElementById('experience-placeholder');
 const experienceIdLabelEl = document.getElementById('experience-id-label');
 const transcriptListEl = document.getElementById('transcript-list');
 
@@ -110,8 +110,8 @@ function clearEmbed() {
 		activeEmbed.remove();
 		activeEmbed = null;
 	}
-	if (avatarPlaceholderEl) {
-		avatarPlaceholderEl.classList.remove('hidden');
+	if (experiencePlaceholderEl) {
+		experiencePlaceholderEl.classList.remove('hidden');
 	}
 }
 
@@ -120,7 +120,7 @@ function mountEmbed() {
 	if (!lesson || !embedRegionEl) return;
 
 	clearEmbed();
-	avatarPlaceholderEl?.classList.add('hidden');
+	experiencePlaceholderEl?.classList.add('hidden');
 
 	const embed = document.createElement('liforma-experience');
 	embed.setAttribute('experience-id', lesson.experienceId);

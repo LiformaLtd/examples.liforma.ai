@@ -1,6 +1,6 @@
 /**
  * Stand-in for a host-side analyser (e.g. Marvely pronunciation feedback).
- * Does not call the avatar or enter conversation history.
+ * Does not call the experience or enter conversation history.
  */
 export function buildPracticeFeedback(expectedHint, spokenText) {
 	const spoken = spokenText.trim();

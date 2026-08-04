@@ -9,7 +9,7 @@
 
 <div class="page-shell prose">
 	<h1>Examples</h1>
-	<p>Forkable apps that show how to integrate Liforma avatar experiences in real products.</p>
+	<p>Forkable apps that show how to integrate Liforma experiences in real products.</p>
 
 	<div class="card-grid">
 		{#each examples as example (example.slug)}

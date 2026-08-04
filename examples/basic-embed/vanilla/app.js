@@ -1,7 +1,7 @@
 import { BASIC_EMBED_EXPERIENCE_ID } from './config.js';
 import { loadLiformaSdk } from './shared/loadLiformaSdk.js';
 
-const host = document.getElementById('avatar-host');
+const host = document.getElementById('experience-host');
 const statusPill = document.getElementById('status-pill');
 const experienceIdLabel = document.getElementById('experience-id-label');
 
@@ -14,7 +14,7 @@ function setStatus(text) {
 }
 
 async function main() {
-	if (!host) throw new Error('Missing #avatar-host');
+	if (!host) throw new Error('Missing #experience-host');
 
 	setStatus('Loading SDK…');
 	await loadLiformaSdk({ build: '6' });

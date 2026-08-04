@@ -46,7 +46,7 @@
 	);
 
 	const turnButtonLabel = $derived.by(() => {
-		if (phase === 'speaking') return 'Avatar speaking…';
+		if (phase === 'speaking') return 'Speaking…';
 		if (phase === 'await_start') return 'Start';
 		if (phase === 'recording') return 'Stop';
 		if (phase === 'feedback') return 'Next';
@@ -215,8 +215,8 @@
 
 <div class="layout">
 	<section class="workspace" aria-label="Practice">
-		<div class="avatar-panel">
-			<div class="avatar-host" aria-label="Liforma experience embed">
+		<div class="experience-panel">
+			<div class="experience-host" aria-label="Liforma experience embed">
 				<Experience
 					bind:this={experience}
 					experienceId={PRACTICE_EXPERIENCE_ID}
@@ -294,7 +294,7 @@
 		gap: 1rem;
 	}
 
-	.avatar-panel {
+	.experience-panel {
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
 		background: #030508;
@@ -302,7 +302,7 @@
 		overflow: hidden;
 	}
 
-	.avatar-host {
+	.experience-host {
 		width: 100%;
 		min-height: 420px;
 	}

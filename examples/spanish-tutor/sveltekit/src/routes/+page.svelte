@@ -93,7 +93,7 @@
 			</div>
 
 			<div class="mic-note" role="note">
-				<strong>Microphone:</strong> Your browser will ask for permission when the avatar session
+				<strong>Microphone:</strong> Your browser will ask for permission when the experience session
 				starts. Use headphones in shared spaces.
 			</div>
 
@@ -107,8 +107,8 @@
 					/>
 				</div>
 			{:else}
-				<div class="avatar-placeholder">
-					<p>Select a lesson and start practice to load your Spanish tutor avatar.</p>
+				<div class="experience-placeholder">
+					<p>Select a lesson and start practice to load your Spanish tutor experience.</p>
 					<p class="muted">
 						Experience ID: <code>{experienceId}</code>
 					</p>
@@ -249,7 +249,7 @@
 		margin-bottom: 1rem;
 	}
 
-	.avatar-placeholder {
+	.experience-placeholder {
 		min-height: 280px;
 		display: flex;
 		flex-direction: column;

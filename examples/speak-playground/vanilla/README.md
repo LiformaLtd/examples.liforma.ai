@@ -1,6 +1,6 @@
 # Speak playground
 
-Type text and hear the avatar speak it via `Experience.speak()`. Toggle **Enqueue** vs **Interrupt** to see how `behavior` affects playback when you send several lines quickly.
+Type text and hear the experience speak it via `Experience.speak()`. Toggle **Enqueue** vs **Interrupt** to see how `behavior` affects playback when you send several lines quickly.
 
 ## Run
 

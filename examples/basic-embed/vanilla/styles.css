@@ -66,7 +66,7 @@ h1 {
 	min-height: 0;
 }
 
-.avatar-panel {
+.experience-panel {
 	flex: 1;
 	min-height: 480px;
 	border: 1px solid var(--border);
@@ -75,7 +75,7 @@ h1 {
 	overflow: hidden;
 }
 
-#avatar-host {
+#experience-host {
 	width: 100%;
 	height: 100%;
 	min-height: 480px;

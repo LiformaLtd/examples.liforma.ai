@@ -2,7 +2,7 @@
 
 ## Goal
 
-Demonstrate **scripted practice** (Marvely-style): the avatar speaks predetermined lines via `Experience.speak()`, while learner speech is captured with explicit Start/Stop boundaries and analysed by the host app — not by the avatar LLM.
+Demonstrate **scripted practice** (Marvely-style): the experience speaks predetermined lines via `Experience.speak()`, while learner speech is captured with explicit Start/Stop boundaries and analysed by the host app — not by the experience LLM.
 
 ## User flow
 
@@ -41,11 +41,11 @@ const utterance = await experience.stopListening();
 
 ## Required UI
 
-- Avatar embed region (`Experience.attach`)
+- Experience embed region (`Experience.attach`)
 - Player-owned Begin lesson control
 - Play line / Start / Stop / Next controls with disabled states per phase
 - Turn hint card
-- Host feedback panel (not in avatar history)
+- Host feedback panel (not in experience conversation history)
 - Session log
 
 ## Experience

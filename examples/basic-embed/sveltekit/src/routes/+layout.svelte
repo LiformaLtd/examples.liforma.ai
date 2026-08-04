@@ -9,7 +9,7 @@
 	<title>Basic embed — Liforma Example</title>
 	<meta
 		name="description"
-		content="Minimal Liforma avatar embed: one experience id, one Experience component."
+		content="Minimal Liforma experience embed: one experience id, one Experience component."
 	/>
 </svelte:head>
 

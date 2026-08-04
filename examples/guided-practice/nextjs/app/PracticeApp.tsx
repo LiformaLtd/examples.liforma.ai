@@ -65,7 +65,7 @@ export default function PracticeApp() {
 			: (currentTurn?.hint ?? '');
 
 	const turnButtonLabel = useMemo(() => {
-		if (phase === 'speaking') return 'Avatar speaking…';
+		if (phase === 'speaking') return 'Speaking…';
 		if (phase === 'await_start') return 'Start';
 		if (phase === 'recording') return 'Stop';
 		if (phase === 'feedback') return 'Next';
@@ -256,8 +256,8 @@ export default function PracticeApp() {
 	return (
 		<div className="layout">
 			<section className="workspace" aria-label="Practice">
-				<div className="avatar-panel">
-					<div className="avatar-host" aria-label="Liforma experience embed">
+				<div className="experience-panel">
+					<div className="experience-host" aria-label="Liforma experience embed">
 						<Experience
 							ref={experienceRef}
 							experienceId={PRACTICE_EXPERIENCE_ID}

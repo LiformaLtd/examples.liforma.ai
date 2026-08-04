@@ -11,7 +11,7 @@ Build a language-learning app where a learner practises Spanish with an animated
 3. User chooses a lesson (only when no session is active).
 4. User starts practice.
 5. The selected lesson's `experienceId` is passed to `<liforma-experience>`.
-6. The avatar session runs; surrounding UI shows the learning goal and session notes.
+6. The experience session runs; surrounding UI shows the learning goal and session notes.
 7. User ends the session (or closes the embed).
 8. User may select a different lesson and start again.
 
@@ -40,7 +40,7 @@ Each lesson includes: `id`, `title`, `description`, `level`, `goal`, `experience
 
 - Lesson selection panel
 - Selected lesson summary / learning goal card
-- Liforma avatar embed region
+- Liforma experience embed region
 - Session status (idle / active)
 - Start / End session controls
 - Microphone permission note

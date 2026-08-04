@@ -63,9 +63,9 @@ Preserve lesson-based UX, Liforma web component embed, and close-before-switch l
 				href={example.meetExperienceUrl}
 				target="_blank"
 				rel="noopener noreferrer"
-				title="Hosted avatar only — no lesson UI"
+				title="Hosted experience only — no lesson UI"
 			>
-				Avatar on Meet
+				Experience on Meet
 			</a>
 		{/if}
 		<a class="btn secondary" href={githubRawPath(example.specPath)} target="_blank" rel="noopener noreferrer">
@@ -76,7 +76,7 @@ Preserve lesson-based UX, Liforma web component embed, and close-before-switch l
 	<h2>What it demonstrates</h2>
 	<ul>
 		<li>Lesson-based app pattern — the app chooses a lesson; the lesson chooses the Liforma Experience.</li>
-		<li>CDN <code>&lt;liforma-experience&gt;</code> embed for public avatar experiences.</li>
+		<li>CDN <code>&lt;liforma-experience&gt;</code> embed for public experiences.</li>
 		<li>Close-before-switch — users end the session before picking another lesson.</li>
 		<li>Learning goals, session status, microphone guidance, and session notes UI.</li>
 	</ul>

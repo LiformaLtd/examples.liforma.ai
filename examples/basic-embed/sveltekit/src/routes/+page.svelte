@@ -10,7 +10,7 @@
 		<code>experienceId</code>. Conversation mode uses the player defaults — no host-side speak or
 		listen UI.
 	</p>
-	<div class="avatar">
+	<div class="experience">
 		<Experience experienceId={BASIC_EMBED_EXPERIENCE_ID} embedBaseUrl={playerEmbedUrl()} />
 	</div>
 </div>
@@ -35,7 +35,7 @@
 		max-width: 42rem;
 	}
 
-	.avatar {
+	.experience {
 		flex: 1;
 		min-height: 480px;
 		border: 1px solid var(--border);

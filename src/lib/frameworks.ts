@@ -72,7 +72,7 @@ export const frameworks: FrameworkMetadata[] = [
 	{
 		slug: 'astro',
 		title: 'Astro',
-		description: 'Content sites, marketing pages, and docs where avatars embed well.',
+		description: 'Content sites, marketing pages, and docs where experiences embed well.',
 		priority: 6,
 		implementationPhase: 3,
 		available: false

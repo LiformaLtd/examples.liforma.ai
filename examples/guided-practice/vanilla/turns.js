@@ -1,4 +1,4 @@
-/** Scripted practice turns — host-owned lines the avatar speaks via `speak()`. */
+/** Scripted practice turns — host-owned lines the experience speaks via `speak()`. */
 export const PRACTICE_EXPERIENCE_ID = 'exp_01EXAMPLES_COFFEE_BARISTA';
 
 export const practiceScenario = {

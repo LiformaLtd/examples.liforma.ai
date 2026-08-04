@@ -160,8 +160,8 @@ npx serve . -l tcp://localhost:${example.localPort}
 		{/if}
 		{#if example.meetExperienceUrl}
 			<li>
-				<a href={example.meetExperienceUrl}>Avatar on Meet</a>
-				— hosted avatar experience without the lesson app UI
+				<a href={example.meetExperienceUrl}>Experience on Meet</a>
+				— hosted experience without the lesson app UI
 			</li>
 		{/if}
 	</ul>

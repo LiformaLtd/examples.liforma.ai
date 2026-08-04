@@ -6,7 +6,7 @@ export function sveltekitAgentPrompt(exampleTitle: string, githubPath: string): 
 Source repo folder: ${githubPath}/sveltekit
 
 Preserve:
-- Liforma avatar embed via CDN web component (\`<liforma-experience experience-id="..." />\`)
+- Liforma experience embed via CDN web component (\`<liforma-experience experience-id="..." />\`)
 - microphone permission guidance
 - lesson selection with close-before-switch (no mid-session lesson change)
 - learning goal card and session status
@@ -18,7 +18,7 @@ Preserve:
 Adapt:
 - branding
 - lesson content
-- avatar experience IDs per lesson
+- experience IDs per lesson
 - surrounding product UI`;
 }
 

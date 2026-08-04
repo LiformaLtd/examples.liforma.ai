@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<title>Liforma Examples — Build from working avatar apps</title>
+	<title>Liforma Examples — Build from working Liforma examples</title>
 	<meta
 		name="description"
 		content="Production-quality starter apps for adding intelligent animated avatars, speech, and real-time AI experiences to your product."

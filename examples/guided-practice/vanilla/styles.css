@@ -75,7 +75,7 @@ h1 {
 	gap: 1rem;
 }
 
-.avatar-panel {
+.experience-panel {
 	border: 1px solid var(--border);
 	border-radius: var(--radius);
 	background: #030508;
@@ -84,7 +84,7 @@ h1 {
 	position: relative;
 }
 
-#avatar-host {
+#experience-host {
 	width: 100%;
 	min-height: 420px;
 }

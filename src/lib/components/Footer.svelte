@@ -7,7 +7,7 @@
 		<p>Production-quality Liforma example apps for developers and AI builders.</p>
 		<nav aria-label="Footer">
 			<a href={externalLinks.docsQuickStart}>Quick Start</a>
-			<a href={externalLinks.meetExperience}>Avatar on Meet</a>
+			<a href={externalLinks.meetExperience}>Experience on Meet</a>
 			<a href={GITHUB_REPO}>GitHub</a>
 			<a href={externalLinks.www}>liforma.ai</a>
 		</nav>

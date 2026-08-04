@@ -6,7 +6,7 @@ import {
 	sdkUrl
 } from './sdk.js';
 
-const avatarHostEl = document.getElementById('avatar-host');
+const experienceHostEl = document.getElementById('experience-host');
 const statusPillEl = document.getElementById('status-pill');
 const logListEl = document.getElementById('log-list');
 const speakFormEl = document.getElementById('speak-form');
@@ -94,7 +94,7 @@ function handleSubmit(text) {
 }
 
 async function initExperience() {
-	setStatus('Loading avatar…', 'active');
+	setStatus('Loading experience…', 'active');
 	await loadLiformaSdk();
 
 	const { Experience } = window.Liforma;
@@ -103,8 +103,8 @@ async function initExperience() {
 		mode: 'presenter',
 		speechInputMode: 'off',
 		startButton: {
-			label: 'Start avatar',
-			ariaLabel: 'Start avatar session and unlock audio',
+			label: 'Start experience',
+			ariaLabel: 'Start experience session and unlock audio',
 			placement: 'bottom-center',
 			variant: 'primary',
 			appearance: {
@@ -119,15 +119,15 @@ async function initExperience() {
 
 	verifySdkCapabilities();
 
-	if (!avatarHostEl) throw new Error('Avatar host element missing.');
+	if (!experienceHostEl) throw new Error('Experience host element missing.');
 
 	let readyHandled = false;
 	const handleReady = () => {
 		if (readyHandled) return;
 		readyHandled = true;
 		if (experienceIdLabelEl) experienceIdLabelEl.textContent = SPEAK_EXPERIENCE_ID;
-		setStatus('Tap Start avatar in the player', 'default');
-		log('Avatar ready. Use the player start button to unlock audio.');
+		setStatus('Tap Start experience in the player', 'default');
+		log('Experience ready. Use the player start button to unlock audio.');
 	};
 
 	experience.on('ready', handleReady);
@@ -144,10 +144,10 @@ async function initExperience() {
 	});
 
 	await experience.attach({
-		container: avatarHostEl,
+		container: experienceHostEl,
 		onStateUpdate: (state) => {
 			if (state === 'error') {
-				setStatus('Avatar error', 'warn');
+				setStatus('Experience error', 'warn');
 				setInputEnabled(false);
 			}
 		}

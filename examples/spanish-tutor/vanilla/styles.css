@@ -232,7 +232,7 @@ h1 {
 	background: var(--bg-elevated);
 }
 
-.avatar-placeholder {
+.experience-placeholder {
 	min-height: 280px;
 	display: flex;
 	flex-direction: column;

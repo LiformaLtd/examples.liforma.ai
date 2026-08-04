@@ -11,7 +11,7 @@
 	<h1>Frameworks</h1>
 	<p>
 		Liforma examples use the <code>&lt;liforma-experience&gt;</code> web component as a universal
-		bridge. Framework ports differ in host UI glue — not core avatar integration.
+		bridge. Framework ports differ in host UI glue — not core experience integration.
 	</p>
 
 	<div class="card-grid">

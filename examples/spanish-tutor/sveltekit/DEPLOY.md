@@ -60,7 +60,7 @@ npx vercel deploy --prod
 ## Verify
 
 1. Open https://spanish-tutor.examples.liforma.ai
-2. Start **Café Conversation** — avatar loads and accepts microphone
+2. Start **Café Conversation** — experience loads and accepts microphone
 3. If CORS / origin errors: confirm origin is on Spanish Tutor project in [app.liforma.ai](https://app.liforma.ai) → Allowed origins, or re-run API seed
 
 ## Local dev

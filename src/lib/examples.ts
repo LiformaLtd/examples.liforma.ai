@@ -12,7 +12,7 @@ export type ExampleMetadata = {
 	localPort: number;
 	/** Hosted runnable app (full lesson UI), when deployed. */
 	liveAppUrl?: string;
-	/** Hosted Meet page for the underlying avatar — not the full example app. */
+	/** Hosted Meet page for the underlying experience — not the full example app. */
 	meetExperienceUrl?: string;
 	specPath: string;
 };
@@ -22,10 +22,10 @@ export const examples: ExampleMetadata[] = [
 		slug: 'basic-embed',
 		title: 'Basic embed',
 		description:
-			'Hello-world avatar embed: one experience id and one Experience component. No custom speak or listen UI.',
+			'Hello-world experience embed: one experience id and one Experience component. No custom speak or listen UI.',
 		category: 'Getting started',
 		frameworks: ['sveltekit', 'vanilla'],
-		features: ['Avatar Experience', 'Public session mint'],
+		features: ['Experience', 'Public session mint'],
 		githubPath: 'examples/basic-embed',
 		localPort: 4001,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
@@ -38,7 +38,7 @@ export const examples: ExampleMetadata[] = [
 			'Practise Spanish with an animated AI tutor. Lesson-based app pattern with close-before-switch UX.',
 		category: 'Education',
 		frameworks: ['sveltekit', 'vanilla'],
-		features: ['Avatar Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
+		features: ['Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
 		githubPath: 'examples/spanish-tutor',
 		localPort: 4002,
 		liveAppUrl: 'https://spanish-tutor.examples.liforma.ai/',
@@ -53,7 +53,7 @@ export const examples: ExampleMetadata[] = [
 		category: 'Education',
 		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],
 		features: [
-			'Avatar Experience',
+			'Experience',
 			'speak()',
 			'Manual listening',
 			'Presenter mode',
@@ -68,10 +68,10 @@ export const examples: ExampleMetadata[] = [
 		slug: 'speak-playground',
 		title: 'Speak playground',
 		description:
-			'Type text and press Enter — the avatar speaks it. Toggle enqueue vs interrupt on speak().',
+			'Type text and press Enter — the experience speaks it. Toggle enqueue vs interrupt on speak().',
 		category: 'Integration',
 		frameworks: ['sveltekit', 'vanilla'],
-		features: ['Avatar Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
+		features: ['Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
 		githubPath: 'examples/speak-playground',
 		localPort: 4004,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',

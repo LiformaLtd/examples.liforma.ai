@@ -2,13 +2,13 @@
 
 ## Goal
 
-The hello-world Liforma integration: mount a single avatar experience with no host-side speech UI, lesson chrome, or custom turn logic.
+The hello-world Liforma integration: mount a single experience with no host-side speech UI, lesson chrome, or custom turn logic.
 
 ## User flow
 
 1. Page loads and mounts `<Experience experienceId="…" />` (Svelte) or `<liforma-experience>` (vanilla).
 2. SDK mints a public session and attaches the hosted player.
-3. User taps the player-owned start control and talks with the avatar.
+3. User taps the player-owned start control and talks with the experience.
 
 ## Liforma integration
 
@@ -33,7 +33,7 @@ host.append(embed);
 
 ## Required UI
 
-- Full-viewport (or clearly sized) avatar host
+- Full-viewport (or clearly sized) experience host
 - No custom speak / listen controls — conversation mode uses the player defaults
 
 ## Experience
