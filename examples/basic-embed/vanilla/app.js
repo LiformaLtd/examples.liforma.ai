@@ -21,7 +21,6 @@ async function main() {
 
 	const embed = document.createElement('liforma-experience');
 	embed.setAttribute('experience-id', BASIC_EMBED_EXPERIENCE_ID);
-	embed.style.cssText = 'display:block;width:100%;height:100%;min-height:480px;';
 	host.replaceChildren(embed);
 	setStatus('Ready — use the player start button');
 }

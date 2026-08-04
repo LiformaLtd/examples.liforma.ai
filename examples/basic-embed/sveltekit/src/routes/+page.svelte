@@ -38,9 +38,17 @@
 	.experience {
 		flex: 1;
 		min-height: 480px;
+		display: flex;
+		flex-direction: column;
 		border: 1px solid var(--border);
 		border-radius: var(--radius);
 		overflow: hidden;
 		background: #030508;
+	}
+
+	.experience :global(.liforma-experience-shell) {
+		flex: 1;
+		min-height: 0;
+		width: 100%;
 	}
 </style>
