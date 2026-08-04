@@ -5,6 +5,7 @@
 	import { implementationSourcePath } from '$lib/examples';
 	import { exampleLocalUrl } from '$lib/examplePorts';
 	import {
+		frameworkEmbedSnippet,
 		genericPortPrompt,
 		sveltekitAgentPrompt,
 		vanillaAgentPrompt
@@ -21,18 +22,16 @@
 
 	const prompt = $derived.by(() => {
 		if (framework.slug === 'sveltekit') {
-			return sveltekitAgentPrompt(example.title, example.githubPath);
+			return sveltekitAgentPrompt(example);
 		}
 		if (framework.slug === 'vanilla') {
-			return vanillaAgentPrompt(example.title, example.githubPath);
+			return vanillaAgentPrompt(example);
 		}
-		return genericPortPrompt(example.title, example.githubPath, framework.slug);
+		return genericPortPrompt(example, framework.slug);
 	});
 
-	const webComponentSnippet = `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
-
-<!-- experience-id comes from the selected lesson -->
-<liforma-experience experience-id="\${lesson.experienceId}"></liforma-experience>`;
+	const embedSnippet = $derived(frameworkEmbedSnippet(example.kind, framework.slug));
+	const embedSnippetLang = $derived(framework.slug === 'sveltekit' ? 'svelte' : 'html');
 
 	const runCommands = $derived.by(() =>
 		framework.slug === 'sveltekit'
@@ -75,8 +74,16 @@ npx serve . -l tcp://localhost:${example.localPort}
 
 	{#if runnable}
 		<p>
-			This implementation is available in the repository. Fork it, run locally, and adapt the lesson
-			UI around the same Liforma web component embed.
+			{#if example.kind === 'embed'}
+				This is the hello-world integration. Fork it, run locally, and drop the same embed into your
+				product shell.
+			{:else if example.kind === 'presenter'}
+				This implementation is available in the repository. Fork it, run locally, and adapt the host
+				UI around the same Experience speak / listen APIs.
+			{:else}
+				This implementation is available in the repository. Fork it, run locally, and adapt the lesson
+				UI around the same Liforma embed.
+			{/if}
 		</p>
 
 		<h2>Run locally</h2>
@@ -89,23 +96,52 @@ npx serve . -l tcp://localhost:${example.localPort}
 			<p>Local URL: <a href={localUrl}>{localUrl}</a></p>
 		{/if}
 
-		<h2>Lesson data</h2>
-		<p>
-			Each lesson has its own <code>experienceId</code> in <code>src/lib/lessons.ts</code> (SvelteKit) or
-			<code>lessons.js</code> (vanilla). Every ID maps to a Liforma Experience with a different scenario,
-			location, and tutor prompt — for example café lessons use <code>{DEMO_EXPERIENCE_ID}</code>.
-		</p>
+		{#if example.kind === 'lessons'}
+			<h2>Lesson data</h2>
+			<p>
+				Each lesson has its own <code>experienceId</code> in <code>src/lib/lessons.ts</code> (SvelteKit) or
+				<code>lessons.js</code> (vanilla). Every ID maps to a Liforma Experience with a different scenario,
+				location, and tutor prompt — for example café lessons use <code>{DEMO_EXPERIENCE_ID}</code>.
+			</p>
+		{:else if example.kind === 'embed'}
+			<h2>Experience id</h2>
+			<p>
+				The demo uses a single public experience id
+				(<code>{DEMO_EXPERIENCE_ID}</code>) from <code>src/lib/config.ts</code> (SvelteKit) or
+				<code>config.js</code> (vanilla).
+			</p>
+		{/if}
 
 		<h2>Liforma integration</h2>
-		<p>Load the CDN script and mount the experience custom element with the selected lesson's ID:</p>
-		<CodeBlock code={webComponentSnippet} lang="html" filename="embed" />
+		{#if example.kind === 'embed' && framework.slug === 'sveltekit'}
+			<p>Import the Svelte component and pass one experience id:</p>
+		{:else if example.kind === 'embed'}
+			<p>Load the CDN script and mount the web component with one experience id:</p>
+		{:else if framework.slug === 'sveltekit'}
+			<p>Mount <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code>:</p>
+		{:else}
+			<p>Load the CDN script and mount the experience custom element:</p>
+		{/if}
+		<CodeBlock code={embedSnippet} lang={embedSnippetLang} filename="embed" />
 
 		<h2>Key files</h2>
 		<ul>
-			{#if framework.slug === 'sveltekit'}
-				<li><code>src/lib/lessons.ts</code> — lesson data and per-lesson <code>experienceId</code></li>
+			{#if example.kind === 'embed' && framework.slug === 'sveltekit'}
+				<li><code>src/lib/config.ts</code> — public <code>experienceId</code></li>
 				<li><code>src/routes/+page.svelte</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code></li>
-				<li><code>src/routes/+page.svelte</code> — lesson UI and close-before-switch flow</li>
+			{:else if example.kind === 'embed'}
+				<li><code>config.js</code> — public <code>experienceId</code></li>
+				<li><code>app.js</code> — load SDK and mount <code>&lt;liforma-experience&gt;</code></li>
+				<li><code>index.html</code> — page shell</li>
+			{:else if example.kind === 'presenter' && framework.slug === 'sveltekit'}
+				<li><code>src/routes/+page.svelte</code> — host UI and Experience APIs</li>
+				<li><code>src/lib/</code> — turns / feedback helpers when present</li>
+			{:else if example.kind === 'presenter'}
+				<li><code>app.js</code> — session attach, speak / listen flow</li>
+				<li><code>index.html</code> — page structure</li>
+			{:else if framework.slug === 'sveltekit'}
+				<li><code>src/lib/lessons.ts</code> — lesson data and per-lesson <code>experienceId</code></li>
+				<li><code>src/routes/+page.svelte</code> — lesson UI, embed, and close-before-switch flow</li>
 			{:else}
 				<li><code>lessons.js</code> — lesson data</li>
 				<li><code>app.js</code> — session state and embed mount</li>

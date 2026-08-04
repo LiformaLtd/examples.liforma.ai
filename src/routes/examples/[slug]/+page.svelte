@@ -2,20 +2,38 @@
 	import CopyPrompt from '$lib/components/CopyPrompt.svelte';
 	import { githubRawPath, githubTreePath, externalLinks, GITHUB_REPO } from '$lib/constants';
 	import { getFramework } from '$lib/frameworks';
+	import { exampleOverviewBullets } from '$lib/prompts';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
 
 	const example = $derived(data.example);
+	const overviewBullets = $derived(exampleOverviewBullets(example.kind));
 
 	const agentPrompt = $derived(
-		`Use the Liforma ${example.title} example to build an app in your chosen framework.
+		example.kind === 'embed'
+			? `Use the Liforma ${example.title} example to build an app in your chosen framework.
 
 Read:
 - ${githubRawPath(example.specPath)}
 - ${githubTreePath(example.githubPath)}
 
-Preserve lesson-based UX, Liforma web component embed, and close-before-switch lesson flow.`
+Preserve the hello-world Experience embed (one experience id, no lesson catalogue).`
+			: example.kind === 'presenter'
+				? `Use the Liforma ${example.title} example to build an app in your chosen framework.
+
+Read:
+- ${githubRawPath(example.specPath)}
+- ${githubTreePath(example.githubPath)}
+
+Preserve the presenter / speak API integration and host-owned UI around the embed.`
+				: `Use the Liforma ${example.title} example to build an app in your chosen framework.
+
+Read:
+- ${githubRawPath(example.specPath)}
+- ${githubTreePath(example.githubPath)}
+
+Preserve lesson-based UX, Liforma Experience embed, and close-before-switch lesson flow.`
 	);
 </script>
 
@@ -75,10 +93,9 @@ Preserve lesson-based UX, Liforma web component embed, and close-before-switch l
 
 	<h2>What it demonstrates</h2>
 	<ul>
-		<li>Lesson-based app pattern — the app chooses a lesson; the lesson chooses the Liforma Experience.</li>
-		<li>CDN <code>&lt;liforma-experience&gt;</code> embed for public experiences.</li>
-		<li>Close-before-switch — users end the session before picking another lesson.</li>
-		<li>Learning goals, session status, microphone guidance, and session notes UI.</li>
+		{#each overviewBullets as bullet (bullet)}
+			<li>{bullet}</li>
+		{/each}
 	</ul>
 
 	<h2>Implementations</h2>

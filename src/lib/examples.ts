@@ -1,10 +1,14 @@
 import type { SupportedFramework } from '$lib/frameworks';
 
+/** Drives gallery copy and framework detail pages. */
+export type ExampleKind = 'embed' | 'lessons' | 'presenter';
+
 export type ExampleMetadata = {
 	slug: string;
 	title: string;
 	description: string;
 	category: string;
+	kind: ExampleKind;
 	frameworks: SupportedFramework[];
 	features: string[];
 	githubPath: string;
@@ -24,6 +28,7 @@ export const examples: ExampleMetadata[] = [
 		description:
 			'Hello-world experience embed: one experience id and one Experience component. No custom speak or listen UI.',
 		category: 'Getting started',
+		kind: 'embed',
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Experience', 'Public session mint'],
 		githubPath: 'examples/basic-embed',
@@ -37,6 +42,7 @@ export const examples: ExampleMetadata[] = [
 		description:
 			'Practise Spanish with an animated AI tutor. Lesson-based app pattern with close-before-switch UX.',
 		category: 'Education',
+		kind: 'lessons',
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
 		githubPath: 'examples/spanish-tutor',
@@ -51,6 +57,7 @@ export const examples: ExampleMetadata[] = [
 		description:
 			'Marvely-style scripted turns: presenter mode, speak() for tutor lines, manual Start/Stop listening, and host-side feedback.',
 		category: 'Education',
+		kind: 'presenter',
 		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],
 		features: [
 			'Experience',
@@ -70,6 +77,7 @@ export const examples: ExampleMetadata[] = [
 		description:
 			'Type text and press Enter — the experience speaks it. Toggle enqueue vs interrupt on speak().',
 		category: 'Integration',
+		kind: 'presenter',
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
 		githubPath: 'examples/speak-playground',

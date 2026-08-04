@@ -6,10 +6,6 @@ declare global {
 		// interface PageState {}
 		// interface Platform {}
 	}
-
-	interface Window {
-		__LIFORMA_STACK?: 'local' | 'production';
-	}
 }
 
 export {};

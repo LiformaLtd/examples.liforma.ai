@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { Experience } from '@liforma/client/svelte';
 	import { BASIC_EMBED_EXPERIENCE_ID } from '$lib/config';
-	import { playerEmbedUrl } from '$lib/liforma-stack';
 </script>
 
 <div class="stage">
@@ -11,7 +10,7 @@
 		listen UI.
 	</p>
 	<div class="experience">
-		<Experience experienceId={BASIC_EMBED_EXPERIENCE_ID} embedBaseUrl={playerEmbedUrl()} />
+		<Experience experienceId={BASIC_EMBED_EXPERIENCE_ID} />
 	</div>
 </div>
 

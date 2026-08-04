@@ -1,12 +1,47 @@
+import { DEMO_EXPERIENCE_ID } from '$lib/constants';
+import type { ExampleKind, ExampleMetadata } from '$lib/examples';
 import type { SupportedFramework } from '$lib/frameworks';
 
-export function sveltekitAgentPrompt(exampleTitle: string, githubPath: string): string {
-	return `Use the Liforma ${exampleTitle} example as source material to build a SvelteKit app.
+export function sveltekitAgentPrompt(example: ExampleMetadata): string {
+	if (example.kind === 'embed') {
+		return `Use the Liforma ${example.title} example as source material to build a SvelteKit app.
 
-Source repo folder: ${githubPath}/sveltekit
+Source repo folder: ${example.githubPath}/sveltekit
 
 Preserve:
-- Liforma experience embed via CDN web component (\`<liforma-experience experience-id="..." />\`)
+- \`<Experience experienceId="…" />\` from \`@liforma/client/svelte\`
+- one public experience id (no lesson catalogue)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- surrounding page chrome`;
+	}
+
+	if (example.kind === 'presenter') {
+		return `Use the Liforma ${example.title} example as source material to build a SvelteKit app.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Preserve:
+- \`Experience\` from \`@liforma/client/svelte\` (or JS \`Experience.startSession\` + \`attach\`)
+- presenter / speak API usage shown in the example
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- scripted lines / host UI
+- experience id
+- surrounding product UI`;
+	}
+
+	return `Use the Liforma ${example.title} example as source material to build a SvelteKit app.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Preserve:
+- Liforma experience embed via \`<Experience />\` from \`@liforma/client/svelte\`
 - microphone permission guidance
 - lesson selection with close-before-switch (no mid-session lesson change)
 - learning goal card and session status
@@ -22,10 +57,44 @@ Adapt:
 - surrounding product UI`;
 }
 
-export function vanillaAgentPrompt(exampleTitle: string, githubPath: string): string {
-	return `Use the Liforma ${exampleTitle} example as source material to build a vanilla HTML app.
+export function vanillaAgentPrompt(example: ExampleMetadata): string {
+	if (example.kind === 'embed') {
+		return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
 
-Source repo folder: ${githubPath}/vanilla
+Source repo folder: ${example.githubPath}/vanilla
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`<liforma-experience experience-id="..." />\` embed
+- one public experience id (no lesson catalogue)
+- copy-paste friendly structure (index.html + app.js)
+
+Adapt:
+- branding
+- experience id
+- surrounding page layout`;
+	}
+
+	if (example.kind === 'presenter') {
+		return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`Experience.startSession\` + \`attach\` / speak API usage shown in the example
+- copy-paste friendly structure (index.html + app.js)
+
+Adapt:
+- branding
+- scripted lines / host UI
+- experience id
+- surrounding page layout`;
+	}
+
+	return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
 
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
@@ -42,18 +111,78 @@ Adapt:
 }
 
 export function genericPortPrompt(
-	exampleTitle: string,
-	githubPath: string,
+	example: ExampleMetadata,
 	framework: SupportedFramework
 ): string {
-	return `Port the Liforma ${exampleTitle} example to ${framework}.
+	const preserve =
+		example.kind === 'embed'
+			? `- \`<liforma-experience>\` / \`<Experience />\` hello-world embed
+- one public experience id`
+			: example.kind === 'presenter'
+				? `- presenter / speak API integration shown in the example
+- host-owned UI around the embed`
+				: `- \`<liforma-experience>\` web component integration
+- lesson-based UX and close-before-switch flow
+- learning goal and session status UI`;
 
-Start from the SvelteKit and vanilla references in ${githubPath}.
+	return `Port the Liforma ${example.title} example to ${framework}.
+
+Start from the SvelteKit and vanilla references in ${example.githubPath}.
 
 Preserve:
-- \`<liforma-experience>\` web component integration
-- lesson-based UX and close-before-switch flow
-- learning goal and session status UI
+${preserve}
 
 Use framework-native patterns. Do not depend on unpublished npm packages.`;
+}
+
+export function exampleOverviewBullets(kind: ExampleKind): string[] {
+	if (kind === 'embed') {
+		return [
+			'Hello-world embed — one experience id and one Experience / web component mount.',
+			'Public session mint with conversation-mode player defaults.',
+			'No host-side speak, listen, or lesson chrome.'
+		];
+	}
+	if (kind === 'presenter') {
+		return [
+			'Presenter-mode integration using Experience.speak() (and related APIs).',
+			'Host-owned UI for scripted lines, listening control, and/or feedback.',
+			'CDN / SDK embed of a public demo experience.'
+		];
+	}
+	return [
+		'Lesson-based app pattern — the app chooses a lesson; the lesson chooses the Liforma Experience.',
+		'CDN <liforma-experience> / <Experience /> embed for public experiences.',
+		'Close-before-switch — users end the session before picking another lesson.',
+		'Learning goals, session status, microphone guidance, and session notes UI.'
+	];
+}
+
+export function frameworkEmbedSnippet(kind: ExampleKind, frameworkSlug: string): string {
+	if (kind === 'embed' && frameworkSlug === 'sveltekit') {
+		return `<script>
+  import { Experience } from '@liforma/client/svelte';
+</script>
+
+<Experience experienceId="${DEMO_EXPERIENCE_ID}" />`;
+	}
+
+	if (kind === 'embed') {
+		return `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
+
+<liforma-experience experience-id="${DEMO_EXPERIENCE_ID}"></liforma-experience>`;
+	}
+
+	if (frameworkSlug === 'sveltekit') {
+		return `<script>
+  import { Experience } from '@liforma/client/svelte';
+</script>
+
+<Experience experienceId={lesson.experienceId} />`;
+	}
+
+	return `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
+
+<!-- experience-id comes from the selected lesson / session config -->
+<liforma-experience experience-id="\${lesson.experienceId}"></liforma-experience>`;
 }

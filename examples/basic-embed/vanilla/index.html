@@ -24,11 +24,6 @@
 					<div>
 						<p class="eyebrow">Liforma example</p>
 						<h1>Basic embed</h1>
-						<p class="lede">
-							Hello-world CDN embed: load the SDK, mount
-							<code>&lt;liforma-experience&gt;</code>, and talk with the experience. No custom speak
-							or listen UI.
-						</p>
 					</div>
 					<a
 						class="docs-link"
@@ -42,13 +37,14 @@
 			</header>
 
 			<main class="app-main">
-				<div class="experience-panel">
-					<div id="experience-host" aria-label="Liforma experience embed"></div>
+				<div class="stage">
+					<p class="lede">
+						Canonical vanilla embed from the docs: one
+						<code>&lt;liforma-experience&gt;</code> and one <code>experience-id</code>. Conversation
+						mode uses the player defaults — no host-side speak or listen UI.
+					</p>
+					<div class="experience" aria-label="Liforma experience embed"></div>
 				</div>
-				<p class="meta">
-					<span id="status-pill" class="status-pill">Loading…</span>
-					· Experience: <code id="experience-id-label"></code>
-				</p>
 			</main>
 		</div>
 		<script src="./app.js" type="module"></script>
