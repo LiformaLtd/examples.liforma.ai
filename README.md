@@ -98,14 +98,14 @@ npm run dev
 
 Use **http://localhost:** ports (not a LAN IP) so WebGPU and microphone APIs work in the browser.
 
-## Allowlisted origins
+## Allowed origins
 
-Public mint and embeds require your browser `Origin` on the project allowlist. Liforma demo experiences include:
+Public mint and embeds require your browser `Origin` on the project allowlist in the
+[developer portal](https://app.liforma.ai) → your project → **Origins**.
 
-- `http://localhost:4000`–`http://localhost:4004` (gallery + examples)
-- Hosted demos on `*.examples.liforma.ai`
-
-For your own `exp_…` experiences, add the same origins in [app.liforma.ai](https://app.liforma.ai) → your project → **Origins**.
+Add the localhost ports you run locally (for example `http://localhost:4001`) and any
+hosted demo origins (for example `https://….examples.liforma.ai`). The API does not
+ship a hardcoded localhost allowlist.
 
 ## Verification
 
