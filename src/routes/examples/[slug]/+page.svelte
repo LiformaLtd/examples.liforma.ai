@@ -19,15 +19,23 @@ Read:
 - ${githubTreePath(example.githubPath)}
 
 Preserve the hello-world Experience embed (one experience id, no lesson catalogue).`
-			: example.kind === 'presenter'
+			: example.kind === 'widget'
 				? `Use the Liforma ${example.title} example to build an app in your chosen framework.
 
 Read:
 - ${githubRawPath(example.specPath)}
 - ${githubTreePath(example.githubPath)}
 
+Preserve the ExperienceWidget corner launcher (thumb until click, in-page overlay expand).`
+				: example.kind === 'presenter'
+					? `Use the Liforma ${example.title} example to build an app in your chosen framework.
+
+Read:
+- ${githubRawPath(example.specPath)}
+- ${githubTreePath(example.githubPath)}
+
 Preserve the presenter / speak API integration and host-owned UI around the embed.`
-				: `Use the Liforma ${example.title} example to build an app in your chosen framework.
+					: `Use the Liforma ${example.title} example to build an app in your chosen framework.
 
 Read:
 - ${githubRawPath(example.specPath)}

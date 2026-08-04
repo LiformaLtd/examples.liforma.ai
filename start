@@ -22,8 +22,8 @@ Start the examples gallery and runnable apps. Uses production Liforma APIs by de
 Modes:
   vanilla       Gallery + all vanilla examples (default)
   sveltekit     Gallery + SvelteKit examples (same ports per example)
-  nextjs        Gallery + guided-practice Next.js (:4003)
-  react-vite    Gallery + guided-practice React (Vite) (:4003)
+  nextjs        Gallery + guided-practice Next.js (:4004)
+  react-vite    Gallery + guided-practice React (Vite) (:4004)
 
 Options:
   --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
@@ -35,9 +35,10 @@ Options:
 Ports:
   4000  Gallery (this repo)
   4001  Basic embed (vanilla or SvelteKit)
-  4002  Spanish Tutor (vanilla or SvelteKit)
-  4003  Guided practice (vanilla or SvelteKit)
-  4004  Speak playground (vanilla or SvelteKit)
+  4002  Experience widget (vanilla)
+  4003  Spanish Tutor (vanilla or SvelteKit)
+  4004  Guided practice (vanilla or SvelteKit / Next / React)
+  4005  Speak playground (vanilla or SvelteKit)
 
 Examples:
   ./start
@@ -48,6 +49,7 @@ Examples:
   ./start --status
   ./stop
   ./stop basic-embed
+  ./stop experience-widget
   ./stop spanish-tutor
   ./stop --status
 EOF
@@ -55,7 +57,7 @@ EOF
 
 while [[ $# -gt 0 ]]; do
 	case "$1" in
-		vanilla|sveltekit)
+		vanilla|sveltekit|nextjs|react-vite)
 			MODE="$1"
 			shift
 			;;
@@ -150,6 +152,7 @@ if [[ "$RESTART" == true ]]; then
 	kill_port 4002
 	kill_port 4003
 	kill_port 4004
+	kill_port 4005
 fi
 
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
@@ -165,12 +168,14 @@ fi
 if [[ "$MODE" == "vanilla" ]]; then
 	start_on_port basic-embed 4001 "$ROOT" \
 		"${vanilla_stack_env}PORT=4001 node scripts/serve-example.mjs examples/basic-embed/vanilla"
-	start_on_port spanish-tutor 4002 "$ROOT" \
-		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/spanish-tutor/vanilla"
-	start_on_port guided-practice 4003 "$ROOT" \
-		"${vanilla_stack_env}PORT=4003 node scripts/serve-example.mjs examples/guided-practice/vanilla"
-	start_on_port speak-playground 4004 "$ROOT" \
-		"${vanilla_stack_env}PORT=4004 node scripts/serve-example.mjs examples/speak-playground/vanilla"
+	start_on_port experience-widget 4002 "$ROOT" \
+		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/experience-widget/vanilla"
+	start_on_port spanish-tutor 4003 "$ROOT" \
+		"${vanilla_stack_env}PORT=4003 node scripts/serve-example.mjs examples/spanish-tutor/vanilla"
+	start_on_port guided-practice 4004 "$ROOT" \
+		"${vanilla_stack_env}PORT=4004 node scripts/serve-example.mjs examples/guided-practice/vanilla"
+	start_on_port speak-playground 4005 "$ROOT" \
+		"${vanilla_stack_env}PORT=4005 node scripts/serve-example.mjs examples/speak-playground/vanilla"
 elif [[ "$MODE" == "nextjs" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/nextjs/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2
@@ -179,13 +184,13 @@ elif [[ "$MODE" == "nextjs" ]]; then
 	if [[ "$USE_LOCAL_STACK" == true ]]; then
 		echo "Note: Next.js --local does not auto-inject. In DevTools run: window.__LIFORMA_STACK='local' then reload." >&2
 	fi
-	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/nextjs" "npm run dev"
+	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/nextjs" "npm run dev"
 elif [[ "$MODE" == "react-vite" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/react-vite/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/react-vite && npm install" >&2
 		exit 1
 	fi
-	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/react-vite" "$framework_dev_cmd"
+	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/react-vite" "$framework_dev_cmd"
 else
 	if [[ ! -d "$ROOT/examples/basic-embed/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/basic-embed/sveltekit && npm install" >&2
@@ -204,9 +209,10 @@ else
 		exit 1
 	fi
 	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$framework_dev_cmd"
-	start_on_port spanish-tutor 4002 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
-	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/sveltekit" "$framework_dev_cmd"
-	start_on_port speak-playground 4004 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"
+	# Experience widget is vanilla-only for v1; keep the port free / unused in sveltekit mode.
+	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
+	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/sveltekit" "$framework_dev_cmd"
+	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"
 fi
 
 echo ""

@@ -13,9 +13,9 @@ From repo root:
 Or only this example:
 
 ```bash
-npx serve . -l tcp://localhost:4003
+npx serve . -l tcp://localhost:4004
 ```
 
-Open **http://localhost:4003**
+Open **http://localhost:4004**
 
-Uses production Liforma (`cdn.liforma.ai`, `api.liforma.ai`, `player.liforma.ai`). Demo experiences allow `http://localhost:4003`. For your own `exp_…`, add that origin in the developer portal.
+Uses production Liforma (`cdn.liforma.ai`, `api.liforma.ai`, `player.liforma.ai`). Demo experiences allow `http://localhost:4004`. For your own `exp_…`, add that origin in the developer portal.

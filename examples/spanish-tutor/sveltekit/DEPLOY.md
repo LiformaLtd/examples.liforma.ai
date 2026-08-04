@@ -69,4 +69,4 @@ npx vercel deploy --prod
 npm run dev
 ```
 
-Runs on http://localhost:4002 (`strictPort: true`). Origins `http://localhost:4002` and `http://localhost:4000` are seeded on the Spanish Tutor project.
+Runs on http://localhost:4003 (`strictPort: true`). Origins `http://localhost:4003` and `http://localhost:4000` are seeded on the Spanish Tutor project.

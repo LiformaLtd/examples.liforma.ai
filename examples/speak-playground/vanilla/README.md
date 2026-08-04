@@ -13,9 +13,9 @@ From repo root:
 Or only this example:
 
 ```bash
-PORT=4004 node scripts/serve-example.mjs examples/speak-playground/vanilla
+PORT=4005 node scripts/serve-example.mjs examples/speak-playground/vanilla
 ```
 
-Open **http://localhost:4004**
+Open **http://localhost:4005**
 
-Uses production Liforma by default. Demo experiences allow `http://localhost:4004`. For your own `exp_…`, add that origin in the developer portal.
+Uses production Liforma by default. Demo experiences allow `http://localhost:4005`. For your own `exp_…`, add that origin in the developer portal.

@@ -17,6 +17,6 @@ npm install
 npm run dev
 ```
 
-http://localhost:4002
+http://localhost:4003
 
 Optional `LIFORMA_API_KEY` in `.env` loads your project catalog from `https://api.liforma.ai` (see `.env.example`).

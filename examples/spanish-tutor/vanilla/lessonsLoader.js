@@ -1,6 +1,6 @@
 const PRODUCTION_LESSONS_API = 'https://spanish-tutor.examples.liforma.ai/api/lessons';
-const LOCAL_SVELTEKIT_LESSONS_API = 'http://localhost:4002/api/lessons';
-const SPANISH_TUTOR_PORT = '4002';
+const LOCAL_SVELTEKIT_LESSONS_API = 'http://localhost:4003/api/lessons';
+const SPANISH_TUTOR_PORT = '4003';
 
 /**
  * @returns {string}

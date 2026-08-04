@@ -77,6 +77,9 @@ npx serve . -l tcp://localhost:${example.localPort}
 			{#if example.kind === 'embed'}
 				This is the hello-world integration. Fork it, run locally, and drop the same embed into your
 				product shell.
+			{:else if example.kind === 'widget'}
+				This is the site-wide corner widget pattern. Fork it, run locally, and place the same launcher
+				on your marketing or support pages.
 			{:else if example.kind === 'presenter'}
 				This implementation is available in the repository. Fork it, run locally, and adapt the host
 				UI around the same Experience speak / listen APIs.
@@ -103,7 +106,7 @@ npx serve . -l tcp://localhost:${example.localPort}
 				<code>lessons.js</code> (vanilla). Every ID maps to a Liforma Experience with a different scenario,
 				location, and tutor prompt — for example café lessons use <code>{DEMO_EXPERIENCE_ID}</code>.
 			</p>
-		{:else if example.kind === 'embed'}
+		{:else if example.kind === 'embed' || example.kind === 'widget'}
 			<h2>Experience id</h2>
 			<p>
 				The demo uses a single public experience id
@@ -116,6 +119,8 @@ npx serve . -l tcp://localhost:${example.localPort}
 			<p>Import the Svelte component and pass one experience id:</p>
 		{:else if example.kind === 'embed'}
 			<p>Load the CDN script and mount the web component with one experience id:</p>
+		{:else if example.kind === 'widget'}
+			<p>Load the CDN script and mount the experience widget custom element:</p>
 		{:else if framework.slug === 'sveltekit'}
 			<p>Mount <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code>:</p>
 		{:else}
@@ -129,6 +134,9 @@ npx serve . -l tcp://localhost:${example.localPort}
 				<li><code>src/routes/+page.svelte</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code></li>
 			{:else if example.kind === 'embed'}
 				<li><code>index.html</code> — CDN script + <code>&lt;liforma-experience&gt;</code></li>
+			{:else if example.kind === 'widget'}
+				<li><code>index.html</code> — CDN script + <code>&lt;liforma-experience-widget&gt;</code></li>
+				<li><code>styles.css</code> — page layout + fixed corner host</li>
 			{:else if example.kind === 'presenter' && framework.slug === 'sveltekit'}
 				<li><code>src/routes/+page.svelte</code> — host UI and Experience APIs</li>
 				<li><code>src/lib/</code> — turns / feedback helpers when present</li>

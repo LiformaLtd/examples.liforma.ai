@@ -1,7 +1,7 @@
 import type { SupportedFramework } from '$lib/frameworks';
 
 /** Drives gallery copy and framework detail pages. */
-export type ExampleKind = 'embed' | 'lessons' | 'presenter';
+export type ExampleKind = 'embed' | 'widget' | 'lessons' | 'presenter';
 
 export type ExampleMetadata = {
 	slug: string;
@@ -37,6 +37,20 @@ export const examples: ExampleMetadata[] = [
 		specPath: 'examples/basic-embed/spec.md'
 	},
 	{
+		slug: 'experience-widget',
+		title: 'Experience widget',
+		description:
+			'Corner launcher: collapsed thumb until click, then an in-page overlay conversation. Light until expand.',
+		category: 'Getting started',
+		kind: 'widget',
+		frameworks: ['vanilla'],
+		features: ['ExperienceWidget', 'Public session mint', 'Overlay expand'],
+		githubPath: 'examples/experience-widget',
+		localPort: 4002,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/experience-widget/spec.md'
+	},
+	{
 		slug: 'spanish-tutor',
 		title: 'Spanish Tutor',
 		description:
@@ -46,7 +60,7 @@ export const examples: ExampleMetadata[] = [
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
 		githubPath: 'examples/spanish-tutor',
-		localPort: 4002,
+		localPort: 4003,
 		liveAppUrl: 'https://spanish-tutor.examples.liforma.ai/',
 		meetExperienceUrl: 'https://www.liforma.ai/meet/demo-spanish-cafe',
 		specPath: 'examples/spanish-tutor/spec.md'
@@ -67,7 +81,7 @@ export const examples: ExampleMetadata[] = [
 			'Host feedback'
 		],
 		githubPath: 'examples/guided-practice',
-		localPort: 4003,
+		localPort: 4004,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/guided-practice/spec.md'
 	},
@@ -81,7 +95,7 @@ export const examples: ExampleMetadata[] = [
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
 		githubPath: 'examples/speak-playground',
-		localPort: 4004,
+		localPort: 4005,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/speak-playground/spec.md'
 	}

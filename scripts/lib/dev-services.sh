@@ -7,9 +7,10 @@ GALLERY_PORT=4000
 EXAMPLE_SERVICES=(
 	"gallery|4000"
 	"basic-embed|4001"
-	"spanish-tutor|4002"
-	"guided-practice|4003"
-	"speak-playground|4004"
+	"experience-widget|4002"
+	"spanish-tutor|4003"
+	"guided-practice|4004"
+	"speak-playground|4005"
 )
 
 # Liforma monorepo stack (api, player, CDN SDK preview) — used with ./start --local

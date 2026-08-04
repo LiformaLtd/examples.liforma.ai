@@ -13,11 +13,11 @@ From repo root:
 Or only this example:
 
 ```bash
-npx serve . -l tcp://localhost:4002
+npx serve . -l tcp://localhost:4003
 ```
 
-http://localhost:4002
+http://localhost:4003
 
 ## Live lesson catalog
 
-`./start` serves vanilla with static fallback lessons. `./start sveltekit` runs the SvelteKit app on the same port (**4002**) with the API-backed catalog — only one framework runs at a time.
+`./start` serves vanilla with static fallback lessons. `./start sveltekit` runs the SvelteKit app on the same port (**4003**) with the API-backed catalog — only one framework runs at a time.

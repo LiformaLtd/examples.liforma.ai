@@ -4,9 +4,9 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"dev": "next dev -p 4003",
+		"dev": "next dev -p 4004",
 		"build": "next build",
-		"start": "next start -p 4003",
+		"start": "next start -p 4004",
 		"lint": "eslint ."
 	},
 	"dependencies": {

@@ -75,6 +75,24 @@ Adapt:
 - surrounding page layout`;
 	}
 
+	if (example.kind === 'widget') {
+		return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`<liforma-experience-widget>\` corner launcher with gallery-thumb
+- light collapsed mount (images only until click)
+- fixed host CSS for corner placement
+- copy-paste friendly structure (index.html + styles.css)
+
+Adapt:
+- branding
+- experience id / gallery thumb URLs
+- host page layout`;
+	}
+
 	if (example.kind === 'presenter') {
 		return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
 
@@ -118,10 +136,13 @@ export function genericPortPrompt(
 		example.kind === 'embed'
 			? `- \`<liforma-experience>\` / \`<Experience />\` hello-world embed
 - one public experience id`
-			: example.kind === 'presenter'
-				? `- presenter / speak API integration shown in the example
+			: example.kind === 'widget'
+				? `- \`<liforma-experience-widget>\` / \`ExperienceWidget\` corner launcher
+- gallery thumb + expand-on-click overlay`
+				: example.kind === 'presenter'
+					? `- presenter / speak API integration shown in the example
 - host-owned UI around the embed`
-				: `- \`<liforma-experience>\` web component integration
+					: `- \`<liforma-experience>\` web component integration
 - lesson-based UX and close-before-switch flow
 - learning goal and session status UI`;
 
@@ -141,6 +162,13 @@ export function exampleOverviewBullets(kind: ExampleKind): string[] {
 			'Hello-world embed — one experience id and one Experience / web component mount.',
 			'Public session mint with conversation-mode player defaults.',
 			'No host-side speak, listen, or lesson chrome.'
+		];
+	}
+	if (kind === 'widget') {
+		return [
+			'Corner ExperienceWidget — collapsed thumb until the user clicks.',
+			'In-page overlay expand; session mint and player load on expand by default.',
+			'Same gallery-thumb plates as ExperienceThumbnail.'
 		];
 	}
 	if (kind === 'presenter') {
@@ -171,6 +199,17 @@ export function frameworkEmbedSnippet(kind: ExampleKind, frameworkSlug: string):
 		return `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
 
 <liforma-experience experience-id="${DEMO_EXPERIENCE_ID}"></liforma-experience>`;
+	}
+
+	if (kind === 'widget') {
+		return `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
+
+<div class="widget-host">
+  <liforma-experience-widget
+    experience-id="${DEMO_EXPERIENCE_ID}"
+    alt="Talk to our barista"
+  ></liforma-experience-widget>
+</div>`;
 	}
 
 	if (frameworkSlug === 'sveltekit') {

@@ -27,7 +27,7 @@
 	</div>
 	<p class="run-hint">
 		Clone the repo and run <code>./start</code> to open the gallery on
-		<code>localhost:4000</code> plus runnable demos on <code>4001</code>–<code>4004</code>.
+		<code>localhost:4000</code> plus runnable demos on <code>4001</code>–<code>4005</code>.
 		See the <a href={GITHUB_REPO}>README</a> for single-example commands.
 	</p>
 </section>

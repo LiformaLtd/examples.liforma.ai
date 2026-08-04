@@ -21,9 +21,10 @@ npm install
 | --- | --- |
 | Gallery (browse examples, copy prompts) | http://localhost:4000 |
 | Basic embed (vanilla) | http://localhost:4001 |
-| Spanish Tutor (vanilla) | http://localhost:4002 |
-| Guided practice — Speak API (vanilla) | http://localhost:4003 |
-| Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4004 |
+| Experience widget (vanilla) | http://localhost:4002 |
+| Spanish Tutor (vanilla) | http://localhost:4003 |
+| Guided practice — Speak API (vanilla) | http://localhost:4004 |
+| Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4005 |
 
 To run SvelteKit implementations instead of vanilla:
 
@@ -31,7 +32,7 @@ To run SvelteKit implementations instead of vanilla:
 ./start sveltekit
 ```
 
-That starts the gallery on **4000**, basic embed on **4001**, Spanish Tutor on **4002**, guided practice on **4003**, and speak playground on **4004**.
+That starts the gallery on **4000**, basic embed on **4001**, Spanish Tutor on **4003**, guided practice on **4004**, and speak playground on **4005**. (Experience widget is vanilla-only for v1.)
 
 Other useful commands:
 
@@ -39,6 +40,7 @@ Other useful commands:
 ./start --status   # which ports are listening
 ./stop             # stop gallery + all examples
 ./stop basic-embed     # stop one service
+./stop experience-widget
 ./stop spanish-tutor
 ```
 
@@ -60,14 +62,20 @@ npm install
 npm run dev
 ```
 
-**Spanish Tutor (vanilla)** — port 4002:
+**Experience widget (vanilla)** — port 4002:
+
+```bash
+PORT=4002 node scripts/serve-example.mjs examples/experience-widget/vanilla
+```
+
+**Spanish Tutor (vanilla)** — port 4003:
 
 ```bash
 cd examples/spanish-tutor/vanilla
-npx serve . -l tcp://localhost:4002
+npx serve . -l tcp://localhost:4003
 ```
 
-**Spanish Tutor (SvelteKit)** — port 4002:
+**Spanish Tutor (SvelteKit)** — port 4003:
 
 ```bash
 cd examples/spanish-tutor/sveltekit
@@ -75,20 +83,20 @@ npm install
 npm run dev
 ```
 
-**Guided practice (vanilla)** — port 4003:
+**Guided practice (vanilla)** — port 4004:
 
 ```bash
 cd examples/guided-practice/vanilla
-npx serve . -l tcp://localhost:4003
+npx serve . -l tcp://localhost:4004
 ```
 
-**Speak playground (vanilla)** — port 4004:
+**Speak playground (vanilla)** — port 4005:
 
 ```bash
-PORT=4004 node scripts/serve-example.mjs examples/speak-playground/vanilla
+PORT=4005 node scripts/serve-example.mjs examples/speak-playground/vanilla
 ```
 
-**Speak playground (SvelteKit)** — port 4004:
+**Speak playground (SvelteKit)** — port 4005:
 
 ```bash
 cd examples/speak-playground/sveltekit

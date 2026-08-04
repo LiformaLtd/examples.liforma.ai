@@ -20,7 +20,7 @@ From the examples repo (inside the monorepo):
 This:
 
 1. Starts **api** (`:3001`), **player** (`:3002`), and **cdn** SDK preview (`:3010`) from the parent monorepo when not already running.
-2. Starts gallery + examples on **4000**–**4004** with the local stack injected via repo scripts (not example source).
+2. Starts gallery + examples on **4000**–**4005** with the local stack injected via repo scripts (not example source).
 
 Check status:
 
@@ -33,15 +33,17 @@ Check status:
 | Mechanism | Use |
 | --- | --- |
 | `?stack=local` on the example URL | SDK host-page opt-in (any framework) |
-| `LIFORMA_STACK=local PORT=4003 node scripts/serve-example.mjs examples/guided-practice/vanilla` | Single vanilla example |
+| `LIFORMA_STACK=local PORT=4004 node scripts/serve-example.mjs examples/guided-practice/vanilla` | Single vanilla example |
 | `node ../../../../scripts/dev-with-local-stack.mjs` | From a SvelteKit / React-Vite example dir |
 | DevTools: `window.__LIFORMA_STACK = 'local'` then reload | Ad-hoc debugging |
 
 Local endpoints: API `:3001`, player `:3002`, CDN SDK preview `:3010`.
 
+`LIFORMA_STACK=local` also rewrites `https://cdn.liforma.ai/sdk/v2/client.js` → `http://localhost:3010/sdk/v2/client.js` in served HTML so unpublished SDK features (e.g. ExperienceWidget) load from the local CDN preview. Appending `?stack=local` alone is **not** enough for that — the page would still load production `client.js`.
+
 ## Meta repo guided practice (legacy port 3013)
 
-The meta workspace `./start --only api,player,cdn,guided-practice` still serves guided practice on **3013** with local stack for monorepo-only workflows. Prefer `./start --local` in the examples repo on **4003** instead.
+The meta workspace `./start --only api,player,cdn,guided-practice` still serves guided practice on **3013** with local stack for monorepo-only workflows. Prefer `./start --local` in the examples repo on **4004** instead.
 
 ```bash
 LIFORMA_STACK=local PORT=3013 node ../../../../scripts/serve-liforma-example.mjs
