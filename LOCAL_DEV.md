@@ -2,7 +2,10 @@
 
 Examples always target production (`cdn.liforma.ai`, `api.liforma.ai`, `player.liforma.ai`), including when the example itself runs on `localhost`. Sample app code never configures a local stack — that keeps third-party copy-paste demos unambiguous.
 
-Local opt-in is injected only by **repo tooling** (`./start --local`, `scripts/serve-example.mjs`, `scripts/dev-with-local-stack.mjs`), which sets `window.__LIFORMA_STACK = 'local'` before the SDK loads.
+Local opt-in (no example-app helpers):
+
+- Append `?stack=local` to the host page URL (SDK reads it on the parent page)
+- Or use **repo tooling** (`./start --local`, `scripts/serve-example.mjs`, `scripts/dev-with-local-stack.mjs`), which sets `window.__LIFORMA_STACK = 'local'`
 
 ## `./start --local` (recommended)
 
@@ -29,9 +32,10 @@ Check status:
 
 | Mechanism | Use |
 | --- | --- |
+| `?stack=local` on the example URL | SDK host-page opt-in (any framework) |
 | `LIFORMA_STACK=local PORT=4003 node scripts/serve-example.mjs examples/guided-practice/vanilla` | Single vanilla example |
 | `node ../../../../scripts/dev-with-local-stack.mjs` | From a SvelteKit / React-Vite example dir |
-| DevTools: `window.__LIFORMA_STACK = 'local'` then reload | Next.js or ad-hoc debugging |
+| DevTools: `window.__LIFORMA_STACK = 'local'` then reload | Ad-hoc debugging |
 
 Local endpoints: API `:3001`, player `:3002`, CDN SDK preview `:3010`.
 

@@ -1,5 +1,5 @@
 /** Bump when the CDN bundle changes materially. */
-const SDK_BUILD = '10';
+const SDK_BUILD = '11';
 
 import {
 	experienceClassHasSpeakApi,
