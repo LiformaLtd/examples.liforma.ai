@@ -155,10 +155,11 @@ fi
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
 
 vanilla_stack_env=""
-sveltekit_cmd="npm run dev"
+framework_dev_cmd="npm run dev"
 if [[ "$USE_LOCAL_STACK" == true ]]; then
 	vanilla_stack_env="LIFORMA_STACK=local "
-	sveltekit_cmd="npm run dev:local"
+	# Inject __LIFORMA_STACK via repo script — not example app source
+	framework_dev_cmd="node \"$ROOT/scripts/dev-with-local-stack.mjs\""
 fi
 
 if [[ "$MODE" == "vanilla" ]]; then
@@ -175,21 +176,16 @@ elif [[ "$MODE" == "nextjs" ]]; then
 		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2
 		exit 1
 	fi
-	nextjs_cmd="npm run dev"
 	if [[ "$USE_LOCAL_STACK" == true ]]; then
-		nextjs_cmd="npm run dev:local"
+		echo "Note: Next.js --local does not auto-inject. In DevTools run: window.__LIFORMA_STACK='local' then reload." >&2
 	fi
-	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/nextjs" "$nextjs_cmd"
+	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/nextjs" "npm run dev"
 elif [[ "$MODE" == "react-vite" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/react-vite/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/react-vite && npm install" >&2
 		exit 1
 	fi
-	react_vite_cmd="npm run dev"
-	if [[ "$USE_LOCAL_STACK" == true ]]; then
-		react_vite_cmd="npm run dev:local"
-	fi
-	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/react-vite" "$react_vite_cmd"
+	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/react-vite" "$framework_dev_cmd"
 else
 	if [[ ! -d "$ROOT/examples/basic-embed/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/basic-embed/sveltekit && npm install" >&2
@@ -207,10 +203,10 @@ else
 		echo "Run: cd examples/speak-playground/sveltekit && npm install" >&2
 		exit 1
 	fi
-	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$sveltekit_cmd"
-	start_on_port spanish-tutor 4002 "$ROOT/examples/spanish-tutor/sveltekit" "$sveltekit_cmd"
-	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/sveltekit" "$sveltekit_cmd"
-	start_on_port speak-playground 4004 "$ROOT/examples/speak-playground/sveltekit" "$sveltekit_cmd"
+	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$framework_dev_cmd"
+	start_on_port spanish-tutor 4002 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
+	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/sveltekit" "$framework_dev_cmd"
+	start_on_port speak-playground 4004 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"
 fi
 
 echo ""

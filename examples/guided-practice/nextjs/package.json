@@ -5,7 +5,6 @@
 	"type": "module",
 	"scripts": {
 		"dev": "next dev -p 4003",
-		"dev:local": "NEXT_PUBLIC_LIFORMA_STACK=local next dev -p 4003",
 		"build": "next build",
 		"start": "next start -p 4003",
 		"lint": "eslint ."

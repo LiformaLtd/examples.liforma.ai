@@ -218,7 +218,7 @@ async function initExperience() {
 			manifest.experience.speechInputMode !== 'manual'
 		) {
 			log(
-				'Warning: manifest modes are not presenter/manual/manual — the experience may run in conversation mode. Use local CDN SDK (:3010).'
+				'Warning: manifest modes are not presenter/manual/manual — the experience may run in conversation mode.'
 			);
 		}
 

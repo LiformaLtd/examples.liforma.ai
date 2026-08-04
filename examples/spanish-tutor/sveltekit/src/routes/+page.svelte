@@ -1,7 +1,6 @@
 <script lang="ts">
 	import LessonList from '$lib/components/LessonList.svelte';
 	import { getLesson } from '$lib/lessons';
-	import { playerEmbedUrl } from '$lib/liforma-stack';
 	import { Experience } from '@liforma/client/svelte';
 	import type { PageData } from './$types';
 
@@ -102,7 +101,6 @@
 					<Experience
 						experienceId={experienceId}
 						language="es"
-						embedBaseUrl={playerEmbedUrl()}
 						onClose={handleEmbedClose}
 					/>
 				</div>

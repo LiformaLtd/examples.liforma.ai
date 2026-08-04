@@ -5,7 +5,6 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite",
-		"dev:local": "VITE_LIFORMA_STACK=local vite",
 		"build": "tsc -b && vite build",
 		"preview": "vite preview"
 	},

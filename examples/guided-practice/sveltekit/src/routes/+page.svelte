@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { buildPracticeFeedback, type PracticeFeedback } from '$lib/feedback';
-	import { playerEmbedUrl } from '$lib/liforma-stack';
 	import { PRACTICE_EXPERIENCE_ID, practiceTurns } from '$lib/turns';
 	import type { ExperienceEvents, StartButtonOptions } from '@liforma/client';
 	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
@@ -220,7 +219,6 @@
 				<Experience
 					bind:this={experience}
 					experienceId={PRACTICE_EXPERIENCE_ID}
-					embedBaseUrl={playerEmbedUrl()}
 					mode="presenter"
 					speechInputMode="manual"
 					{startButton}

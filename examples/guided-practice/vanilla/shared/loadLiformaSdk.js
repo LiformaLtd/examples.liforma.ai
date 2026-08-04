@@ -1,30 +1,35 @@
-import {
-	experienceClassHasSpeakApi,
-	existingSdkScript,
-	isLocalLiformaStack,
-	resolveLiformaStack,
-	sdkClientUrl
-} from './liformaStack.js';
-
 const SDK_MARKER = 'data-liforma-sdk';
+const PRODUCTION_SDK_BASE = 'https://cdn.liforma.ai/sdk/v2/client.js';
 const DEFAULT_TIMEOUT_MS = 20_000;
 
 let loadPromise = null;
+
+function sdkClientUrl(build) {
+	const base = PRODUCTION_SDK_BASE;
+	return build ? `${base}?b=${build}` : base;
+}
+
+function existingSdkScript() {
+	const el = document.querySelector(`script[${SDK_MARKER}]`);
+	return el instanceof HTMLScriptElement ? el : null;
+}
+
+function experienceClassHasSpeakApi(Experience) {
+	if (typeof window !== 'undefined' && window.Liforma?.features?.speakApi === true) {
+		return true;
+	}
+	return (
+		typeof Experience?.prototype?.speak === 'function' &&
+		typeof Experience?.prototype?.startListening === 'function' &&
+		typeof Experience?.prototype?.stopListening === 'function'
+	);
+}
 
 function sdkLoadError(url, options, loadedButMissingSpeakApi = false) {
 	if (loadedButMissingSpeakApi) {
 		return new Error(
 			`SDK loaded from ${url} but does not include the presenter speech APIs. ` +
-				(isLocalLiformaStack()
-					? 'Rebuild cdn.liforma.ai (`npm run dev:sdk`) and hard-refresh.'
-					: 'Ensure cdn.liforma.ai has published a SDK build that includes the Speak API.')
-		);
-	}
-
-	if (isLocalLiformaStack()) {
-		return new Error(
-			`Failed to load Liforma SDK from ${url}. ` +
-				'Start api (:3001), player (:3002), and cdn SDK preview (:3010).'
+				'Ensure cdn.liforma.ai has published a SDK build that includes the Speak API.'
 		);
 	}
 
@@ -42,11 +47,12 @@ function isSdkReady(requireSpeakApi) {
 }
 
 /**
- * Load the Liforma v2 browser SDK from production CDN by default.
+ * Load the Liforma v2 browser SDK from production CDN.
+ * Examples always target production; local monorepo stack is not configured here.
  *
  * @param {object} [options]
  * @param {string} [options.build] CDN cache-bust build id
- * @param {boolean} [options.requireSpeakApi] Guided-practice examples need speak()
+ * @param {boolean} [options.requireSpeakApi] Guided-practice / speak examples need speak()
  * @param {number} [options.timeoutMs]
  * @param {string} [options.hintWhenProductionFailed]
  */
@@ -61,7 +67,6 @@ export function loadLiformaSdk(options = {}) {
 	if (loadPromise) return loadPromise;
 
 	loadPromise = new Promise((resolve, reject) => {
-		const stack = resolveLiformaStack();
 		const url = sdkClientUrl(build);
 		const existing = existingSdkScript();
 
@@ -78,8 +83,6 @@ export function loadLiformaSdk(options = {}) {
 		script.src = url;
 		script.setAttribute(SDK_MARKER, 'true');
 		script.async = true;
-		script.dataset.apiBaseUrl = stack.apiBaseUrl;
-		script.dataset.playerEmbedUrl = stack.playerEmbedUrl;
 
 		const timeoutId = window.setTimeout(() => {
 			loadPromise = null;
@@ -111,4 +114,4 @@ export function loadLiformaSdk(options = {}) {
 	return loadPromise;
 }
 
-export { experienceClassHasSpeakApi, existingSdkScript, resolveLiformaStack, sdkClientUrl as sdkUrl };
+export { experienceClassHasSpeakApi, existingSdkScript, sdkClientUrl as sdkUrl };
