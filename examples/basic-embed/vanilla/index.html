@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Basic embed — Liforma example</title>
+		<meta
+			name="description"
+			content="Minimal Liforma avatar embed: one experience id, one web component."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+	</head>
+	<body>
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>Basic embed</h1>
+						<p class="lede">
+							Hello-world CDN embed: load the SDK, mount
+							<code>&lt;liforma-experience&gt;</code>, and talk with the avatar. No custom speak
+							or listen UI.
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://examples.liforma.ai/examples/basic-embed"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						Example docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="avatar-panel">
+					<div id="avatar-host" aria-label="Liforma avatar embed"></div>
+				</div>
+				<p class="meta">
+					<span id="status-pill" class="status-pill">Loading…</span>
+					· Experience: <code id="experience-id-label"></code>
+				</p>
+			</main>
+		</div>
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

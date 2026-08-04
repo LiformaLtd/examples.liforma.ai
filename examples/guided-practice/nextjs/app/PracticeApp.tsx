@@ -244,7 +244,7 @@ export default function PracticeApp() {
 			setStatus('Failed to load', 'warn');
 			if (error.message.includes('Failed to fetch')) {
 				pushLog(
-					'Could not reach the Liforma API. Add http://localhost:4002 to your project allowed origins.'
+					'Could not reach the Liforma API. Add http://localhost:4003 to your project allowed origins.'
 				);
 			} else {
 				pushLog(error.message);

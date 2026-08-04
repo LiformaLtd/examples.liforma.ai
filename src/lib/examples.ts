@@ -19,6 +19,19 @@ export type ExampleMetadata = {
 
 export const examples: ExampleMetadata[] = [
 	{
+		slug: 'basic-embed',
+		title: 'Basic embed',
+		description:
+			'Hello-world avatar embed: one experience id and one Experience component. No custom speak or listen UI.',
+		category: 'Getting started',
+		frameworks: ['sveltekit', 'vanilla'],
+		features: ['Avatar Experience', 'Public session mint'],
+		githubPath: 'examples/basic-embed',
+		localPort: 4001,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/basic-embed/spec.md'
+	},
+	{
 		slug: 'spanish-tutor',
 		title: 'Spanish Tutor',
 		description:
@@ -27,7 +40,7 @@ export const examples: ExampleMetadata[] = [
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Avatar Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
 		githubPath: 'examples/spanish-tutor',
-		localPort: 4001,
+		localPort: 4002,
 		liveAppUrl: 'https://spanish-tutor.examples.liforma.ai/',
 		meetExperienceUrl: 'https://www.liforma.ai/meet/demo-spanish-cafe',
 		specPath: 'examples/spanish-tutor/spec.md'
@@ -47,7 +60,7 @@ export const examples: ExampleMetadata[] = [
 			'Host feedback'
 		],
 		githubPath: 'examples/guided-practice',
-		localPort: 4002,
+		localPort: 4003,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/guided-practice/spec.md'
 	},
@@ -60,7 +73,7 @@ export const examples: ExampleMetadata[] = [
 		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Avatar Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
 		githubPath: 'examples/speak-playground',
-		localPort: 4003,
+		localPort: 4004,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/speak-playground/spec.md'
 	}

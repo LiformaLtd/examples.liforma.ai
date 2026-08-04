@@ -8,6 +8,13 @@ export function useLocalStack(): boolean {
 	return (window as Window & { __LIFORMA_STACK?: string }).__LIFORMA_STACK === 'local';
 }
 
+/** Opt `@liforma/client` into local stack (explicit — never hostname-based). */
+export function syncLocalStackGlobals(): void {
+	if (typeof window === 'undefined' || !useLocalStack()) return;
+	(window as Window & { __LIFORMA_STACK?: string }).__LIFORMA_STACK = 'local';
+}
+
 export function playerEmbedUrl(): string | undefined {
+	syncLocalStackGlobals();
 	return useLocalStack() ? LOCAL_PLAYER_EMBED_URL : undefined;
 }

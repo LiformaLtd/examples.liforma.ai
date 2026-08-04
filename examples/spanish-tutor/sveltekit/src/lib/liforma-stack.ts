@@ -10,7 +10,18 @@ export function useLocalStack(): boolean {
 	return window.__LIFORMA_STACK === 'local';
 }
 
+/**
+ * Opt the SDK into the local monorepo stack.
+ * `@liforma/client` only uses localhost when `__LIFORMA_STACK === 'local'`
+ * (or explicit URL globals) — never from hostname alone.
+ */
+export function syncLocalStackGlobals(): void {
+	if (typeof window === 'undefined' || !useLocalStack()) return;
+	window.__LIFORMA_STACK = 'local';
+}
+
 /** Player embed origin override for local development. */
 export function playerEmbedUrl(): string | undefined {
+	syncLocalStackGlobals();
 	return useLocalStack() ? LOCAL_PLAYER_EMBED_URL : undefined;
 }

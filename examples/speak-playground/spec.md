@@ -48,4 +48,4 @@ Default: `exp_01EXAMPLES_COFFEE_BARISTA` (Examples project coffee barista clone)
 
 ## Local port
 
-`4003` (vanilla and SvelteKit share the port).
+`4004` (vanilla and SvelteKit share the port).

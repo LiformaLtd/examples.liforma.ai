@@ -1,3 +1,4 @@
 import { createLiformaSessionRouteHandler } from '@liforma/client/next';
 
-export const POST = createLiformaSessionRouteHandler();
+/** Demo route — open mint. Production apps must pass `authorize`. */
+export const POST = createLiformaSessionRouteHandler({ allowUnauthenticated: true });

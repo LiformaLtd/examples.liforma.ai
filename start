@@ -22,8 +22,8 @@ Start the examples gallery and runnable apps. Uses production Liforma APIs by de
 Modes:
   vanilla       Gallery + all vanilla examples (default)
   sveltekit     Gallery + SvelteKit examples (same ports per example)
-  nextjs        Gallery + guided-practice Next.js (:4002)
-  react-vite    Gallery + guided-practice React (Vite) (:4002)
+  nextjs        Gallery + guided-practice Next.js (:4003)
+  react-vite    Gallery + guided-practice React (Vite) (:4003)
 
 Options:
   --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
@@ -34,9 +34,10 @@ Options:
 
 Ports:
   4000  Gallery (this repo)
-  4001  Spanish Tutor (vanilla or SvelteKit)
-  4002  Guided practice (vanilla or SvelteKit)
-  4003  Speak playground (vanilla or SvelteKit)
+  4001  Basic embed (vanilla or SvelteKit)
+  4002  Spanish Tutor (vanilla or SvelteKit)
+  4003  Guided practice (vanilla or SvelteKit)
+  4004  Speak playground (vanilla or SvelteKit)
 
 Examples:
   ./start
@@ -46,6 +47,7 @@ Examples:
   ./start --local --restart
   ./start --status
   ./stop
+  ./stop basic-embed
   ./stop spanish-tutor
   ./stop --status
 EOF
@@ -147,6 +149,7 @@ if [[ "$RESTART" == true ]]; then
 	kill_port 4001
 	kill_port 4002
 	kill_port 4003
+	kill_port 4004
 fi
 
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
@@ -159,12 +162,14 @@ if [[ "$USE_LOCAL_STACK" == true ]]; then
 fi
 
 if [[ "$MODE" == "vanilla" ]]; then
-	start_on_port spanish-tutor 4001 "$ROOT" \
-		"${vanilla_stack_env}PORT=4001 node scripts/serve-example.mjs examples/spanish-tutor/vanilla"
-	start_on_port guided-practice 4002 "$ROOT" \
-		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/guided-practice/vanilla"
-	start_on_port speak-playground 4003 "$ROOT" \
-		"${vanilla_stack_env}PORT=4003 node scripts/serve-example.mjs examples/speak-playground/vanilla"
+	start_on_port basic-embed 4001 "$ROOT" \
+		"${vanilla_stack_env}PORT=4001 node scripts/serve-example.mjs examples/basic-embed/vanilla"
+	start_on_port spanish-tutor 4002 "$ROOT" \
+		"${vanilla_stack_env}PORT=4002 node scripts/serve-example.mjs examples/spanish-tutor/vanilla"
+	start_on_port guided-practice 4003 "$ROOT" \
+		"${vanilla_stack_env}PORT=4003 node scripts/serve-example.mjs examples/guided-practice/vanilla"
+	start_on_port speak-playground 4004 "$ROOT" \
+		"${vanilla_stack_env}PORT=4004 node scripts/serve-example.mjs examples/speak-playground/vanilla"
 elif [[ "$MODE" == "nextjs" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/nextjs/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2
@@ -174,7 +179,7 @@ elif [[ "$MODE" == "nextjs" ]]; then
 	if [[ "$USE_LOCAL_STACK" == true ]]; then
 		nextjs_cmd="npm run dev:local"
 	fi
-	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/nextjs" "$nextjs_cmd"
+	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/nextjs" "$nextjs_cmd"
 elif [[ "$MODE" == "react-vite" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/react-vite/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/react-vite && npm install" >&2
@@ -184,8 +189,12 @@ elif [[ "$MODE" == "react-vite" ]]; then
 	if [[ "$USE_LOCAL_STACK" == true ]]; then
 		react_vite_cmd="npm run dev:local"
 	fi
-	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/react-vite" "$react_vite_cmd"
+	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/react-vite" "$react_vite_cmd"
 else
+	if [[ ! -d "$ROOT/examples/basic-embed/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/basic-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
 	if [[ ! -d "$ROOT/examples/spanish-tutor/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/spanish-tutor/sveltekit && npm install" >&2
 		exit 1
@@ -198,9 +207,10 @@ else
 		echo "Run: cd examples/speak-playground/sveltekit && npm install" >&2
 		exit 1
 	fi
-	start_on_port spanish-tutor 4001 "$ROOT/examples/spanish-tutor/sveltekit" "$sveltekit_cmd"
-	start_on_port guided-practice 4002 "$ROOT/examples/guided-practice/sveltekit" "$sveltekit_cmd"
-	start_on_port speak-playground 4003 "$ROOT/examples/speak-playground/sveltekit" "$sveltekit_cmd"
+	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$sveltekit_cmd"
+	start_on_port spanish-tutor 4002 "$ROOT/examples/spanish-tutor/sveltekit" "$sveltekit_cmd"
+	start_on_port guided-practice 4003 "$ROOT/examples/guided-practice/sveltekit" "$sveltekit_cmd"
+	start_on_port speak-playground 4004 "$ROOT/examples/speak-playground/sveltekit" "$sveltekit_cmd"
 fi
 
 echo ""

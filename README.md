@@ -20,9 +20,10 @@ npm install
 | Service | URL |
 | --- | --- |
 | Gallery (browse examples, copy prompts) | http://localhost:4000 |
-| Spanish Tutor (vanilla) | http://localhost:4001 |
-| Guided practice — Speak API (vanilla) | http://localhost:4002 |
-| Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4003 |
+| Basic embed (vanilla) | http://localhost:4001 |
+| Spanish Tutor (vanilla) | http://localhost:4002 |
+| Guided practice — Speak API (vanilla) | http://localhost:4003 |
+| Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4004 |
 
 To run SvelteKit implementations instead of vanilla:
 
@@ -30,28 +31,43 @@ To run SvelteKit implementations instead of vanilla:
 ./start sveltekit
 ```
 
-That starts the gallery on **4000**, Spanish Tutor on **4001**, guided practice on **4002**, and speak playground on **4003**.
+That starts the gallery on **4000**, basic embed on **4001**, Spanish Tutor on **4002**, guided practice on **4003**, and speak playground on **4004**.
 
 Other useful commands:
 
 ```bash
 ./start --status   # which ports are listening
 ./stop             # stop gallery + all examples
-./stop spanish-tutor   # stop one service
+./stop basic-embed     # stop one service
+./stop spanish-tutor
 ```
 
 ## Run one example only
 
 From the repo root you can still use `./start` (it skips services already running). Or `cd` into a single example and run it yourself:
 
-**Spanish Tutor (vanilla)** — port 4001:
+**Basic embed (vanilla)** — port 4001:
+
+```bash
+PORT=4001 node scripts/serve-example.mjs examples/basic-embed/vanilla
+```
+
+**Basic embed (SvelteKit)** — port 4001:
+
+```bash
+cd examples/basic-embed/sveltekit
+npm install
+npm run dev
+```
+
+**Spanish Tutor (vanilla)** — port 4002:
 
 ```bash
 cd examples/spanish-tutor/vanilla
-npx serve . -l tcp://localhost:4001
+npx serve . -l tcp://localhost:4002
 ```
 
-**Spanish Tutor (SvelteKit)** — port 4001:
+**Spanish Tutor (SvelteKit)** — port 4002:
 
 ```bash
 cd examples/spanish-tutor/sveltekit
@@ -59,20 +75,20 @@ npm install
 npm run dev
 ```
 
-**Guided practice (vanilla)** — port 4002:
+**Guided practice (vanilla)** — port 4003:
 
 ```bash
 cd examples/guided-practice/vanilla
-npx serve . -l tcp://localhost:4002
+npx serve . -l tcp://localhost:4003
 ```
 
-**Speak playground (vanilla)** — port 4003:
+**Speak playground (vanilla)** — port 4004:
 
 ```bash
-PORT=4003 node scripts/serve-example.mjs examples/speak-playground/vanilla
+PORT=4004 node scripts/serve-example.mjs examples/speak-playground/vanilla
 ```
 
-**Speak playground (SvelteKit)** — port 4003:
+**Speak playground (SvelteKit)** — port 4004:
 
 ```bash
 cd examples/speak-playground/sveltekit
@@ -86,7 +102,7 @@ Use **http://localhost:** ports (not a LAN IP) so WebGPU and microphone APIs wor
 
 Public mint and embeds require your browser `Origin` on the project allowlist. Liforma demo experiences include:
 
-- `http://localhost:4000`–`http://localhost:4003` (gallery + examples)
+- `http://localhost:4000`–`http://localhost:4004` (gallery + examples)
 - Hosted demos on `*.examples.liforma.ai`
 
 For your own `exp_…` experiences, add the same origins in [app.liforma.ai](https://app.liforma.ai) → your project → **Origins**.
@@ -95,6 +111,7 @@ For your own `exp_…` experiences, add the same origins in [app.liforma.ai](htt
 
 ```bash
 npm run verify
+cd examples/basic-embed/sveltekit && npm run verify
 cd examples/guided-practice/sveltekit && npm run verify
 cd examples/speak-playground/sveltekit && npm run verify
 ```

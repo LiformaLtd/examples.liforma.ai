@@ -3,9 +3,10 @@ export const GALLERY_PORT = 4000;
 
 /** Canonical local port per example slug (vanilla and SvelteKit share the same port). */
 export const EXAMPLE_PORTS: Record<string, number> = {
-	'spanish-tutor': 4001,
-	'guided-practice': 4002,
-	'speak-playground': 4003
+	'basic-embed': 4001,
+	'spanish-tutor': 4002,
+	'guided-practice': 4003,
+	'speak-playground': 4004
 };
 
 export function getExamplePort(slug: string): number | undefined {

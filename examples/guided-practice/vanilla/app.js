@@ -314,7 +314,7 @@ void initExperience().catch((err) => {
 	const message = err instanceof Error ? err.message : String(err);
 	if (message === 'Failed to fetch' || message.includes('Failed to fetch')) {
 		log(
-			'Could not reach the Liforma API. Add http://localhost:4002 to your project allowed origins in the developer portal.'
+			'Could not reach the Liforma API. Add http://localhost:4003 to your project allowed origins in the developer portal.'
 		);
 	} else {
 		log(message);

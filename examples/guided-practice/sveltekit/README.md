@@ -10,7 +10,7 @@ From the examples repo root:
 ./start sveltekit
 ```
 
-Open http://localhost:4002
+Open http://localhost:4003
 
 For local unpublished SDK/player changes:
 

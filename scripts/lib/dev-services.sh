@@ -6,9 +6,10 @@ GALLERY_PORT=4000
 # name|port — one port per example slug (vanilla and SvelteKit share ports)
 EXAMPLE_SERVICES=(
 	"gallery|4000"
-	"spanish-tutor|4001"
-	"guided-practice|4002"
-	"speak-playground|4003"
+	"basic-embed|4001"
+	"spanish-tutor|4002"
+	"guided-practice|4003"
+	"speak-playground|4004"
 )
 
 # Liforma monorepo stack (api, player, CDN SDK preview) — used with ./start --local

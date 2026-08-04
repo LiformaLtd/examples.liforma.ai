@@ -4,11 +4,11 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
-		port: 4001,
+		port: 4002,
 		strictPort: true
 	},
 	preview: {
-		port: 4001,
+		port: 4002,
 		strictPort: true
 	}
 });
