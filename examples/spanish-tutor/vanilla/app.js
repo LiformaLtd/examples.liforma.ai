@@ -168,7 +168,7 @@ function updateUi() {
 }
 
 async function bootstrapLessons() {
-	await loadLiformaSdk({ build: '6' });
+	await loadLiformaSdk({ build: '7' });
 	try {
 		const loadedLessons = await loadLessons();
 		lessons = loadedLessons;
