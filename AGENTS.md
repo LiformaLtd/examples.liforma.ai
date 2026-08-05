@@ -4,7 +4,7 @@ When working in this repository:
 
 0. **Prefer Liforma Agent Skills** before inventing integration code:
    `npx skills add LiformaLtd/agent-skills`
-   ([LiformaLtd/agent-skills](https://github.com/LiformaLtd/agent-skills) — `liforma-integrate`, `liforma-debug`).
+   ([LiformaLtd/agent-skills](https://github.com/LiformaLtd/agent-skills) — `liforma-demo`, `liforma-integrate`, `liforma-debug`).
    Docs index: https://docs.liforma.ai/llms.txt
 1. Keep examples minimal but complete.
 2. Use TypeScript in SvelteKit apps.
