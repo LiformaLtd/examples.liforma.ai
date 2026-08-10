@@ -7,6 +7,7 @@
 	import {
 		frameworkEmbedSnippet,
 		genericPortPrompt,
+		reactAgentPrompt,
 		sveltekitAgentPrompt,
 		vanillaAgentPrompt
 	} from '$lib/prompts';
@@ -27,14 +28,25 @@
 		if (framework.slug === 'vanilla') {
 			return vanillaAgentPrompt(example);
 		}
+		if (framework.slug === 'nextjs' || framework.slug === 'react-vite') {
+			return reactAgentPrompt(example, framework.slug);
+		}
 		return genericPortPrompt(example, framework.slug);
 	});
 
 	const embedSnippet = $derived(frameworkEmbedSnippet(example.kind, framework.slug));
-	const embedSnippetLang = $derived(framework.slug === 'sveltekit' ? 'svelte' : 'html');
+	const embedSnippetLang = $derived(
+		framework.slug === 'sveltekit'
+			? 'svelte'
+			: framework.slug === 'nextjs' || framework.slug === 'react-vite'
+				? 'tsx'
+				: 'html'
+	);
 
 	const runCommands = $derived.by(() =>
-		framework.slug === 'sveltekit'
+		framework.slug === 'sveltekit' ||
+		framework.slug === 'nextjs' ||
+		framework.slug === 'react-vite'
 			? `cd ${sourcePath}
 npm install
 npm run dev
@@ -91,8 +103,9 @@ npx serve . -l tcp://localhost:${example.localPort}
 
 		<h2>Run locally</h2>
 		<p>
-			From the repo root, <code>./start</code> runs all examples (or <code>./start sveltekit</code> for
-			SvelteKit apps). To run only this one:
+			From the repo root, <code>./start</code> runs all examples (or
+			<code>./start sveltekit</code> / <code>./start nextjs</code> /
+			<code>./start react-vite</code> for those frameworks). To run only this one:
 		</p>
 		<CodeBlock code={runCommands} lang="bash" filename="terminal" />
 		{#if localUrl}
@@ -117,12 +130,23 @@ npx serve . -l tcp://localhost:${example.localPort}
 		<h2>Liforma integration</h2>
 		{#if example.kind === 'embed' && framework.slug === 'sveltekit'}
 			<p>Import the Svelte component and pass one experience id:</p>
+		{:else if example.kind === 'embed' && framework.slug === 'nextjs'}
+			<p>
+				Use a client component and import <code>Experience</code> from
+				<code>@liforma/client/react</code> (not <code>/next</code>):
+			</p>
+		{:else if example.kind === 'embed' && framework.slug === 'react-vite'}
+			<p>Import <code>Experience</code> from <code>@liforma/client/react</code> and pass one experience id:</p>
 		{:else if example.kind === 'embed'}
 			<p>Load the CDN script and mount the web component with one experience id:</p>
+		{:else if example.kind === 'widget' && framework.slug === 'sveltekit'}
+			<p>Mount <code>&lt;ExperienceWidget /&gt;</code> from <code>@liforma/client/svelte</code>:</p>
 		{:else if example.kind === 'widget'}
 			<p>Load the CDN script and mount the experience widget custom element:</p>
 		{:else if framework.slug === 'sveltekit'}
 			<p>Mount <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code>:</p>
+		{:else if framework.slug === 'nextjs' || framework.slug === 'react-vite'}
+			<p>Mount <code>&lt;Experience /&gt;</code> from <code>@liforma/client/react</code>:</p>
 		{:else}
 			<p>Load the CDN script and mount the experience custom element:</p>
 		{/if}
@@ -130,22 +154,81 @@ npx serve . -l tcp://localhost:${example.localPort}
 
 		<h2>Key files</h2>
 		<ul>
-			{#if example.kind === 'embed' && framework.slug === 'sveltekit'}
+			{#if example.slug === 'elevenlabs-embed'}
+				<li>
+					<code>@liforma/client/elevenlabs</code> — <strong>read first</strong> —
+					<code>connectElevenLabsAgent</code>
+				</li>
+				{#if framework.slug === 'sveltekit'}
+					<li><code>src/routes/+page.svelte</code> — demo Connect / Start UI only</li>
+					<li><code>src/routes/api/…/+server.ts</code> — demo secret mint (replace in production)</li>
+				{:else if framework.slug === 'nextjs'}
+					<li><code>app/DemoApp.tsx</code> — demo Connect / Start UI only</li>
+					<li><code>app/api/…/route.ts</code> — demo secret mint (replace in production)</li>
+				{:else if framework.slug === 'react-vite'}
+					<li><code>src/DemoApp.tsx</code> — demo Connect / Start UI only</li>
+					<li><code>server/api-handlers.mjs</code> + Vite middleware — demo secret mint</li>
+				{:else}
+					<li><code>bridge.js</code> — CDN/vanilla port of the same helper</li>
+					<li><code>app.js</code> — demo Connect / Start UI only</li>
+					<li><code>server.mjs</code> — demo secret mint (replace in production)</li>
+				{/if}
+			{:else if example.slug === 'openai-realtime-embed'}
+				<li>
+					<code>@liforma/client/openai</code> — <strong>read first</strong> —
+					<code>connectOpenAiRealtime</code>
+				</li>
+				{#if framework.slug === 'sveltekit'}
+					<li><code>src/routes/+page.svelte</code> — demo Connect / Start UI only</li>
+					<li><code>src/routes/api/…/+server.ts</code> — demo secret mint (replace in production)</li>
+				{:else if framework.slug === 'nextjs'}
+					<li><code>app/DemoApp.tsx</code> — demo Connect / Start UI only</li>
+					<li><code>app/api/…/route.ts</code> — demo secret mint (replace in production)</li>
+				{:else if framework.slug === 'react-vite'}
+					<li><code>src/DemoApp.tsx</code> — demo Connect / Start UI only</li>
+					<li><code>server/api-handlers.mjs</code> + Vite middleware — demo secret mint</li>
+				{:else}
+					<li><code>bridge.js</code> — CDN/vanilla port of the same helper</li>
+					<li><code>app.js</code> — demo Connect / Start UI only</li>
+					<li><code>server.mjs</code> — demo secret mint (replace in production)</li>
+				{/if}
+			{:else if example.kind === 'embed' && framework.slug === 'sveltekit'}
 				<li><code>src/routes/+page.svelte</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code></li>
+			{:else if example.kind === 'embed' && framework.slug === 'nextjs'}
+				<li><code>app/Demo.tsx</code> — client <code>&lt;Experience /&gt;</code> from <code>@liforma/client/react</code></li>
+				<li><code>app/page.tsx</code> — App Router page</li>
+			{:else if example.kind === 'embed' && framework.slug === 'react-vite'}
+				<li><code>src/Demo.tsx</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/react</code></li>
+				<li><code>src/App.tsx</code> — page chrome</li>
 			{:else if example.kind === 'embed'}
 				<li><code>index.html</code> — CDN script + <code>&lt;liforma-experience&gt;</code></li>
+			{:else if example.kind === 'widget' && framework.slug === 'sveltekit'}
+				<li><code>src/routes/+page.svelte</code> — marketing copy + <code>&lt;ExperienceWidget /&gt;</code></li>
+			{:else if example.kind === 'widget' && framework.slug === 'nextjs'}
+				<li><code>app/Demo.tsx</code> — <code>&lt;ExperienceWidget /&gt;</code> from <code>@liforma/client/react</code></li>
+			{:else if example.kind === 'widget' && framework.slug === 'react-vite'}
+				<li><code>src/Demo.tsx</code> — <code>&lt;ExperienceWidget /&gt;</code> from <code>@liforma/client/react</code></li>
 			{:else if example.kind === 'widget'}
 				<li><code>index.html</code> — CDN script + <code>&lt;liforma-experience-widget&gt;</code></li>
-				<li><code>styles.css</code> — page layout + fixed corner host</li>
+				<li><code>styles.css</code> — marketing page layout</li>
+			{:else if example.slug === 'speak-playground' && (framework.slug === 'nextjs' || framework.slug === 'react-vite')}
+				<li><code>SpeakWorkspace.tsx</code> / <code>SpeakApp.tsx</code> — <code>speech.speak(&#123; queue &#125;)</code> integration</li>
+				<li><code>lib/config.ts</code> — experience id + demo lines</li>
 			{:else if example.kind === 'presenter' && framework.slug === 'sveltekit'}
 				<li><code>src/routes/+page.svelte</code> — host UI and Experience APIs</li>
 				<li><code>src/lib/</code> — turns / feedback helpers when present</li>
+			{:else if example.kind === 'presenter' && (framework.slug === 'nextjs' || framework.slug === 'react-vite')}
+				<li><code>PracticeApp.tsx</code> / workspace component — host UI and Experience APIs</li>
+				<li><code>lib/</code> — turns / feedback helpers when present</li>
 			{:else if example.kind === 'presenter'}
 				<li><code>index.html</code> — CDN script + page structure</li>
 				<li><code>app.js</code> — <code>Experience.startSession</code>, speak / listen flow</li>
 			{:else if framework.slug === 'sveltekit'}
 				<li><code>src/lib/lessons.ts</code> — lesson data and per-lesson <code>experienceId</code></li>
 				<li><code>src/routes/+page.svelte</code> — lesson UI, embed, and close-before-switch flow</li>
+			{:else if framework.slug === 'nextjs' || framework.slug === 'react-vite'}
+				<li><code>TutorApp.tsx</code> — lesson UI, embed, and close-before-switch flow</li>
+				<li><code>lib/lessons.ts</code> — lesson data and per-lesson <code>experienceId</code></li>
 			{:else}
 				<li><code>lessons.js</code> — lesson data</li>
 				<li><code>app.js</code> — session state and embed mount</li>

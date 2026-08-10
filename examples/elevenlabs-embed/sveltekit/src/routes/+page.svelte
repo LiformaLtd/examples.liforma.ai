@@ -2,14 +2,10 @@
 	/**
 	 * Demo page shell — Connect/End UI, agent prompt copy fields, arm-then-start.
 	 *
-	 * Integration pattern (copy into your product):
-	 *   → $lib/bridge.ts  (`startElevenLabsLiformaBridge`)
+	 * Integration (copy into your product):
+	 *   import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
 	 */
 	import { loadAgentId, saveAgentId } from '$lib/agentIdStore';
-	import {
-		startElevenLabsLiformaBridge,
-		type ElevenLabsLiformaBridge
-	} from '$lib/bridge';
 	import {
 		EXPERIENCE_ID,
 		SUGGESTED_FIRST_MESSAGE,
@@ -17,6 +13,10 @@
 	} from '$lib/config';
 	import { DemoSignedUrlError, fetchDemoSignedUrl } from '$lib/demoSignedUrl';
 	import type { StartButtonOptions } from '@liforma/client';
+	import {
+		connectElevenLabsAgent,
+		type ElevenLabsAgentBridge
+	} from '@liforma/client/elevenlabs';
 	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
 	import { onMount } from 'svelte';
 
@@ -36,7 +36,7 @@
 	let armed = $state(false);
 	let connecting = $state(false);
 	let cachedSignedUrl = $state<string | null>(null);
-	let bridge = $state<ElevenLabsLiformaBridge | null>(null);
+	let bridge = $state<ElevenLabsAgentBridge | null>(null);
 
 	let agentId = $state('');
 	let apiKey = $state('');
@@ -47,7 +47,7 @@
 	let statusTone = $state<StatusTone>('default');
 	let logs = $state<LogEntry[]>([
 		{
-			text: 'Developer tip: read $lib/bridge.ts for the ElevenLabs → Liforma integration. Flow: Connect → Start experience.',
+			text: 'Developer tip: use connectElevenLabsAgent from @liforma/client/elevenlabs. Flow: Connect → Start experience.',
 			kind: 'info'
 		}
 	]);
@@ -221,8 +221,7 @@
 				cachedSignedUrl = signedUrl;
 			}
 
-			bridge = await startElevenLabsLiformaBridge({
-				experience,
+			bridge = await connectElevenLabsAgent(experience, {
 				agentId: signedUrl ? undefined : id,
 				signedUrl: signedUrl ?? undefined,
 				onLog: (line, kind) => pushLog(line, kind),

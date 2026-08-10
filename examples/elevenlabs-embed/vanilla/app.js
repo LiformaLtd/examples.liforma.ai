@@ -2,7 +2,7 @@
  * Demo page shell for the ElevenLabs embed example.
  *
  * Integration pattern (copy this into your product):
- *   → bridge.js  (`startElevenLabsLiformaBridge`)
+ *   → @liforma/client/elevenlabs (npm) or bridge.js (CDN port)
  *
  * This file only wires demo UI: Connect/End, credential form, agent prompt
  * copy fields, and Connect-before-Start arming.
@@ -522,7 +522,7 @@ endBtnEl?.addEventListener('click', () => {
 });
 
 log(
-	'Developer tip: read bridge.js for the ElevenLabs → Liforma integration. Flow: Connect → Start experience.'
+	'Developer tip: use connectElevenLabsAgent from @liforma/client/elevenlabs (bridge.js is the CDN port). Flow: Connect → Start experience.'
 );
 
 async function restoreAgentId() {

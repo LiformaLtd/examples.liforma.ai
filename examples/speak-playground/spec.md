@@ -2,7 +2,7 @@
 
 ## Goal
 
-Demonstrate `Experience.speak()` with a simple text field: user types a line, presses Enter, and the experience speaks it. A visible toggle switches `behavior` between `enqueue` and `interrupt` so integrators can see the difference when firing multiple lines quickly.
+Demonstrate `experience.speech.speak({ queue })` with a simple text field: user types a line, presses Enter, and the experience speaks it. A visible toggle switches between enqueue (`queue: 'append'`) and interrupt (`queue: 'replace-active'`) so integrators can see the difference when firing multiple lines quickly.
 
 ## User flow
 
@@ -15,18 +15,21 @@ Demonstrate `Experience.speak()` with a simple text field: user types a line, pr
 
 ## Liforma integration
 
-```js
-const experience = await Experience.startSession({
-  experienceId: 'exp_…',
-  mode: 'presenter',
-  speechInputMode: 'off'
-});
+```tsx
+import { Experience, type ExperienceHandle } from '@liforma/client/react';
 
-experience.on('started', () => {
-  void experience.speak({ text: 'Hello!', behavior: 'enqueue' });
-});
+// Declarative mount (React / Next) — or startSession + attach in vanilla
+<Experience
+  ref={experienceRef}
+  experienceId="exp_…"
+  mode="presenter"
+  speechInputMode="off"
+/>
 
-await experience.attach({ container });
+await experienceRef.current.speech.speak({
+  text: 'Hello!',
+  queue: 'append' // or 'replace-active' to interrupt
+});
 ```
 
 ## Required UI
@@ -44,8 +47,8 @@ Default: `exp_01EXAMPLES_COFFEE_BARISTA` (Examples project coffee barista clone)
 
 ## Frameworks
 
-**Vanilla** (`vanilla/`) and **SvelteKit** (`sveltekit/`) — same UX and API calls.
+**Vanilla**, **SvelteKit**, **Next.js**, and **React (Vite)** — same UX; React/Next use `speech.speak({ queue })`.
 
 ## Local port
 
-`4005` (vanilla and SvelteKit share the port).
+`4005` (all frameworks share the port; run one at a time).

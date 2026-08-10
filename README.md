@@ -21,7 +21,7 @@ npm install
 | --- | --- |
 | Gallery (browse examples, copy prompts) | http://localhost:4000 |
 | Basic embed (vanilla) | http://localhost:4001 |
-| Experience widget (vanilla) | http://localhost:4002 |
+| Experience widget (vanilla or SvelteKit) | http://localhost:4002 |
 | Spanish Tutor (vanilla) | http://localhost:4003 |
 | Guided practice — Speak API (vanilla) | http://localhost:4004 |
 | Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4005 |
@@ -34,7 +34,14 @@ To run SvelteKit implementations instead of vanilla:
 ./start sveltekit
 ```
 
-That starts the gallery on **4000**, basic embed on **4001**, Spanish Tutor on **4003**, guided practice on **4004**, speak playground on **4005**, ElevenLabs embed on **4006**, and OpenAI Realtime embed on **4007**. (Experience widget is vanilla-only for v1.)
+That starts the gallery on **4000**, basic embed on **4001**, experience widget on **4002**, Spanish Tutor on **4003**, guided practice on **4004**, speak playground on **4005**, ElevenLabs embed on **4006**, and OpenAI Realtime embed on **4007**.
+
+Next.js / React (Vite) modes start the gallery plus every example on its canonical port (**4001**–**4007**):
+
+```bash
+./start nextjs
+./start react-vite
+```
 
 Other useful commands:
 
@@ -64,10 +71,34 @@ npm install
 npm run dev
 ```
 
+**Basic embed (Next.js)** — port 4001:
+
+```bash
+cd examples/basic-embed/nextjs
+npm install
+npm run dev
+```
+
+**Basic embed (React + Vite)** — port 4001:
+
+```bash
+cd examples/basic-embed/react-vite
+npm install
+npm run dev
+```
+
 **Experience widget (vanilla)** — port 4002:
 
 ```bash
 PORT=4002 node scripts/serve-example.mjs examples/experience-widget/vanilla
+```
+
+**Experience widget (SvelteKit)** — port 4002:
+
+```bash
+cd examples/experience-widget/sveltekit
+npm install
+npm run dev
 ```
 
 **Spanish Tutor (vanilla)** — port 4003:

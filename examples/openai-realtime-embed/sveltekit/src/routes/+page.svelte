@@ -2,16 +2,16 @@
 	/**
 	 * Demo page shell — Connect/End UI, instructions copy, arm-then-start.
 	 *
-	 * Integration pattern (copy into your product):
-	 *   → $lib/bridge.ts  (`startOpenAiRealtimeLiformaBridge`)
+	 * Integration (copy into your product):
+	 *   import { connectOpenAiRealtime } from '@liforma/client/openai';
 	 */
-	import {
-		startOpenAiRealtimeLiformaBridge,
-		type OpenAiRealtimeLiformaBridge
-	} from '$lib/bridge';
 	import { EXPERIENCE_ID, SUGGESTED_INSTRUCTIONS } from '$lib/config';
 	import { DemoClientSecretError, fetchDemoClientSecret } from '$lib/demoClientSecret';
 	import type { StartButtonOptions } from '@liforma/client';
+	import {
+		connectOpenAiRealtime,
+		type OpenAiRealtimeBridge
+	} from '@liforma/client/openai';
 	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
 
 	const OPENAI_API_KEYS_URL = 'https://platform.openai.com/api-keys';
@@ -30,7 +30,7 @@
 	let armed = $state(false);
 	let connecting = $state(false);
 	let cachedEphemeralKey = $state<string | null>(null);
-	let bridge = $state<OpenAiRealtimeLiformaBridge | null>(null);
+	let bridge = $state<OpenAiRealtimeBridge | null>(null);
 
 	let apiKey = $state('');
 	let showApiKey = $state(false);
@@ -39,7 +39,7 @@
 	let statusTone = $state<StatusTone>('default');
 	let logs = $state<LogEntry[]>([
 		{
-			text: 'Developer tip: read $lib/bridge.ts for the OpenAI Realtime → Liforma integration. Flow: Connect → Start experience.',
+			text: 'Developer tip: use connectOpenAiRealtime from @liforma/client/openai. Flow: Connect → Start experience.',
 			kind: 'info'
 		}
 	]);
@@ -164,9 +164,9 @@
 				cachedEphemeralKey = ephemeralKey;
 			}
 
-			bridge = await startOpenAiRealtimeLiformaBridge({
-				experience,
+			bridge = await connectOpenAiRealtime(experience, {
 				ephemeralKey,
+				instructions: SUGGESTED_INSTRUCTIONS,
 				onLog: (line, kind) => pushLog(line, kind),
 				onDisconnect: () => {
 					bridge = null;
@@ -320,7 +320,7 @@
 			<h2>1. Suggested Realtime instructions</h2>
 			<p>
 				These instructions are applied when minting the ephemeral session (and again via
-				<code>session.update</code> in <code>bridge.ts</code>) so Anna matches the coffee-barista
+				<code>session.update</code> via <code>connectOpenAiRealtime</code>) so Anna matches the coffee-barista
 				scenario.
 			</p>
 

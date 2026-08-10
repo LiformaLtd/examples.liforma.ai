@@ -15,50 +15,32 @@ Same shape as **basic embed**: one coffee-barista experience on the page. Eleven
 
 ## Code layout
 
-### `vanilla/`
-
-| File | Role |
+| Surface | Role |
 |---|---|
-| **`bridge.js`** | Canonical integration — `startElevenLabsLiformaBridge` |
-| `app.js` | Demo UI (Connect arming, modal, form) |
-| `config.js` | Suggested agent first message / system prompt |
-| `demoSignedUrl.js` / `server.mjs` | Local signed-URL demo only |
-
-### `sveltekit/`
-
-| File | Role |
-|---|---|
-| **`src/lib/bridge.ts`** | Canonical integration — same pattern as vanilla |
-| `src/routes/+page.svelte` | Demo UI |
-| `src/lib/config.ts` | Suggested agent prompts |
-| `src/routes/api/elevenlabs-signed-url/+server.ts` | Signed-URL demo route |
+| **`@liforma/client/elevenlabs`** | Canonical integration — `connectElevenLabsAgent` |
+| Framework `DemoApp` / `+page.svelte` | Demo UI (Connect arming, modal, form) |
+| `vanilla/bridge.js` | CDN/vanilla port of the same helper |
+| Demo API routes / `server.mjs` | Signed-URL mint only (replace in production) |
 
 ## Liforma integration
 
-See `vanilla/bridge.js`. Sketch:
+```ts
+import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
 
-```js
-const experience = await Experience.startSession({
-  experienceId: 'exp_01EXAMPLES_COFFEE_BARISTA',
-  mode: 'presenter',
-  speechInputMode: 'off'
-});
-await experience.attach({ container });
-
-const bridge = await startElevenLabsLiformaBridge({
-  experience,
+// After Experience started (audio unlocked):
+const bridge = await connectElevenLabsAgent(experience, {
   signedUrl // or agentId for public agents
 });
 // bridge.end() when done
 ```
 
-Critical: `conversation.setVolume({ volume: 0 })` so only the avatar speaks (done inside the bridge).
+Critical: the helper calls `conversation.setVolume({ volume: 0 })` so only the avatar speaks.
 
 ## ElevenLabs
 
-- `@elevenlabs/client` via CDN IIFE (`ElevenLabsClient.Conversation`)
+- `@elevenlabs/client` (npm) or CDN IIFE (`ElevenLabsClient.Conversation`) in vanilla
 - `connectionType: 'websocket'` so `onAudio` emits base64 PCM
-- Local example server proxies `POST /api/elevenlabs-signed-url` (API key stays on localhost → ElevenLabs; avoids browser CORS)
+- Local example servers proxy `POST /api/elevenlabs-signed-url` (API key stays on localhost → ElevenLabs; avoids browser CORS)
 
 ## Required UI
 
@@ -74,7 +56,7 @@ Default: `exp_01EXAMPLES_COFFEE_BARISTA`
 
 ## Frameworks
 
-**Vanilla** (`vanilla/`) and **SvelteKit** (`sveltekit/`) — same port; `./start vanilla` vs `./start sveltekit`.
+**Vanilla**, **SvelteKit**, **Next.js**, and **React (Vite)** — same port; one framework at a time via `./start`.
 
 ## Local port
 

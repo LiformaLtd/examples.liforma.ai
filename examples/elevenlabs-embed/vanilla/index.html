@@ -22,10 +22,11 @@
 	<body>
 		<!--
 			Developer map:
-			  bridge.js          ← ElevenLabs → Liforma integration (copy this)
-			  app.js             ← demo UI only
-			  config.js          ← suggested agent prompt text (dashboard paste)
-			  demoSignedUrl.js   ← local signed-URL helper (use your backend in prod)
+			  @liforma/client/elevenlabs  ← npm helper (prefer in bundled apps)
+			  bridge.js                   ← CDN/vanilla port of the same helper
+			  app.js                      ← demo UI only
+			  config.js                   ← suggested agent prompt text
+			  demoSignedUrl.js            ← local signed-URL helper
 		-->
 		<div class="app-shell">
 			<header class="app-header">
@@ -36,8 +37,9 @@
 						<p class="lede">
 							Same coffee-barista embed as
 							<a href="http://localhost:4001">basic embed</a>, but ElevenLabs Agents is the
-							speech-to-speech stack. Integration lives in
-							<code>bridge.js</code> (<code>createUtterance</code> from ElevenLabs PCM).
+							speech-to-speech stack. Prefer
+							<code>@liforma/client/elevenlabs</code>; this page uses
+							<code>bridge.js</code> (CDN port of the same helper).
 						</p>
 					</div>
 					<a

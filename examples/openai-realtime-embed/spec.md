@@ -23,39 +23,22 @@ https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/openai
 
 ## Code layout
 
-### `vanilla/`
-
-| File | Role |
+| Surface | Role |
 |---|---|
-| **`bridge.js`** | Canonical integration — `startOpenAiRealtimeLiformaBridge` |
-| `app.js` | Demo UI (Connect arming, modal, form) |
-| `config.js` | Suggested Realtime instructions (barista) |
-| `demoClientSecret.js` / `server.mjs` | Local ephemeral-secret mint (demo only) |
-
-### `sveltekit/`
-
-| File | Role |
-|---|---|
-| **`src/lib/bridge.ts`** | Canonical integration — same pattern as vanilla |
-| `src/routes/+page.svelte` | Demo UI |
-| `src/lib/config.ts` | Suggested instructions |
-| `src/routes/api/openai-realtime-session/+server.ts` | Ephemeral client-secret demo route |
+| **`@liforma/client/openai`** | Canonical integration — `connectOpenAiRealtime` |
+| Framework `DemoApp` / `+page.svelte` | Demo UI (Connect arming, modal, form) |
+| `vanilla/bridge.js` | CDN/vanilla port of the same helper |
+| Demo API routes / `server.mjs` | Ephemeral client-secret mint only (replace in production) |
 
 ## Liforma integration
 
-See `vanilla/bridge.js`. Sketch:
+```ts
+import { connectOpenAiRealtime } from '@liforma/client/openai';
 
-```js
-const experience = await Experience.startSession({
-  experienceId: 'exp_01EXAMPLES_COFFEE_BARISTA',
-  mode: 'presenter',
-  speechInputMode: 'off'
-});
-await experience.attach({ container });
-
-const bridge = await startOpenAiRealtimeLiformaBridge({
-  experience,
-  ephemeralKey // from POST /api/openai-realtime-session
+// After Experience started (audio unlocked):
+const bridge = await connectOpenAiRealtime(experience, {
+  ephemeralKey, // from POST /api/openai-realtime-session
+  instructions: '…' // optional; demos pass barista copy
 });
 // bridge.end() when done
 ```
@@ -83,7 +66,7 @@ Default: `exp_01EXAMPLES_COFFEE_BARISTA`
 
 ## Frameworks
 
-**Vanilla** (`vanilla/`) and **SvelteKit** (`sveltekit/`) — same port; `./start vanilla` vs `./start sveltekit`.
+**Vanilla**, **SvelteKit**, **Next.js**, and **React (Vite)** — same port; one framework at a time via `./start`.
 
 ## Local port
 

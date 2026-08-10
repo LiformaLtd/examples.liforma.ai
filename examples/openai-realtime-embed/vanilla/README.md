@@ -1,29 +1,23 @@
 # OpenAI Realtime embed (vanilla)
 
-Coffee-barista embed with **OpenAI Realtime** as speech-to-speech. Agent PCM + transcript are piped into `experience.speech.createUtterance` so the Liforma avatar talks with force-align lipsync when transcript is present.
+Basic coffee-barista experience embed with **OpenAI Realtime** as the speech-to-speech system.
+
+**Prefer npm in bundled apps:** `connectOpenAiRealtime` from `@liforma/client/openai`.  
+This vanilla demo keeps a CDN-compatible `bridge.js` that mirrors that helper.
 
 ## Files (for developers)
 
 | File | What it is |
 |---|---|
-| **`bridge.js`** | **Read this first.** OpenAI Realtime → Liforma BYO integration (`startOpenAiRealtimeLiformaBridge`). |
+| **`@liforma/client/openai`** | Canonical npm helper (`connectOpenAiRealtime`). |
+| **`bridge.js`** | CDN/vanilla port of the same helper (no bundler). |
 | `app.js` | Demo page shell only (Connect/End UI, arm-then-start flow, modal). |
 | `config.js` | Suggested Realtime instructions (barista). |
 | `demoClientSecret.js` / `server.mjs` | Demo ephemeral client-secret mint — replace with your backend in production. |
 
-Same integration idea as `../sveltekit/src/lib/bridge.ts`.
-
 This example uses **WebSocket + ephemeral client secret** so turns match the ElevenLabs `createUtterance` pattern. For OpenAI’s preferred browser **WebRTC** path, see the [OpenAI BYO docs](https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/openai).
 
 ## Run
-
-From the examples repo root:
-
-```bash
-./start vanilla
-```
-
-Or only this example:
 
 ```bash
 PORT=4007 node examples/openai-realtime-embed/vanilla/server.mjs

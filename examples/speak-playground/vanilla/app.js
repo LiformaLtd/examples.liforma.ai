@@ -32,8 +32,8 @@ function log(line, kind = 'info') {
 	logListEl.scrollTop = logListEl.scrollHeight;
 }
 
-function selectedBehavior() {
-	return behaviorInterruptEl?.checked ? 'interrupt' : 'enqueue';
+function selectedQueue() {
+	return behaviorInterruptEl?.checked ? 'replace-active' : 'append';
 }
 
 function updateBehaviorLabels() {
@@ -51,13 +51,13 @@ function setInputEnabled(enabled) {
 function queueSpeak(text) {
 	if (!experience || !text.trim()) return;
 
-	const behavior = selectedBehavior();
-	log(`speak({ behavior: '${behavior}' }): “${text.trim()}”`, 'speak');
+	const queue = selectedQueue();
+	log(`speech.speak({ queue: '${queue}' }): “${text.trim()}”`, 'speak');
 
-	void experience
-		.speak({ text: text.trim(), behavior })
+	void experience.speech
+		.speak({ text: text.trim(), queue })
 		.then((result) => {
-			log(`completed (${result.durationMs}ms): “${result.text}”`, 'end');
+			log(`completed (${result.durationMs}ms): “${result.transcript ?? text.trim()}”`, 'end');
 		})
 		.catch((err) => {
 			if (err instanceof DOMException && err.name === 'AbortError') {

@@ -1,24 +1,11 @@
 /**
- * OpenAI Realtime → Liforma BYO voice bridge
+ * Vanilla / CDN port of `@liforma/client/openai` → `connectOpenAiRealtime`.
  *
- * =============================================================================
- * READ THIS FILE — this is the integration pattern to copy into your app.
- * Demo UI lives in app.js and is not required for production.
- * =============================================================================
+ * Prefer the npm helper in bundled apps:
+ *   import { connectOpenAiRealtime } from '@liforma/client/openai';
  *
- * Pattern:
- * 1. Mount a Liforma `<Experience>` (`mode="presenter"`, `speechInputMode="off"`
- *    when OpenAI owns the microphone).
- * 2. Wait until the player has started (audio unlocked inside the iframe).
- * 3. Mint an ephemeral Realtime client secret on your server (never ship OPENAI_API_KEY).
- * 4. Open `wss://api.openai.com/v1/realtime` with that ephemeral key.
- * 5. Stream mic PCM → `input_audio_buffer.append`; mute any local OpenAI playback.
- * 6. On each `response.output_audio.delta` → `createUtterance` / `write` / `close`.
- * 7. Collect `response.output_audio_transcript.*` → `setTranscript` / `close({ transcript })`
- *    so STA can force-align (better lipsync than PCM-only free decode).
- *
- * Why WebSocket here: per-turn PCM + transcript match the ElevenLabs createUtterance
- * pattern. OpenAI’s preferred browser media path is WebRTC — see docs.
+ * This file mirrors that helper for the static vanilla demo (CDN SDK).
+ * Demo UI lives in app.js / config.js and is not required for production.
  *
  * Docs: https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/openai
  */

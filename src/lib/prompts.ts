@@ -8,13 +8,12 @@ export function sveltekitAgentPrompt(example: ExampleMetadata): string {
 
 Source repo folder: ${example.githubPath}/sveltekit
 
-Start from \`src/lib/bridge.ts\` (\`startElevenLabsLiformaBridge\`) — that is the ElevenLabs → Liforma integration.
+Use \`connectElevenLabsAgent\` from \`@liforma/client/elevenlabs\` — that is the ElevenLabs → Liforma integration.
 \`src/routes/+page.svelte\` is demo UI only; \`src/lib/config.ts\` is suggested agent prompt text.
 
 Preserve:
 - \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
-- \`@elevenlabs/client\` Conversation (websocket) muted with \`setVolume({ volume: 0 })\`
-- pipe ElevenLabs \`onAudio\` PCM into \`experience.speech.createUtterance\` / \`write\` / \`close\` (see bridge.ts)
+- \`connectElevenLabsAgent(experience, { signedUrl })\` after audio unlock
 - signed-URL mint on a server route (never ship ElevenLabs API keys to production browsers)
 - TypeScript and normal CSS (no Tailwind)
 
@@ -30,15 +29,13 @@ Adapt:
 
 Source repo folder: ${example.githubPath}/sveltekit
 
-Start from \`src/lib/bridge.ts\` (\`startOpenAiRealtimeLiformaBridge\`) — that is the OpenAI Realtime → Liforma integration.
+Use \`connectOpenAiRealtime\` from \`@liforma/client/openai\` — that is the OpenAI Realtime → Liforma integration.
 \`src/routes/+page.svelte\` is demo UI only; \`src/lib/config.ts\` is suggested Realtime instructions.
 
 Preserve:
 - \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
+- \`connectOpenAiRealtime(experience, { ephemeralKey, instructions })\` after audio unlock
 - ephemeral Realtime client secret minted on a server route (never ship OPENAI_API_KEY to production browsers)
-- browser WebSocket to OpenAI Realtime; mic PCM → \`input_audio_buffer.append\`
-- pipe \`response.output_audio.delta\` into \`experience.speech.createUtterance\` / \`write\` / \`close\`
-- pipe \`response.output_audio_transcript.*\` into \`setTranscript\` / \`close({ transcript })\`
 - TypeScript and normal CSS (no Tailwind)
 
 Adapt:
@@ -46,6 +43,24 @@ Adapt:
 - experience id
 - Realtime model / voice / instructions
 - production ephemeral-secret backend`;
+	}
+
+	if (example.kind === 'widget') {
+		return `Use the Liforma ${example.title} SvelteKit example as source material.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Preserve:
+- \`<ExperienceWidget />\` from \`@liforma/client/svelte\`
+- \`position="bottom-right"\` (self-positioned FAB — no host corner CSS required)
+- \`prefetch="idle"\` for one-gesture expand
+- thumb plates from the public preview API (optional \`galleryThumb\` override)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- surrounding marketing page copy`;
 	}
 
 	if (example.kind === 'embed') {
@@ -108,14 +123,13 @@ export function vanillaAgentPrompt(example: ExampleMetadata): string {
 
 Source repo folder: ${example.githubPath}/vanilla
 
-Start from \`bridge.js\` (\`startElevenLabsLiformaBridge\`) — that is the ElevenLabs → Liforma integration.
-\`app.js\` is demo UI only; \`config.js\` is suggested agent prompt text.
+Prefer \`connectElevenLabsAgent\` from \`@liforma/client/elevenlabs\` in bundled apps.
+Vanilla \`bridge.js\` is a CDN port of that helper. \`app.js\` is demo UI only.
 
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
-- \`@elevenlabs/client\` Conversation (websocket) muted with \`setVolume({ volume: 0 })\`
 - \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
-- pipe ElevenLabs \`onAudio\` PCM into \`experience.speech.createUtterance\` / \`write\` / \`close\` (see bridge.js)
+- ElevenLabs → Liforma bridge (mute ElevenLabs speaker; pipe PCM into createUtterance)
 - local signed-URL proxy pattern (never ship ElevenLabs API keys to production browsers)
 
 Adapt:
@@ -130,16 +144,14 @@ Adapt:
 
 Source repo folder: ${example.githubPath}/vanilla
 
-Start from \`bridge.js\` (\`startOpenAiRealtimeLiformaBridge\`) — that is the OpenAI Realtime → Liforma integration.
-\`app.js\` is demo UI only; \`config.js\` is suggested Realtime instructions.
+Prefer \`connectOpenAiRealtime\` from \`@liforma/client/openai\` in bundled apps.
+Vanilla \`bridge.js\` is a CDN port of that helper. \`app.js\` is demo UI only.
 
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
 - \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
-- ephemeral Realtime client secret minted on a server route (never ship OPENAI_API_KEY to production browsers)
-- browser WebSocket to OpenAI Realtime; mic PCM → \`input_audio_buffer.append\`
-- pipe \`response.output_audio.delta\` into \`createUtterance\` / \`write\` / \`close\` (see bridge.js)
-- pipe transcript events into \`setTranscript\` / \`close({ transcript })\`
+- OpenAI Realtime → Liforma bridge (pipe PCM + transcript into createUtterance)
+- local ephemeral client-secret mint pattern (never ship OPENAI_API_KEY to production browsers)
 
 Adapt:
 - branding
@@ -172,14 +184,14 @@ Source repo folder: ${example.githubPath}/vanilla
 
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
-- \`<liforma-experience-widget>\` corner launcher with gallery-thumb
-- light collapsed mount (images only until click)
-- fixed host CSS for corner placement
-- copy-paste friendly structure (index.html + styles.css)
+- \`<liforma-experience-widget>\` corner launcher with \`position="bottom-right"\`
+- \`prefetch="idle"\` for one-gesture expand
+- light collapsed mount (preview API thumb plates until click)
+- copy-paste friendly structure (index.html + styles.css) — no host corner CSS required for anchored position
 
 Adapt:
 - branding
-- experience id / gallery thumb URLs
+- experience id
 - host page layout`;
 	}
 
@@ -218,6 +230,156 @@ Adapt:
 - surrounding page layout`;
 }
 
+export function reactAgentPrompt(
+	example: ExampleMetadata,
+	framework: 'nextjs' | 'react-vite'
+): string {
+	const folder = `${example.githubPath}/${framework}`;
+	const frameworkLabel = framework === 'nextjs' ? 'Next.js App Router' : 'React (Vite)';
+	const nextNote =
+		framework === 'nextjs'
+			? `- \`'use client'\` on the Experience mount component
+- import from \`@liforma/client/react\` (not \`/next\` — that export is the session-route helper)`
+			: `- import from \`@liforma/client/react\``;
+
+	if (example.slug === 'elevenlabs-embed') {
+		return `Use the Liforma ElevenLabs embed ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Use \`connectElevenLabsAgent\` from \`@liforma/client/elevenlabs\` — that is the ElevenLabs → Liforma integration.
+\`DemoApp.tsx\` is demo UI only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
+${nextNote}
+- \`connectElevenLabsAgent(experience, { signedUrl })\` after audio unlock
+- signed-URL mint on a server route / Vite middleware (never ship ElevenLabs API keys to production browsers)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- your ElevenLabs agent
+- production signed-URL backend`;
+	}
+
+	if (example.slug === 'openai-realtime-embed') {
+		return `Use the Liforma OpenAI Realtime embed ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Use \`connectOpenAiRealtime\` from \`@liforma/client/openai\` — that is the OpenAI Realtime → Liforma integration.
+\`DemoApp.tsx\` is demo UI only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
+${nextNote}
+- \`connectOpenAiRealtime(experience, { ephemeralKey, instructions })\` after audio unlock
+- ephemeral Realtime client secret minted on a server route / Vite middleware (never ship OPENAI_API_KEY to browsers)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- Realtime model / voice / instructions
+- production ephemeral-secret backend`;
+	}
+
+	if (example.kind === 'widget') {
+		return `Use the Liforma ${example.title} ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Start from \`Demo.tsx\` — that is the integration.
+
+Preserve:
+- \`<ExperienceWidget />\` from \`@liforma/client/react\`
+${nextNote}
+- \`position="bottom-right"\` (self-positioned FAB — no host corner CSS required)
+- \`prefetch="idle"\` for one-gesture expand
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- surrounding marketing page copy`;
+	}
+
+	if (example.kind === 'embed') {
+		return `Use the Liforma ${example.title} ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Preserve:
+- \`<Experience experienceId="…" />\` from \`@liforma/client/react\`
+${nextNote}
+- one public experience id (no lesson catalogue, no sessionEndpoint)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- surrounding page chrome`;
+	}
+
+	if (example.kind === 'lessons') {
+		return `Use the Liforma ${example.title} ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Start from \`TutorApp.tsx\` — lesson selection + Experience mount rules.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` with \`language="es"\`
+${nextNote}
+- close-before-switch: do not change \`experienceId\` while a session is mounted; unmount first
+- mount Experience only when the session is active
+- per-lesson \`experienceId\` in lesson data (not environment variables)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- lesson content
+- experience IDs per lesson
+- surrounding product UI`;
+	}
+
+	if (example.slug === 'speak-playground') {
+		return `Use the Liforma Speak playground ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Start from \`SpeakWorkspace.tsx\` / \`SpeakApp.tsx\` — that is the speak() integration.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
+${nextNote}
+- \`experience.speech.speak({ text, queue: 'append' | 'replace-active' })\`
+- Enqueue = \`append\`; Interrupt = \`replace-active\`; \`AbortError\` means interrupted
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- host UI
+- experience id`;
+	}
+
+	return `Use the Liforma ${example.title} ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Preserve:
+- React \`Experience\` / speak API usage shown in the example
+${nextNote}
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- host UI / turns
+- experience id`;
+}
+
 export function genericPortPrompt(
 	example: ExampleMetadata,
 	framework: SupportedFramework
@@ -228,7 +390,7 @@ export function genericPortPrompt(
 - one public experience id`
 			: example.kind === 'widget'
 				? `- \`<liforma-experience-widget>\` / \`ExperienceWidget\` corner launcher
-- gallery thumb + expand-on-click overlay`
+- preview API thumb + expand-on-click overlay (\`position="bottom-right"\`)`
 				: example.kind === 'presenter'
 					? `- presenter / speak API integration shown in the example
 - host-owned UI around the embed`
@@ -258,7 +420,7 @@ export function exampleOverviewBullets(kind: ExampleKind): string[] {
 		return [
 			'Corner ExperienceWidget — collapsed thumb until the user clicks.',
 			'In-page overlay expand; session mint and player load on expand by default.',
-			'Same gallery-thumb plates as ExperienceThumbnail.'
+			'Thumb plates from the public preview API (optional galleryThumb override).'
 		];
 	}
 	if (kind === 'presenter') {
@@ -285,10 +447,50 @@ export function frameworkEmbedSnippet(kind: ExampleKind, frameworkSlug: string):
 <Experience experienceId="${DEMO_EXPERIENCE_ID}" />`;
 	}
 
+	if (kind === 'embed' && (frameworkSlug === 'nextjs' || frameworkSlug === 'react-vite')) {
+		const nextClient = frameworkSlug === 'nextjs' ? `'use client';\n\n` : '';
+		return `${nextClient}import { Experience } from '@liforma/client/react';
+
+export function Demo() {
+  return <Experience experienceId="${DEMO_EXPERIENCE_ID}" />;
+}`;
+	}
+
 	if (kind === 'embed') {
 		return `<script src="https://cdn.liforma.ai/sdk/v2/client.js"><\\/script>
 
 <liforma-experience experience-id="${DEMO_EXPERIENCE_ID}"></liforma-experience>`;
+	}
+
+	if (kind === 'widget' && frameworkSlug === 'sveltekit') {
+		return `<script>
+  import { ExperienceWidget } from '@liforma/client/svelte';
+</script>
+
+<ExperienceWidget
+  experienceId="${DEMO_EXPERIENCE_ID}"
+  alt="Talk to our barista"
+  position="bottom-right"
+  offset={16}
+  prefetch="idle"
+/>`;
+	}
+
+	if (kind === 'widget' && (frameworkSlug === 'nextjs' || frameworkSlug === 'react-vite')) {
+		const nextClient = frameworkSlug === 'nextjs' ? `'use client';\n\n` : '';
+		return `${nextClient}import { ExperienceWidget } from '@liforma/client/react';
+
+export function Demo() {
+  return (
+    <ExperienceWidget
+      experienceId="${DEMO_EXPERIENCE_ID}"
+      alt="Talk to our barista"
+      position="bottom-right"
+      offset={16}
+      prefetch="idle"
+    />
+  );
+}`;
 	}
 
 	if (kind === 'widget') {
@@ -299,6 +501,7 @@ export function frameworkEmbedSnippet(kind: ExampleKind, frameworkSlug: string):
   alt="Talk to our barista"
   position="bottom-right"
   offset="16"
+  prefetch="idle"
 ></liforma-experience-widget>`;
 	}
 

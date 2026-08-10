@@ -121,7 +121,7 @@ export default function PracticeApp() {
 		setPhaseState('speaking');
 		setStatus('Tutor speaking…', 'active');
 		pushLog(`Tutor: ${turn.tutorLine}`);
-		await experience.speak({ text: turn.tutorLine });
+		await experience.speech.speak({ text: turn.tutorLine });
 		setPhaseState('await_start');
 		setStatus('Tap Start when you are ready to speak', 'default');
 		pushLog('Your turn — tap Start, speak, then Stop.');
@@ -180,7 +180,7 @@ export default function PracticeApp() {
 				setPhaseState('speaking');
 				setStatus('Tutor speaking…', 'active');
 				pushLog(`Tutor: ${turn.tutorLine}`);
-				await experience.speak({ text: turn.tutorLine });
+				await experience.speech.speak({ text: turn.tutorLine });
 				setPhaseState('await_start');
 				setStatus('Tap Start when you are ready to speak', 'default');
 				pushLog('Your turn — tap Start, speak, then Stop.');

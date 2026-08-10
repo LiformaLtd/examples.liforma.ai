@@ -1,28 +1,26 @@
 # ElevenLabs embed (SvelteKit)
 
-SvelteKit version of the coffee-barista embed with **ElevenLabs Agents** as speech-to-speech. Agent PCM is piped into `experience.speech.createUtterance` so the Liforma avatar talks.
+SvelteKit coffee-barista embed with **ElevenLabs Agents** as speech-to-speech.
 
 ## Files (for developers)
 
 | File | What it is |
 |---|---|
-| **`src/lib/bridge.ts`** | **Read this first.** ElevenLabs → Liforma BYO integration (`startElevenLabsLiformaBridge`). Copy this pattern into your app. |
+| **`@liforma/client/elevenlabs`** | **Read this first.** `connectElevenLabsAgent` — ElevenLabs → Liforma BYO helper. |
 | `src/routes/+page.svelte` | Demo page shell only (Connect/End UI, arm-then-start flow, modal). |
 | `src/lib/config.ts` | Suggested agent first message + system prompt (dashboard paste content). |
 | `src/lib/demoSignedUrl.ts` | Client helper for the demo API route. |
 | `src/routes/api/elevenlabs-signed-url/+server.ts` | Demo signed-URL proxy — replace with your backend in production. |
 
-Same integration idea as `../vanilla/bridge.js`.
+```ts
+import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
 
-## Run
-
-From the examples repo root:
-
-```bash
-./start sveltekit
+const bridge = await connectElevenLabsAgent(experience, { signedUrl });
+// … later
+await bridge.end();
 ```
 
-Or only this example:
+## Run
 
 ```bash
 cd examples/elevenlabs-embed/sveltekit && npm install && npm run dev
@@ -42,8 +40,6 @@ Optional server-side key:
 ```bash
 ELEVENLABS_API_KEY=sk_… npm run dev
 ```
-
-Then leave the API key field blank (still enter Agent ID).
 
 ## Docs
 

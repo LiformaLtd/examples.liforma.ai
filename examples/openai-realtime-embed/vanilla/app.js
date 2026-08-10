@@ -2,7 +2,8 @@
  * Demo page shell for the OpenAI Realtime embed example.
  *
  * Integration pattern (copy this into your product):
- *   → bridge.js  (`startOpenAiRealtimeLiformaBridge`)
+ * Prefer npm: import { connectOpenAiRealtime } from '@liforma/client/openai'
+ * Vanilla: bridge.js (CDN port of the same helper)
  *
  * This file only wires demo UI: Connect/End, credential form, instructions
  * copy field, and Connect-before-Start arming.

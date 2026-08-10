@@ -27,7 +27,37 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
 ></liforma-experience-widget>
 ```
 
-Default `position` is `static` (fill the host). Use `bottom-right` / `bottom-left` for a self-positioned FAB. Default `prefetch` is `onExpand`; this demo uses `idle` for one-gesture expand. Optional `gallery-thumb` overrides the preview fetch when the host already has catalog URLs.
+### SvelteKit
+
+```svelte
+<script lang="ts">
+  import { ExperienceWidget } from '@liforma/client/svelte';
+</script>
+
+<ExperienceWidget
+  experienceId="exp_01EXAMPLES_COFFEE_BARISTA"
+  alt="Talk to our barista"
+  position="bottom-right"
+  offset={16}
+  prefetch="idle"
+/>
+```
+
+### Next.js / React (Vite)
+
+```tsx
+import { ExperienceWidget } from '@liforma/client/react';
+
+<ExperienceWidget
+  experienceId="exp_01EXAMPLES_COFFEE_BARISTA"
+  alt="Talk to our barista"
+  position="bottom-right"
+  offset={16}
+  prefetch="idle"
+/>
+```
+
+Default `position` is `static` (fill the host). Use `bottom-right` / `bottom-left` for a self-positioned FAB. On desktop, reduce docks a draggable portrait window; mobile opens near full-screen with close only. Default `prefetch` is `onExpand`; this demo uses `idle` for one-gesture expand. Optional `gallery-thumb` overrides the preview fetch when the host already has catalog URLs.
 
 ## Experience
 
@@ -35,8 +65,8 @@ Default `position` is `static` (fill the host). Use `bottom-right` / `bottom-lef
 
 ## Frameworks
 
-**Vanilla** (`vanilla/`) for v1.
+**Vanilla**, **SvelteKit**, **Next.js**, and **React (Vite)** — same port; one framework at a time via `./start`.
 
 ## Local port
 
-`4002` (Spanish Tutor → `4003`, guided-practice → `4004`, speak-playground → `4005`).
+`4002`

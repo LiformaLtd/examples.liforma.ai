@@ -1,21 +1,11 @@
 /**
- * ElevenLabs Agents → Liforma BYO voice bridge
+ * Vanilla / CDN port of `@liforma/client/elevenlabs` → `connectElevenLabsAgent`.
  *
- * =============================================================================
- * READ THIS FILE — this is the integration pattern to copy into your app.
- * Demo UI (Connect form, modal, agent copy-paste prompts) lives in app.js /
- * config.js and is not required for production.
- * =============================================================================
+ * Prefer the npm helper in bundled apps:
+ *   import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
  *
- * Pattern:
- * 1. Mount a Liforma Experience (often `mode: 'presenter'`, `speechInputMode: 'off'`
- *    when ElevenLabs owns the microphone).
- * 2. Wait until the player has started (audio unlocked inside the iframe).
- * 3. `Conversation.startSession({ connectionType: 'websocket', … })`.
- * 4. `conversation.setVolume({ volume: 0 })` — mute ElevenLabs; Liforma speaks.
- * 5. On each `onAudio` PCM chunk → `experience.speech.createUtterance` / `write` / `close`.
- * 6. Collect agent text via `onMessage` → `setTranscript` / `close({ transcript })` so STA
- *    can force-align (better lipsync than PCM-only free decode).
+ * This file mirrors that helper for the static vanilla demo (CDN SDK + IIFE ElevenLabs).
+ * Demo UI lives in app.js / config.js and is not required for production.
  *
  * Docs: https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/elevenlabs
  */

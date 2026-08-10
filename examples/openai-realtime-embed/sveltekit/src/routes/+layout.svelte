@@ -26,9 +26,8 @@
 				<p class="eyebrow">Liforma example</p>
 				<h1>OpenAI Realtime embed</h1>
 				<p class="lede">
-					SvelteKit coffee-barista embed with OpenAI Realtime as speech-to-speech. Integration lives
-					in <code>$lib/bridge.ts</code> (<code>createUtterance</code> from Realtime PCM +
-					transcript).
+					SvelteKit coffee-barista embed with OpenAI Realtime as speech-to-speech. Integration:
+					<code>@liforma/client/openai</code>.
 				</p>
 			</div>
 			<a

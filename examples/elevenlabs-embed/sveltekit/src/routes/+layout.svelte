@@ -27,7 +27,7 @@
 				<h1>ElevenLabs embed</h1>
 				<p class="lede">
 					SvelteKit version of the coffee-barista embed with ElevenLabs Agents as speech-to-speech.
-					Integration lives in <code>$lib/bridge.ts</code>.
+					Integration: <code>@liforma/client/elevenlabs</code>.
 				</p>
 			</div>
 			<a

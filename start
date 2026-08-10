@@ -22,8 +22,8 @@ Start the examples gallery and runnable apps. Uses production Liforma APIs by de
 Modes:
   vanilla       Gallery + all vanilla examples (default)
   sveltekit     Gallery + SvelteKit examples (same ports per example)
-  nextjs        Gallery + guided-practice Next.js (:4004)
-  react-vite    Gallery + guided-practice React (Vite) (:4004)
+  nextjs        Gallery + all Next.js examples (:4001–:4007)
+  react-vite    Gallery + all React (Vite) examples (:4001–:4007)
 
 Options:
   --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
@@ -32,15 +32,15 @@ Options:
   --status    Show which services are listening
   -h, --help  Show this help
 
-Ports:
+Ports (one port per example; framework modes share ports):
   4000  Gallery (this repo)
-  4001  Basic embed (vanilla or SvelteKit)
-  4002  Experience widget (vanilla)
-  4003  Spanish Tutor (vanilla or SvelteKit)
-  4004  Guided practice (vanilla or SvelteKit / Next / React)
-  4005  Speak playground (vanilla or SvelteKit)
-  4006  ElevenLabs embed (vanilla or SvelteKit)
-  4007  OpenAI Realtime embed (vanilla or SvelteKit)
+  4001  Basic embed
+  4002  Experience widget
+  4003  Spanish Tutor
+  4004  Guided practice
+  4005  Speak playground
+  4006  ElevenLabs embed
+  4007  OpenAI Realtime embed
 
 Examples:
   ./start
@@ -185,23 +185,59 @@ if [[ "$MODE" == "vanilla" ]]; then
 	start_on_port openai-realtime-embed 4007 "$ROOT" \
 		"${vanilla_stack_env}PORT=4007 node examples/openai-realtime-embed/vanilla/server.mjs"
 elif [[ "$MODE" == "nextjs" ]]; then
-	if [[ ! -d "$ROOT/examples/guided-practice/nextjs/node_modules" ]]; then
-		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2
-		exit 1
-	fi
+	for dir in \
+		basic-embed \
+		experience-widget \
+		spanish-tutor \
+		guided-practice \
+		speak-playground \
+		elevenlabs-embed \
+		openai-realtime-embed
+	do
+		if [[ ! -d "$ROOT/examples/$dir/nextjs/node_modules" ]]; then
+			echo "Run: cd examples/$dir/nextjs && npm install" >&2
+			exit 1
+		fi
+	done
 	if [[ "$USE_LOCAL_STACK" == true ]]; then
 		echo "Note: Next.js --local does not auto-inject. In DevTools run: window.__LIFORMA_STACK='local' then reload." >&2
 	fi
+	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/nextjs" "npm run dev"
+	start_on_port experience-widget 4002 "$ROOT/examples/experience-widget/nextjs" "npm run dev"
+	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/nextjs" "npm run dev"
 	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/nextjs" "npm run dev"
+	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/nextjs" "npm run dev"
+	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/nextjs" "npm run dev"
+	start_on_port openai-realtime-embed 4007 "$ROOT/examples/openai-realtime-embed/nextjs" "npm run dev"
 elif [[ "$MODE" == "react-vite" ]]; then
-	if [[ ! -d "$ROOT/examples/guided-practice/react-vite/node_modules" ]]; then
-		echo "Run: cd examples/guided-practice/react-vite && npm install" >&2
-		exit 1
-	fi
+	for dir in \
+		basic-embed \
+		experience-widget \
+		spanish-tutor \
+		guided-practice \
+		speak-playground \
+		elevenlabs-embed \
+		openai-realtime-embed
+	do
+		if [[ ! -d "$ROOT/examples/$dir/react-vite/node_modules" ]]; then
+			echo "Run: cd examples/$dir/react-vite && npm install" >&2
+			exit 1
+		fi
+	done
+	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/react-vite" "$framework_dev_cmd"
+	start_on_port experience-widget 4002 "$ROOT/examples/experience-widget/react-vite" "$framework_dev_cmd"
+	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/react-vite" "$framework_dev_cmd"
 	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/react-vite" "$framework_dev_cmd"
+	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/react-vite" "$framework_dev_cmd"
+	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/react-vite" "$framework_dev_cmd"
+	start_on_port openai-realtime-embed 4007 "$ROOT/examples/openai-realtime-embed/react-vite" "$framework_dev_cmd"
 else
 	if [[ ! -d "$ROOT/examples/basic-embed/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/basic-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/experience-widget/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/experience-widget/sveltekit && npm install" >&2
 		exit 1
 	fi
 	if [[ ! -d "$ROOT/examples/spanish-tutor/sveltekit/node_modules" ]]; then
@@ -225,7 +261,7 @@ else
 		exit 1
 	fi
 	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$framework_dev_cmd"
-	# Experience widget is vanilla-only for v1; keep the port free / unused in sveltekit mode.
+	start_on_port experience-widget 4002 "$ROOT/examples/experience-widget/sveltekit" "$framework_dev_cmd"
 	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
 	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/sveltekit" "$framework_dev_cmd"
 	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"

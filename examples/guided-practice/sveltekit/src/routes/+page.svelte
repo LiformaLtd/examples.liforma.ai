@@ -117,7 +117,7 @@
 		setPhase('speaking');
 		setStatus('Tutor speaking…', 'active');
 		pushLog(`Tutor: ${turn.tutorLine}`);
-		await experience.speak({ text: turn.tutorLine });
+		await experience.speech.speak({ text: turn.tutorLine });
 		setPhase('await_start');
 		setStatus('Tap Start when you are ready to speak', 'default');
 		pushLog('Your turn — tap Start, speak, then Stop.');
