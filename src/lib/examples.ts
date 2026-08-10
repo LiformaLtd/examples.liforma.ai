@@ -112,6 +112,20 @@ export const examples: ExampleMetadata[] = [
 		localPort: 4006,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/elevenlabs-embed/spec.md'
+	},
+	{
+		slug: 'openai-realtime-embed',
+		title: 'OpenAI Realtime embed',
+		description:
+			'Basic coffee-barista embed with OpenAI Realtime as speech-to-speech — pipe PCM + transcript into createUtterance.',
+		category: 'Integration',
+		kind: 'embed',
+		frameworks: ['sveltekit', 'vanilla'],
+		features: ['Experience', 'OpenAI Realtime', 'createUtterance', 'BYO voice', 'transcript'],
+		githubPath: 'examples/openai-realtime-embed',
+		localPort: 4007,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/openai-realtime-embed/spec.md'
 	}
 ];
 

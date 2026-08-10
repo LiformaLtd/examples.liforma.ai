@@ -40,6 +40,7 @@ Ports:
   4004  Guided practice (vanilla or SvelteKit / Next / React)
   4005  Speak playground (vanilla or SvelteKit)
   4006  ElevenLabs embed (vanilla or SvelteKit)
+  4007  OpenAI Realtime embed (vanilla or SvelteKit)
 
 Examples:
   ./start
@@ -155,6 +156,7 @@ if [[ "$RESTART" == true ]]; then
 	kill_port 4004
 	kill_port 4005
 	kill_port 4006
+	kill_port 4007
 fi
 
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
@@ -180,6 +182,8 @@ if [[ "$MODE" == "vanilla" ]]; then
 		"${vanilla_stack_env}PORT=4005 node scripts/serve-example.mjs examples/speak-playground/vanilla"
 	start_on_port elevenlabs-embed 4006 "$ROOT" \
 		"${vanilla_stack_env}PORT=4006 node examples/elevenlabs-embed/vanilla/server.mjs"
+	start_on_port openai-realtime-embed 4007 "$ROOT" \
+		"${vanilla_stack_env}PORT=4007 node examples/openai-realtime-embed/vanilla/server.mjs"
 elif [[ "$MODE" == "nextjs" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/nextjs/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2
@@ -216,12 +220,17 @@ else
 		echo "Run: cd examples/elevenlabs-embed/sveltekit && npm install" >&2
 		exit 1
 	fi
+	if [[ ! -d "$ROOT/examples/openai-realtime-embed/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/openai-realtime-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
 	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$framework_dev_cmd"
 	# Experience widget is vanilla-only for v1; keep the port free / unused in sveltekit mode.
 	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
 	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/sveltekit" "$framework_dev_cmd"
 	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"
 	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/sveltekit" "$framework_dev_cmd"
+	start_on_port openai-realtime-embed 4007 "$ROOT/examples/openai-realtime-embed/sveltekit" "$framework_dev_cmd"
 fi
 
 echo ""

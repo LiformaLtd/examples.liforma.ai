@@ -25,6 +25,29 @@ Adapt:
 - production signed-URL backend`;
 	}
 
+	if (example.slug === 'openai-realtime-embed') {
+		return `Use the Liforma OpenAI Realtime embed SvelteKit example as source material.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Start from \`src/lib/bridge.ts\` (\`startOpenAiRealtimeLiformaBridge\`) — that is the OpenAI Realtime → Liforma integration.
+\`src/routes/+page.svelte\` is demo UI only; \`src/lib/config.ts\` is suggested Realtime instructions.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
+- ephemeral Realtime client secret minted on a server route (never ship OPENAI_API_KEY to production browsers)
+- browser WebSocket to OpenAI Realtime; mic PCM → \`input_audio_buffer.append\`
+- pipe \`response.output_audio.delta\` into \`experience.speech.createUtterance\` / \`write\` / \`close\`
+- pipe \`response.output_audio_transcript.*\` into \`setTranscript\` / \`close({ transcript })\`
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- Realtime model / voice / instructions
+- production ephemeral-secret backend`;
+	}
+
 	if (example.kind === 'embed') {
 		return `Use the Liforma ${example.title} example as source material to build a SvelteKit app.
 
@@ -100,6 +123,29 @@ Adapt:
 - experience id
 - your ElevenLabs agent
 - production signed-URL backend`;
+	}
+
+	if (example.slug === 'openai-realtime-embed') {
+		return `Use the Liforma OpenAI Realtime embed example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Start from \`bridge.js\` (\`startOpenAiRealtimeLiformaBridge\`) — that is the OpenAI Realtime → Liforma integration.
+\`app.js\` is demo UI only; \`config.js\` is suggested Realtime instructions.
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
+- ephemeral Realtime client secret minted on a server route (never ship OPENAI_API_KEY to production browsers)
+- browser WebSocket to OpenAI Realtime; mic PCM → \`input_audio_buffer.append\`
+- pipe \`response.output_audio.delta\` into \`createUtterance\` / \`write\` / \`close\` (see bridge.js)
+- pipe transcript events into \`setTranscript\` / \`close({ transcript })\`
+
+Adapt:
+- branding
+- experience id
+- Realtime model / voice / instructions
+- production ephemeral-secret backend`;
 	}
 
 	if (example.kind === 'embed') {

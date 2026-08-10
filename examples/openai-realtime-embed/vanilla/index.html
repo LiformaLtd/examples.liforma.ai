@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>OpenAI Realtime embed — Liforma example</title>
+		<meta
+			name="description"
+			content="Basic Liforma experience embed with OpenAI Realtime as the speech-to-speech system."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+		<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+	</head>
+	<body>
+		<!--
+			Developer map:
+			  bridge.js            ← OpenAI Realtime → Liforma integration (copy this)
+			  app.js               ← demo UI only
+			  config.js            ← suggested Realtime instructions
+			  demoClientSecret.js  ← local ephemeral-secret helper (use your backend in prod)
+		-->
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>OpenAI Realtime embed</h1>
+						<p class="lede">
+							Same coffee-barista embed as
+							<a href="http://localhost:4001">basic embed</a>, but OpenAI Realtime is the
+							speech-to-speech stack. Integration lives in
+							<code>bridge.js</code> (<code>createUtterance</code> from Realtime PCM + transcript).
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/openai"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						BYO voice docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="OpenAI Realtime embed">
+						<div class="experience-panel">
+							<div id="experience-host" aria-label="Liforma experience embed"></div>
+						</div>
+
+						<div class="control-card">
+							<h2>1. Suggested Realtime instructions</h2>
+							<p>
+								These instructions are applied when minting the ephemeral session (and again via
+								<code>session.update</code> in <code>bridge.js</code>) so Anna matches the
+								coffee-barista scenario.
+							</p>
+
+							<label class="field">
+								<span class="field-label-row">
+									<span>Instructions</span>
+									<button type="button" class="btn btn-ghost" id="btn-copy-instructions">
+										Copy
+									</button>
+								</span>
+								<textarea
+									id="suggested-instructions"
+									class="text-input"
+									readonly
+									rows="12"
+								></textarea>
+							</label>
+						</div>
+
+						<div class="control-card">
+							<h2>2. Connect OpenAI, then start the player</h2>
+							<p>
+								Paste your <strong>OpenAI API key</strong>, click <strong>Connect</strong>, then
+								tap <strong>Start experience</strong> on the avatar. This app’s API route mints an
+								ephemeral Realtime client secret (demo-only — use a real backend in production).
+							</p>
+
+							<form class="credentials-form" id="openai-form">
+								<label class="field">
+									<span class="field-label-row">
+										<span>API key</span>
+										<button type="button" class="btn btn-ghost" id="btn-toggle-key">Show</button>
+									</span>
+									<input
+										id="api-key"
+										class="text-input"
+										type="password"
+										placeholder="sk-… (or leave blank if OPENAI_API_KEY is set)"
+										autocomplete="off"
+										autocapitalize="off"
+										spellcheck="false"
+									/>
+									<span class="field-note"
+										>Never stored in this browser. Prefer env OPENAI_API_KEY locally.</span
+									>
+								</label>
+								<p class="field-hint" id="api-key-hint" hidden></p>
+
+								<div class="actions">
+									<button type="submit" class="btn btn-primary" id="btn-connect" disabled>
+										Connect
+									</button>
+									<button type="button" class="btn" id="btn-end" disabled>End</button>
+								</div>
+							</form>
+
+							<p class="hint">
+								This demo uses Realtime <strong>WebSocket</strong> so PCM + transcript map onto
+								<code>createUtterance</code> (same pattern as ElevenLabs). For WebRTC, see the
+								<a
+									href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/openai"
+									target="_blank"
+									rel="noopener noreferrer"
+									>OpenAI BYO docs</a
+								>.
+							</p>
+
+							<p class="meta">
+								<span id="status-pill" class="status-pill">Loading…</span>
+								· Experience: <code id="experience-id-label"></code>
+							</p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+
+		<dialog id="connect-first-dialog" class="connect-dialog" aria-labelledby="connect-first-title">
+			<form method="dialog" class="connect-dialog-body">
+				<h2 id="connect-first-title">Connect OpenAI</h2>
+				<p>The experience will start after you connect to OpenAI Realtime below.</p>
+				<button type="submit" class="btn btn-primary" value="ok">OK</button>
+			</form>
+		</dialog>
+
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

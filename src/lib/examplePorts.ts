@@ -8,7 +8,8 @@ export const EXAMPLE_PORTS: Record<string, number> = {
 	'spanish-tutor': 4003,
 	'guided-practice': 4004,
 	'speak-playground': 4005,
-	'elevenlabs-embed': 4006
+	'elevenlabs-embed': 4006,
+	'openai-realtime-embed': 4007
 };
 
 export function getExamplePort(slug: string): number | undefined {

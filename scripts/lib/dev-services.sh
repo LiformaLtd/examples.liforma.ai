@@ -12,6 +12,7 @@ EXAMPLE_SERVICES=(
 	"guided-practice|4004"
 	"speak-playground|4005"
 	"elevenlabs-embed|4006"
+	"openai-realtime-embed|4007"
 )
 
 # Liforma monorepo stack (api, player, CDN SDK preview) — used with ./start --local
