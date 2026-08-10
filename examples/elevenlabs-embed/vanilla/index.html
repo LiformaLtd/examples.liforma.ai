@@ -20,6 +20,13 @@
 		<script src="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.17.0/dist/lib.iife.js"></script>
 	</head>
 	<body>
+		<!--
+			Developer map:
+			  bridge.js          ← ElevenLabs → Liforma integration (copy this)
+			  app.js             ← demo UI only
+			  config.js          ← suggested agent prompt text (dashboard paste)
+			  demoSignedUrl.js   ← local signed-URL helper (use your backend in prod)
+		-->
 		<div class="app-shell">
 			<header class="app-header">
 				<div class="header-inner">
@@ -29,8 +36,8 @@
 						<p class="lede">
 							Same coffee-barista embed as
 							<a href="http://localhost:4001">basic embed</a>, but ElevenLabs Agents is the
-							speech-to-speech stack. Liforma renders the avatar from ElevenLabs PCM via
-							<code>createUtterance</code>.
+							speech-to-speech stack. Integration lives in
+							<code>bridge.js</code> (<code>createUtterance</code> from ElevenLabs PCM).
 						</p>
 					</div>
 					<a
@@ -103,12 +110,12 @@
 						</div>
 
 						<div class="control-card">
-							<h2>2. Unlock the player, then connect</h2>
+							<h2>2. Connect ElevenLabs, then start the player</h2>
 							<p>
-								First click <strong>Start experience</strong> on the avatar (unlocks audio).
-								Then paste your <strong>Agent ID</strong> and <strong>API key</strong> and start
-								the conversation. The local server mints a signed URL (demo-only — use a real
-								backend in production).
+								Paste your <strong>Agent ID</strong> and <strong>API key</strong>, click
+								<strong>Connect</strong>, then tap <strong>Start experience</strong> on the avatar
+								(unlocks audio and opens the conversation). The local server mints a signed URL
+								(demo-only — use a real backend in production).
 							</p>
 
 							<form id="elevenlabs-form" class="credentials-form" autocomplete="off">
@@ -148,8 +155,8 @@
 								<p class="field-hint" id="api-key-hint" hidden></p>
 
 								<div class="actions">
-									<button type="submit" class="btn btn-primary" id="btn-start" disabled>
-										Start conversation
+									<button type="submit" class="btn btn-primary" id="btn-connect" disabled>
+										Connect
 									</button>
 									<button type="button" class="btn" id="btn-end" disabled>End</button>
 								</div>
@@ -182,6 +189,15 @@
 				</div>
 			</main>
 		</div>
-		<script src="./app.js?v=8" type="module"></script>
+
+		<dialog id="connect-first-dialog" class="connect-dialog" aria-labelledby="connect-first-title">
+			<form method="dialog" class="connect-dialog-body">
+				<h2 id="connect-first-title">Connect ElevenLabs</h2>
+				<p>The experience will start after you connect to ElevenLabs below.</p>
+				<button type="submit" class="btn btn-primary" value="ok">OK</button>
+			</form>
+		</dialog>
+
+		<script src="./app.js?v=12" type="module"></script>
 	</body>
 </html>

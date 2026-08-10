@@ -7,12 +7,35 @@ Same shape as **basic embed**: one coffee-barista experience on the page. Eleven
 ## User flow
 
 1. Page loads and mounts the Liforma experience (presenter mode, mic off).
-2. User taps the player start control to unlock avatar audio.
-3. Developer enters their ElevenLabs **Agent ID** and **API key** (demo-only; production should mint a signed URL on a server).
-4. User taps **Start conversation** — ElevenLabs takes the mic; agent audio is muted on ElevenLabs and forwarded into Liforma.
-5. User taps **End conversation** to hang up.
+2. Developer enters their ElevenLabs **Agent ID** and **API key** (demo-only; production should mint a signed URL on a server).
+3. User taps **Connect** — validates credentials (mints signed URL when a key is present) and arms the session. The ElevenLabs socket does **not** open yet.
+4. User taps the player **Start experience** control — unlocks avatar audio; because Connect already armed, ElevenLabs opens and agent PCM is forwarded into Liforma (ElevenLabs speaker muted).
+5. Alternate order: Start first (audio unlocks) without Connect — `onStart` shows a modal directing the user to Connect below; socket opens when they Connect afterward.
+6. User taps **End** to hang up or clear an armed-but-not-live connection.
+
+## Code layout
+
+### `vanilla/`
+
+| File | Role |
+|---|---|
+| **`bridge.js`** | Canonical integration — `startElevenLabsLiformaBridge` |
+| `app.js` | Demo UI (Connect arming, modal, form) |
+| `config.js` | Suggested agent first message / system prompt |
+| `demoSignedUrl.js` / `server.mjs` | Local signed-URL demo only |
+
+### `sveltekit/`
+
+| File | Role |
+|---|---|
+| **`src/lib/bridge.ts`** | Canonical integration — same pattern as vanilla |
+| `src/routes/+page.svelte` | Demo UI |
+| `src/lib/config.ts` | Suggested agent prompts |
+| `src/routes/api/elevenlabs-signed-url/+server.ts` | Signed-URL demo route |
 
 ## Liforma integration
+
+See `vanilla/bridge.js`. Sketch:
 
 ```js
 const experience = await Experience.startSession({
@@ -22,16 +45,14 @@ const experience = await Experience.startSession({
 });
 await experience.attach({ container });
 
-// On each ElevenLabs onAudio chunk:
-const utterance = experience.speech.createUtterance({
-  format: { encoding: 'pcm_s16le', sampleRate, channels: 1 },
-  queue: 'replace-active'
+const bridge = await startElevenLabsLiformaBridge({
+  experience,
+  signedUrl // or agentId for public agents
 });
-await utterance.write(pcmChunk);
-await utterance.close({ history: 'none' });
+// bridge.end() when done
 ```
 
-Critical: `conversation.setVolume({ volume: 0 })` so only the avatar speaks.
+Critical: `conversation.setVolume({ volume: 0 })` so only the avatar speaks (done inside the bridge).
 
 ## ElevenLabs
 
@@ -44,7 +65,7 @@ Critical: `conversation.setVolume({ volume: 0 })` so only the avatar speaks.
 - Experience host (same visual weight as basic embed)
 - Suggested ElevenLabs **first message** + **system prompt** for the coffee-barista scenario (copy buttons)
 - Agent ID + API key fields (Agent ID persisted in IndexedDB; API key never stored; restricted keys need ElevenAgents → Write)
-- Start / End conversation controls
+- Connect / End controls (Connect arms; Start on the player opens the bridge)
 - Short warning that API keys in the browser are for local demos only
 
 ## Experience
@@ -53,7 +74,7 @@ Default: `exp_01EXAMPLES_COFFEE_BARISTA`
 
 ## Frameworks
 
-**Vanilla** (`vanilla/`) for v1.
+**Vanilla** (`vanilla/`) and **SvelteKit** (`sveltekit/`) — same port; `./start vanilla` vs `./start sveltekit`.
 
 ## Local port
 

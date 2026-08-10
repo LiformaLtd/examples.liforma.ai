@@ -289,6 +289,45 @@ h1 {
 	color: #92400e;
 }
 
+.connect-dialog {
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	padding: 0;
+	max-width: min(22rem, calc(100vw - 2rem));
+	box-shadow: 0 16px 40px rgba(20, 32, 26, 0.18);
+	color: var(--text);
+	background: var(--bg-elevated);
+}
+
+.connect-dialog::backdrop {
+	background: rgba(20, 32, 26, 0.45);
+}
+
+.connect-dialog-body {
+	margin: 0;
+	padding: 1.25rem 1.35rem 1.15rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
+}
+
+.connect-dialog-body h2 {
+	margin: 0;
+	font-size: 1.125rem;
+	letter-spacing: -0.02em;
+}
+
+.connect-dialog-body p {
+	margin: 0;
+	color: var(--text-muted);
+	font-size: 0.9375rem;
+}
+
+.connect-dialog-body .btn {
+	align-self: flex-end;
+	margin-top: 0.25rem;
+}
+
 @media (max-width: 860px) {
 	.layout {
 		grid-template-columns: 1fr;

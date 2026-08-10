@@ -106,7 +106,7 @@ export const examples: ExampleMetadata[] = [
 			'Basic coffee-barista embed with ElevenLabs Agents as speech-to-speech — pipe agent PCM into createUtterance.',
 		category: 'Integration',
 		kind: 'embed',
-		frameworks: ['vanilla'],
+		frameworks: ['sveltekit', 'vanilla'],
 		features: ['Experience', 'ElevenLabs Agents', 'createUtterance', 'BYO voice'],
 		githubPath: 'examples/elevenlabs-embed',
 		localPort: 4006,

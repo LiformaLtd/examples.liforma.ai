@@ -1,6 +1,6 @@
 /**
  * Demo content only — not part of the Liforma ↔ ElevenLabs integration.
- * Integration code: bridge.js
+ * Integration code: $lib/bridge.ts
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */

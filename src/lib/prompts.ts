@@ -3,6 +3,28 @@ import type { ExampleKind, ExampleMetadata } from '$lib/examples';
 import type { SupportedFramework } from '$lib/frameworks';
 
 export function sveltekitAgentPrompt(example: ExampleMetadata): string {
+	if (example.slug === 'elevenlabs-embed') {
+		return `Use the Liforma ElevenLabs embed SvelteKit example as source material.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Start from \`src/lib/bridge.ts\` (\`startElevenLabsLiformaBridge\`) — that is the ElevenLabs → Liforma integration.
+\`src/routes/+page.svelte\` is demo UI only; \`src/lib/config.ts\` is suggested agent prompt text.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
+- \`@elevenlabs/client\` Conversation (websocket) muted with \`setVolume({ volume: 0 })\`
+- pipe ElevenLabs \`onAudio\` PCM into \`experience.speech.createUtterance\` / \`write\` / \`close\` (see bridge.ts)
+- signed-URL mint on a server route (never ship ElevenLabs API keys to production browsers)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- your ElevenLabs agent
+- production signed-URL backend`;
+	}
+
 	if (example.kind === 'embed') {
 		return `Use the Liforma ${example.title} example as source material to build a SvelteKit app.
 
@@ -63,13 +85,15 @@ export function vanillaAgentPrompt(example: ExampleMetadata): string {
 
 Source repo folder: ${example.githubPath}/vanilla
 
+Start from \`bridge.js\` (\`startElevenLabsLiformaBridge\`) — that is the ElevenLabs → Liforma integration.
+\`app.js\` is demo UI only; \`config.js\` is suggested agent prompt text.
+
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
 - \`@elevenlabs/client\` Conversation (websocket) muted with \`setVolume({ volume: 0 })\`
 - \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
-- pipe ElevenLabs \`onAudio\` PCM into \`experience.speech.createUtterance\` / \`write\` / \`close\`
+- pipe ElevenLabs \`onAudio\` PCM into \`experience.speech.createUtterance\` / \`write\` / \`close\` (see bridge.js)
 - local signed-URL proxy pattern (never ship ElevenLabs API keys to production browsers)
-- copy-paste friendly structure (index.html + app.js + server.mjs)
 
 Adapt:
 - branding

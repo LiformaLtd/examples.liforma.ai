@@ -39,7 +39,7 @@ Ports:
   4003  Spanish Tutor (vanilla or SvelteKit)
   4004  Guided practice (vanilla or SvelteKit / Next / React)
   4005  Speak playground (vanilla or SvelteKit)
-  4006  ElevenLabs embed (vanilla)
+  4006  ElevenLabs embed (vanilla or SvelteKit)
 
 Examples:
   ./start
@@ -212,11 +212,16 @@ else
 		echo "Run: cd examples/speak-playground/sveltekit && npm install" >&2
 		exit 1
 	fi
+	if [[ ! -d "$ROOT/examples/elevenlabs-embed/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/elevenlabs-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
 	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$framework_dev_cmd"
 	# Experience widget is vanilla-only for v1; keep the port free / unused in sveltekit mode.
 	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
 	start_on_port guided-practice 4004 "$ROOT/examples/guided-practice/sveltekit" "$framework_dev_cmd"
 	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"
+	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/sveltekit" "$framework_dev_cmd"
 fi
 
 echo ""

@@ -1,9 +1,21 @@
+/**
+ * Demo page shell for the ElevenLabs embed example.
+ *
+ * Integration pattern (copy this into your product):
+ *   → bridge.js  (`startElevenLabsLiformaBridge`)
+ *
+ * This file only wires demo UI: Connect/End, credential form, agent prompt
+ * copy fields, and Connect-before-Start arming.
+ */
+
 import {
 	EXPERIENCE_ID,
 	SUGGESTED_FIRST_MESSAGE,
 	SUGGESTED_SYSTEM_PROMPT
 } from './config.js';
 import { loadAgentId, saveAgentId } from './agentIdStore.js';
+import { startElevenLabsLiformaBridge } from './bridge.js';
+import { fetchDemoSignedUrl } from './demoSignedUrl.js';
 
 const experienceHostEl = document.getElementById('experience-host');
 const statusPillEl = document.getElementById('status-pill');
@@ -13,37 +25,34 @@ const agentIdEl = document.getElementById('agent-id');
 const apiKeyEl = document.getElementById('api-key');
 const apiKeyHintEl = document.getElementById('api-key-hint');
 const toggleKeyBtnEl = document.getElementById('btn-toggle-key');
-const startBtnEl = document.getElementById('btn-start');
+const connectBtnEl = document.getElementById('btn-connect');
 const endBtnEl = document.getElementById('btn-end');
-
-/** Typical ElevenLabs key shape — length varies; only warn on obvious paste mistakes. */
-const ELEVENLABS_API_KEY_MIN_LENGTH = 20;
-const ELEVENLABS_API_KEYS_URL = 'https://elevenlabs.io/app/settings/api-keys';
+const connectFirstDialogEl = document.getElementById('connect-first-dialog');
 const experienceIdLabelEl = document.getElementById('experience-id-label');
 const suggestedFirstEl = document.getElementById('suggested-first-message');
 const suggestedPromptEl = document.getElementById('suggested-system-prompt');
 const copyFirstBtnEl = document.getElementById('btn-copy-first');
 const copyPromptBtnEl = document.getElementById('btn-copy-prompt');
 
+/** Typical ElevenLabs key shape — length varies; only warn on obvious paste mistakes. */
+const ELEVENLABS_API_KEY_MIN_LENGTH = 20;
+const ELEVENLABS_API_KEYS_URL = 'https://elevenlabs.io/app/settings/api-keys';
+
 /** @type {import('@liforma/client').Experience | null} */
 let experience = null;
 let sessionReady = false;
 
-/** @type {import('@elevenlabs/client').Conversation | null} */
-let conversation = null;
-
 /**
- * @typedef {{ utterance: ReturnType<NonNullable<typeof experience>['speech']['createUtterance']>; writes: Promise<void> }} Turn
+ * Connect arms credentials (and may pre-mint a signed URL). The ElevenLabs socket
+ * opens only after the player has started — preferred order: Connect → Start.
  */
-/** @type {Turn | null} */
-let turn = null;
-/** null until agent_output_audio_format arrives (or fallback timer). */
-/** @type {number | null} */
-let sampleRate = null;
-let sampleRateReady = false;
-/** @type {string[]} */
-let pendingAudioB64 = [];
-let sampleRateFallbackTimer = 0;
+let armed = false;
+/** @type {string | null} */
+let cachedSignedUrl = null;
+let connecting = false;
+
+/** @type {Awaited<ReturnType<typeof startElevenLabsLiformaBridge>> | null} */
+let bridge = null;
 
 function setStatus(text, tone = 'default') {
 	if (!statusPillEl) return;
@@ -120,7 +129,6 @@ function showInvalidApiKeyHint(keyMeta) {
 
 function normalizeApiKey(raw) {
 	let key = String(raw ?? '').trim();
-	// Strip accidental "Bearer " / quotes / zero-width chars from paste.
 	key = key.replace(/^Bearer\s+/i, '');
 	key = key.replace(/^["']|["']$/g, '');
 	key = key.replace(/[\u200B-\u200D\uFEFF]/g, '');
@@ -128,9 +136,7 @@ function normalizeApiKey(raw) {
 }
 
 function hasCredentials() {
-	const agentId = agentIdEl?.value.trim() ?? '';
-	// Agent ID alone is enough for public agents; key required for private.
-	return Boolean(agentId);
+	return Boolean(agentIdEl?.value.trim());
 }
 
 function updateApiKeyHint() {
@@ -156,234 +162,109 @@ function updateApiKeyHint() {
 	apiKeyHintEl.textContent = '';
 }
 
-/** Enable Start when credentials are present; player unlock is checked on click. */
+function clearArm() {
+	armed = false;
+	cachedSignedUrl = null;
+}
+
+function showConnectFirstModal() {
+	if (!(connectFirstDialogEl instanceof HTMLDialogElement)) return;
+	if (connectFirstDialogEl.open) return;
+	connectFirstDialogEl.showModal();
+}
+
+function isBridgeLive() {
+	return Boolean(bridge?.isConnected());
+}
+
 function refreshControls() {
-	const connected = Boolean(conversation);
-	if (startBtnEl) startBtnEl.disabled = connected || !hasCredentials();
-	if (endBtnEl) endBtnEl.disabled = !connected;
-	if (agentIdEl) agentIdEl.disabled = connected;
-	if (apiKeyEl) apiKeyEl.disabled = connected;
+	const connected = isBridgeLive();
+	if (connectBtnEl) {
+		connectBtnEl.disabled = connecting || connected || armed || !hasCredentials();
+		if (connecting) connectBtnEl.textContent = 'Connecting…';
+		else if (armed && !connected) connectBtnEl.textContent = 'Waiting for Start';
+		else connectBtnEl.textContent = 'Connect';
+	}
+	if (endBtnEl) endBtnEl.disabled = !(connected || armed || connecting);
+	if (agentIdEl) agentIdEl.disabled = connected || armed || connecting;
+	if (apiKeyEl) apiKeyEl.disabled = connected || armed || connecting;
 	updateStatusFromState();
 }
 
 function updateStatusFromState() {
-	if (conversation) {
+	if (isBridgeLive()) {
 		setStatus('Talking via ElevenLabs → avatar', 'active');
+		return;
+	}
+	if (connecting) {
+		setStatus('Connecting to ElevenLabs…', 'active');
 		return;
 	}
 	if (!experience) {
 		setStatus('Loading experience…', 'active');
 		return;
 	}
-	if (!sessionReady) {
-		setStatus('Tap “Start experience” in the player first', 'warn');
+	if (armed && !sessionReady) {
+		setStatus('Connected — tap Start experience on the avatar', 'active');
+		return;
+	}
+	if (armed && sessionReady) {
+		setStatus('Opening ElevenLabs…', 'active');
 		return;
 	}
 	if (!hasCredentials()) {
-		setStatus('Enter Agent ID (and API key if private)', 'default');
+		setStatus('Enter Agent ID (and API key if private), then Connect', 'default');
 		return;
 	}
-	setStatus('Ready — start ElevenLabs conversation', 'active');
-}
-
-/** @returns {Uint8Array} */
-function base64ToPcmBytes(b64) {
-	const bin = atob(b64);
-	const out = new Uint8Array(bin.length);
-	for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
-	return out;
-}
-
-/** Liforma speech.write rejects chunks larger than 64 KiB. */
-const MAX_PCM_CHUNK_BYTES = 64 * 1024;
-
-/**
- * @param {{ write: (chunk: ArrayBuffer | ArrayBufferView) => Promise<unknown> }} utterance
- * @param {Uint8Array} bytes
- */
-async function writePcmInChunks(utterance, bytes) {
-	// Fast path — typical ElevenLabs frames are well under the cap.
-	if (bytes.byteLength <= MAX_PCM_CHUNK_BYTES) {
-		if ((bytes.byteLength & 1) !== 0) {
-			await utterance.write(bytes.subarray(0, bytes.byteLength - 1));
-			return;
-		}
-		await utterance.write(bytes);
+	if (!sessionReady) {
+		setStatus('Connect ElevenLabs, then tap Start on the avatar', 'default');
 		return;
 	}
-	let offset = 0;
-	while (offset < bytes.byteLength) {
-		let end = Math.min(offset + MAX_PCM_CHUNK_BYTES, bytes.byteLength);
-		if (end < bytes.byteLength && (end - offset) % 2 === 1) end -= 1;
-		if (end <= offset) break;
-		await utterance.write(bytes.subarray(offset, end));
-		offset = end;
-	}
+	setStatus('Ready — Connect to wire ElevenLabs', 'active');
 }
 
-function clearSampleRateFallback() {
-	if (!sampleRateFallbackTimer) return;
-	window.clearTimeout(sampleRateFallbackTimer);
-	sampleRateFallbackTimer = 0;
-}
+/** @param {unknown} err */
+function handleConnectError(err) {
+	const code =
+		err && typeof err === 'object' && 'code' in err && typeof err.code === 'string'
+			? err.code
+			: err instanceof Error
+				? err.message
+				: '';
+	const keyMeta = err && typeof err === 'object' && 'keyMeta' in err ? err.keyMeta : null;
 
-function flushPendingAudio() {
-	if (!pendingAudioB64.length) return;
-	const queued = pendingAudioB64;
-	pendingAudioB64 = [];
-	for (const b64 of queued) writeAgentAudio(b64);
-}
+	setStatus('ElevenLabs connect failed', 'warn');
 
-/**
- * Wrong sample-rate locks make STA/energy clocks drift — mouth can look stuck open.
- * Wait for metadata (short fallback) before createUtterance.
- * @param {number} rate
- */
-function lockSampleRate(rate) {
-	if (sampleRateReady) return;
-	if (!Number.isFinite(rate) || rate <= 0) return;
-	sampleRate = rate;
-	sampleRateReady = true;
-	clearSampleRateFallback();
-	log(`Agent output format: pcm_${sampleRate}`);
-	flushPendingAudio();
-}
-
-function armSampleRateFallback() {
-	clearSampleRateFallback();
-	sampleRateFallbackTimer = window.setTimeout(() => {
-		sampleRateFallbackTimer = 0;
-		if (!sampleRateReady) {
-			log('No agent_output_audio_format yet — falling back to pcm_16000', 'warn');
-			lockSampleRate(16_000);
-		}
-	}, 800);
-}
-
-/** @param {string} base64Audio */
-function writeAgentAudio(base64Audio) {
-	if (!experience || !sampleRateReady || sampleRate == null) return;
-	if (!turn) {
-		const utterance = experience.speech.createUtterance({
-			format: { encoding: 'pcm_s16le', sampleRate, channels: 1 },
-			queue: 'replace-active'
-		});
-		turn = { utterance, writes: Promise.resolve() };
-	}
-	const current = turn;
-	const bytes = base64ToPcmBytes(base64Audio);
-	current.writes = current.writes
-		.then(() => writePcmInChunks(current.utterance, bytes))
-		.catch((err) => console.error(err));
-}
-
-/** @param {string} base64Audio */
-function handleAgentAudio(base64Audio) {
-	if (!sampleRateReady) {
-		pendingAudioB64.push(base64Audio);
-		return;
-	}
-	writeAgentAudio(base64Audio);
-}
-
-function formatUpstreamError(status, data) {
-	const detailRaw = typeof data.detail === 'string' ? data.detail : '';
-	const message =
-		(typeof data.elevenMessage === 'string' && data.elevenMessage) ||
-		(() => {
-			try {
-				const parsed = JSON.parse(detailRaw);
-				return (
-					parsed?.detail?.message ||
-					parsed?.message ||
-					(typeof parsed?.detail === 'string' ? parsed.detail : '')
-				);
-			} catch {
-				return detailRaw;
-			}
-		})();
-
-	if (status === 404) {
-		return (
-			'ElevenLabs could not find that agent (404). Check the Agent ID. ' +
-			(message ? `(${message})` : '')
-		).trim();
-	}
-	return data.error
-		? `${data.error}${message ? `: ${message}` : detailRaw ? `: ${detailRaw}` : ''}`
-		: `HTTP ${status}${message ? `: ${message}` : ''}`;
-}
-
-function classifyElevenLabsAuthError(status, data) {
-	const code = String(data.elevenCode ?? '').toLowerCase();
-	const detailRaw = typeof data.detail === 'string' ? data.detail.toLowerCase() : '';
-	const message = String(data.elevenMessage ?? '').toLowerCase();
-	const isInvalidKey =
-		code === 'invalid_api_key' ||
-		detailRaw.includes('"status":"invalid_api_key"') ||
-		message.includes('invalid api key');
-	// Prefer invalid-key over permission when ElevenLabs says the secret is wrong.
-	if (status === 401 && isInvalidKey) return 'elevenlabs_invalid_api_key';
-	if (status === 401) return 'elevenlabs_invalid_api_key';
-
-	const isPermission =
-		status === 403 ||
-		code === 'missing_permissions' ||
-		code === 'insufficient_permissions' ||
-		code === 'forbidden' ||
-		message.includes('permission') ||
-		detailRaw.includes('insufficient_permissions') ||
-		detailRaw.includes('missing_permissions');
-	if (isPermission) return 'elevenlabs_agents_permission';
-	return null;
-}
-
-/**
- * @returns {Promise<string>}
- */
-async function fetchSignedUrl(agentId, apiKey) {
-	const res = await fetch('/api/elevenlabs-signed-url', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ agentId, apiKey })
-	});
-	const data = await res.json().catch(() => ({}));
-	if (!res.ok) {
-		const kind = classifyElevenLabsAuthError(res.status, data);
-		if (kind) {
-			const err = new Error(kind);
-			err.code = kind;
-			err.keyMeta = data.keyMeta ?? null;
-			err.httpStatus = res.status;
-			err.elevenCode = data.elevenCode ?? '';
-			err.elevenMessage = data.elevenMessage ?? '';
-			console.warn('[elevenlabs-embed] signed-url failed', {
-				kind,
-				httpStatus: res.status,
-				elevenCode: data.elevenCode,
-				elevenMessage: data.elevenMessage,
-				keyMeta: data.keyMeta
-			});
-			throw err;
-		}
-		throw new Error(formatUpstreamError(res.status, data));
-	}
-	if (!data.signedUrl) throw new Error('Signed URL missing from proxy response');
-	return data.signedUrl;
-}
-
-function getConversationCtor() {
-	const Conversation = window.ElevenLabsClient?.Conversation;
-	if (!Conversation) {
-		throw new Error(
-			'ElevenLabs client not loaded. Ensure the @elevenlabs/client script is included.'
+	if (code === 'elevenlabs_agents_permission') {
+		showElevenAgentsPermissionHint();
+		console.warn(
+			'[elevenlabs-embed] API key permission error — set Eleven Agents → Write (not only Read), then Save.'
 		);
+		return;
 	}
-	return Conversation;
+	if (code === 'elevenlabs_invalid_api_key') {
+		showInvalidApiKeyHint(keyMeta);
+		const suffix = keyMeta?.suffix ? `••••${keyMeta.suffix}` : '';
+		const length = keyMeta?.length;
+		const fingerprint =
+			suffix || length
+				? `Key fingerprint from proxy: length=${length ?? '?'}, ends with ${suffix || '????'} (compare with dashboard last-4).`
+				: 'ElevenLabs returned invalid_api_key for the value in the form.';
+		log(fingerprint, 'warn');
+		console.warn('[elevenlabs-embed]', fingerprint);
+		return;
+	}
+	const message = err instanceof Error ? err.message : String(err);
+	log(message, 'warn');
+	console.warn('[elevenlabs-embed]', message);
 }
 
-async function startElevenLabs() {
-	if (conversation) return;
+/**
+ * Connect click: validate (+ optional signed-URL mint), arm, then open the bridge
+ * immediately if the player is already started.
+ */
+async function armElevenLabs() {
+	if (isBridgeLive() || connecting || armed) return;
 
 	const agentId = agentIdEl?.value.trim() ?? '';
 	const apiKey = normalizeApiKey(apiKeyEl?.value ?? '');
@@ -398,159 +279,105 @@ async function startElevenLabs() {
 		log(`API key looks too short (${apiKey.length} chars).`, 'warn');
 		return;
 	}
-	if (!experience || !sessionReady) {
-		setStatus('Tap “Start experience” in the player first', 'warn');
-		log(
-			'Unlock the Liforma player first: click “Start experience” on the avatar, then Start conversation again.',
-			'warn'
-		);
+
+	connecting = true;
+	refreshControls();
+
+	try {
+		cachedSignedUrl = null;
+		if (apiKey) {
+			log('Requesting signed URL via local proxy…');
+			cachedSignedUrl = await fetchDemoSignedUrl(agentId, apiKey);
+			log('Signed URL ready. ElevenLabs will open after you start the player.');
+		} else {
+			log('No API key — will connect as public agent with agentId only.');
+		}
+
+		armed = true;
+		connecting = false;
+		refreshControls();
+
+		if (sessionReady) {
+			await openBridge();
+		} else {
+			log('Armed. Tap Start experience on the avatar to unlock audio and begin.');
+		}
+	} catch (err) {
+		connecting = false;
+		clearArm();
+		handleConnectError(err);
+		refreshControls();
+	}
+}
+
+/** Open the integration bridge (see bridge.js). Requires player started + armed. */
+async function openBridge() {
+	if (isBridgeLive() || connecting) return;
+	if (!armed) return;
+	if (!experience || !sessionReady) return;
+
+	const agentId = agentIdEl?.value.trim() ?? '';
+	const apiKey = normalizeApiKey(apiKeyEl?.value ?? '');
+	if (!agentId) {
+		clearArm();
+		log('Enter your ElevenLabs Agent ID.', 'warn');
+		refreshControls();
 		return;
 	}
 
-	setStatus('Connecting to ElevenLabs…', 'active');
-	if (startBtnEl) startBtnEl.disabled = true;
+	connecting = true;
+	refreshControls();
 
 	try {
-		const Conversation = getConversationCtor();
-		/** @type {Record<string, unknown>} */
-		const sessionOpts = {
-			connectionType: 'websocket',
+		let signedUrl = cachedSignedUrl;
+		if (!signedUrl && apiKey) {
+			log('Requesting signed URL via local proxy…');
+			signedUrl = await fetchDemoSignedUrl(agentId, apiKey);
+			cachedSignedUrl = signedUrl;
+		}
 
-			onConversationMetadata: (meta) => {
-				const fmt = meta?.agent_output_audio_format;
-				const m = /^pcm_(\d+)$/.exec(fmt ?? '');
-				if (m) lockSampleRate(Number(m[1]));
-			},
-
-			onAudio: (base64Audio) => {
-				handleAgentAudio(base64Audio);
-			},
-
-			onModeChange: ({ mode }) => {
-				if (mode !== 'listening') return;
-				const current = turn;
-				turn = null;
-				if (!current) return;
-				void current.writes.then(() => current.utterance.close({ history: 'none' }));
-			},
-
-			onInterruption: () => {
-				pendingAudioB64 = [];
-				const current = turn;
-				turn = null;
-				void (current
-					? current.utterance.cancel()
-					: experience?.speech.interrupt({ scope: 'active' }));
-			},
-
-			onError: (message) => {
-				log(`ElevenLabs error: ${message}`, 'warn');
-			},
-
+		bridge = await startElevenLabsLiformaBridge({
+			experience,
+			agentId: signedUrl ? undefined : agentId,
+			signedUrl: signedUrl ?? undefined,
+			onLog: (line, kind) => log(line, kind),
 			onDisconnect: () => {
-				clearSampleRateFallback();
-				pendingAudioB64 = [];
-				log('ElevenLabs disconnected');
-				conversation = null;
-				turn = null;
-				sampleRate = null;
-				sampleRateReady = false;
+				bridge = null;
+				clearArm();
 				refreshControls();
 			}
-		};
+		});
 
-		if (apiKey) {
-			log('Requesting signed URL via local proxy…');
-			sessionOpts.signedUrl = await fetchSignedUrl(agentId, apiKey);
-		} else {
-			log('No API key — connecting as public agent with agentId only…');
-			sessionOpts.agentId = agentId;
-		}
-
-		sampleRate = null;
-		sampleRateReady = false;
-		pendingAudioB64 = [];
-		turn = null;
-		armSampleRateFallback();
-
-		conversation = await Conversation.startSession(sessionOpts);
-
-		// Critical: silence ElevenLabs playback — Liforma owns the speaker.
-		await conversation.setVolume({ volume: 0 });
-
+		connecting = false;
 		refreshControls();
-		log('Conversation started. Speak into your mic — the avatar should lip-sync.');
 	} catch (err) {
-		conversation = null;
-		const code =
-			err && typeof err === 'object' && 'code' in err && typeof err.code === 'string'
-				? err.code
-				: err instanceof Error
-					? err.message
-					: '';
-		const keyMeta =
-			err && typeof err === 'object' && 'keyMeta' in err ? err.keyMeta : null;
-
+		bridge = null;
+		connecting = false;
+		clearArm();
+		handleConnectError(err);
 		refreshControls();
-		setStatus('ElevenLabs connect failed', 'warn');
-
-		if (code === 'elevenlabs_agents_permission') {
-			showElevenAgentsPermissionHint();
-			console.warn(
-				'[elevenlabs-embed] API key permission error — set Eleven Agents → Write (not only Read), then Save.'
-			);
-			return;
-		}
-		if (code === 'elevenlabs_invalid_api_key') {
-			showInvalidApiKeyHint(keyMeta);
-			const suffix = keyMeta?.suffix ? `••••${keyMeta.suffix}` : '';
-			const length = keyMeta?.length;
-			const fingerprint =
-				suffix || length
-					? `Key fingerprint from proxy: length=${length ?? '?'}, ends with ${suffix || '????'} (compare with dashboard last-4).`
-					: 'ElevenLabs returned invalid_api_key for the value in the form.';
-			log(fingerprint, 'warn');
-			console.warn('[elevenlabs-embed]', fingerprint);
-			console.warn(
-				'[elevenlabs-embed] The red POST 401 in DevTools is expected — check the yellow hint under API key / session log.'
-			);
-			return;
-		}
-		const message = err instanceof Error ? err.message : String(err);
-		log(message, 'warn');
-		console.warn('[elevenlabs-embed]', message);
 	}
 }
 
 async function endElevenLabs() {
-	clearSampleRateFallback();
-	pendingAudioB64 = [];
-	const current = turn;
-	turn = null;
-	const active = conversation;
-	conversation = null;
-	sampleRate = null;
-	sampleRateReady = false;
+	const active = bridge;
+	bridge = null;
+	connecting = false;
+	const wasArmed = armed;
+	clearArm();
 	refreshControls();
-
-	if (current) {
-		try {
-			await current.writes;
-			await current.utterance.close({ history: 'none' });
-		} catch {
-			/* ignore */
-		}
-	}
 
 	if (active) {
 		try {
-			await active.endSession();
+			await active.end();
 		} catch (err) {
 			console.error(err);
 		}
+		log('Conversation ended');
+	} else if (wasArmed) {
+		log('Disconnected (cleared armed ElevenLabs connection).');
 	}
 
-	log('Conversation ended');
 	refreshControls();
 }
 
@@ -580,6 +407,19 @@ async function initExperience() {
 				size: 'large',
 				shadow: 'soft'
 			}
+		},
+		onStart: () => {
+			sessionReady = true;
+			log('Player unlocked.');
+			refreshControls();
+			if (armed && !isBridgeLive()) {
+				void openBridge();
+				return;
+			}
+			if (!armed) {
+				showConnectFirstModal();
+				log('Start before Connect — connect to ElevenLabs below to begin the conversation.');
+			}
 		}
 	});
 
@@ -590,23 +430,18 @@ async function initExperience() {
 		if (readyHandled) return;
 		readyHandled = true;
 		if (experienceIdLabelEl) experienceIdLabelEl.textContent = EXPERIENCE_ID;
-		setStatus('Tap Start experience in the player', 'default');
-		log('Experience ready. Unlock audio with the player start button, then start ElevenLabs.');
+		refreshControls();
+		log('Experience ready. Connect ElevenLabs, then tap Start experience on the avatar.');
 	};
 
 	experience.on('ready', handleReady);
-	experience.on('started', () => {
-		sessionReady = true;
-		log('Player unlocked. You can start the ElevenLabs conversation.');
-		refreshControls();
-	});
 
 	await experience.attach({
 		container: experienceHostEl,
 		onStateUpdate: (state) => {
 			if (state === 'error') {
 				setStatus('Experience error', 'warn');
-				if (startBtnEl) startBtnEl.disabled = true;
+				if (connectBtnEl) connectBtnEl.disabled = true;
 			}
 		}
 	});
@@ -651,6 +486,10 @@ function scheduleSaveAgentId() {
 }
 
 agentIdEl?.addEventListener('input', () => {
+	if (armed && !isBridgeLive()) {
+		clearArm();
+		log('Credentials changed — click Connect again.', 'warn');
+	}
 	scheduleSaveAgentId();
 	refreshControls();
 });
@@ -658,6 +497,10 @@ agentIdEl?.addEventListener('change', () => {
 	void saveAgentId(agentIdEl.value);
 });
 apiKeyEl?.addEventListener('input', () => {
+	if (armed && !isBridgeLive()) {
+		clearArm();
+		log('Credentials changed — click Connect again.', 'warn');
+	}
 	updateApiKeyHint();
 	refreshControls();
 });
@@ -672,14 +515,14 @@ toggleKeyBtnEl?.addEventListener('click', () => {
 
 formEl?.addEventListener('submit', (event) => {
 	event.preventDefault();
-	void startElevenLabs();
+	void armElevenLabs();
 });
 endBtnEl?.addEventListener('click', () => {
 	void endElevenLabs();
 });
 
 log(
-	'Flow: (1) copy prompt into ElevenLabs agent (2) tap Start experience on the avatar (3) Start conversation.'
+	'Developer tip: read bridge.js for the ElevenLabs → Liforma integration. Flow: Connect → Start experience.'
 );
 
 async function restoreAgentId() {
@@ -696,7 +539,7 @@ refreshControls();
 void initExperience().catch((err) => {
 	console.error(err);
 	setStatus('Failed to load', 'warn');
-	if (startBtnEl) startBtnEl.disabled = true;
+	if (connectBtnEl) connectBtnEl.disabled = true;
 	const message = err instanceof Error ? err.message : String(err);
 	log(message, 'warn');
 });

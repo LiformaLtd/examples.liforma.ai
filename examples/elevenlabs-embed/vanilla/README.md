@@ -2,6 +2,18 @@
 
 Basic coffee-barista experience embed with **ElevenLabs Agents** as the speech-to-speech system. Agent PCM is piped into `experience.speech.createUtterance` so the Liforma avatar talks.
 
+SvelteKit twin: [`../sveltekit`](../sveltekit) (same port via `./start sveltekit`).
+
+## Files (for developers)
+
+| File | What it is |
+|---|---|
+| **`bridge.js`** | **Read this first.** ElevenLabs → Liforma BYO integration (`startElevenLabsLiformaBridge`). Copy this pattern into your app. |
+| `app.js` | Demo page shell only (Connect/End UI, arm-then-start flow, modal). |
+| `config.js` | Suggested agent first message + system prompt (dashboard paste content). |
+| `demoSignedUrl.js` | Local signed-URL helper — replace with your backend in production. |
+| `server.mjs` | Demo proxy for signed URLs (avoids browser CORS; do not ship API keys to clients). |
+
 ## Run
 
 From the examples repo root:
@@ -23,7 +35,7 @@ Open **http://localhost:4006**
 1. Create an [ElevenLabs Agent](https://elevenlabs.io/app/agents).
 2. On the example page, **Copy** the suggested **First message** and **System prompt** (coffee barista / Anna) into the agent so the scenario matches the avatar.
 3. Create an API key in the ElevenLabs dashboard (**Developers → API Keys**). Copy the full `sk_…` at create-time. If the key is **restricted**, set **ElevenAgents → Write** (signed-URL mint needs write; Read alone is not enough).
-4. Unlock the Liforma player, paste Agent ID + API key, then **Start conversation**.
+4. Paste Agent ID + API key, click **Connect**, then tap **Start experience** on the avatar.
 
 Optional: put the key on the server instead of the form:
 
