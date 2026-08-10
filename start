@@ -39,6 +39,7 @@ Ports:
   4003  Spanish Tutor (vanilla or SvelteKit)
   4004  Guided practice (vanilla or SvelteKit / Next / React)
   4005  Speak playground (vanilla or SvelteKit)
+  4006  ElevenLabs embed (vanilla)
 
 Examples:
   ./start
@@ -153,6 +154,7 @@ if [[ "$RESTART" == true ]]; then
 	kill_port 4003
 	kill_port 4004
 	kill_port 4005
+	kill_port 4006
 fi
 
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
@@ -176,6 +178,8 @@ if [[ "$MODE" == "vanilla" ]]; then
 		"${vanilla_stack_env}PORT=4004 node scripts/serve-example.mjs examples/guided-practice/vanilla"
 	start_on_port speak-playground 4005 "$ROOT" \
 		"${vanilla_stack_env}PORT=4005 node scripts/serve-example.mjs examples/speak-playground/vanilla"
+	start_on_port elevenlabs-embed 4006 "$ROOT" \
+		"${vanilla_stack_env}PORT=4006 node examples/elevenlabs-embed/vanilla/server.mjs"
 elif [[ "$MODE" == "nextjs" ]]; then
 	if [[ ! -d "$ROOT/examples/guided-practice/nextjs/node_modules" ]]; then
 		echo "Run: cd examples/guided-practice/nextjs && npm install" >&2

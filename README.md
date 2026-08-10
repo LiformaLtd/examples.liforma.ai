@@ -25,6 +25,7 @@ npm install
 | Spanish Tutor (vanilla) | http://localhost:4003 |
 | Guided practice — Speak API (vanilla) | http://localhost:4004 |
 | Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4005 |
+| ElevenLabs embed — Agents → avatar (vanilla) | http://localhost:4006 |
 
 To run SvelteKit implementations instead of vanilla:
 
@@ -32,7 +33,7 @@ To run SvelteKit implementations instead of vanilla:
 ./start sveltekit
 ```
 
-That starts the gallery on **4000**, basic embed on **4001**, Spanish Tutor on **4003**, guided practice on **4004**, and speak playground on **4005**. (Experience widget is vanilla-only for v1.)
+That starts the gallery on **4000**, basic embed on **4001**, Spanish Tutor on **4003**, guided practice on **4004**, speak playground on **4005**, and ElevenLabs embed on **4006**. (Experience widget and ElevenLabs embed are vanilla-only for v1.)
 
 Other useful commands:
 
@@ -102,6 +103,12 @@ PORT=4005 node scripts/serve-example.mjs examples/speak-playground/vanilla
 cd examples/speak-playground/sveltekit
 npm install
 npm run dev
+```
+
+**ElevenLabs embed (vanilla)** — port 4006:
+
+```bash
+PORT=4006 node examples/elevenlabs-embed/vanilla/server.mjs
 ```
 
 Use **http://localhost:** ports (not a LAN IP) so WebGPU and microphone APIs work in the browser.

@@ -58,6 +58,26 @@ Adapt:
 }
 
 export function vanillaAgentPrompt(example: ExampleMetadata): string {
+	if (example.slug === 'elevenlabs-embed') {
+		return `Use the Liforma ElevenLabs embed example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`@elevenlabs/client\` Conversation (websocket) muted with \`setVolume({ volume: 0 })\`
+- \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
+- pipe ElevenLabs \`onAudio\` PCM into \`experience.speech.createUtterance\` / \`write\` / \`close\`
+- local signed-URL proxy pattern (never ship ElevenLabs API keys to production browsers)
+- copy-paste friendly structure (index.html + app.js + server.mjs)
+
+Adapt:
+- branding
+- experience id
+- your ElevenLabs agent
+- production signed-URL backend`;
+	}
+
 	if (example.kind === 'embed') {
 		return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
 
@@ -173,7 +193,7 @@ export function exampleOverviewBullets(kind: ExampleKind): string[] {
 	}
 	if (kind === 'presenter') {
 		return [
-			'Presenter-mode integration using Experience.speak() (and related APIs).',
+			'Presenter-mode integration using Experience.speech.speak() (and related APIs).',
 			'Host-owned UI for scripted lines, listening control, and/or feedback.',
 			'CDN / SDK embed of a public demo experience.'
 		];

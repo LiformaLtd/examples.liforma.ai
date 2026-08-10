@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>ElevenLabs embed — Liforma example</title>
+		<meta
+			name="description"
+			content="Basic Liforma experience embed with ElevenLabs Agents as the speech-to-speech system."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+		<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@elevenlabs/client@1.17.0/dist/lib.iife.js"></script>
+	</head>
+	<body>
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>ElevenLabs embed</h1>
+						<p class="lede">
+							Same coffee-barista embed as
+							<a href="http://localhost:4001">basic embed</a>, but ElevenLabs Agents is the
+							speech-to-speech stack. Liforma renders the avatar from ElevenLabs PCM via
+							<code>createUtterance</code>.
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/elevenlabs"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						BYO voice docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="ElevenLabs embed">
+						<div class="experience-panel">
+							<div id="experience-host" aria-label="Liforma experience embed"></div>
+						</div>
+
+						<div class="control-card">
+							<h2>1. Create a matching ElevenLabs agent</h2>
+							<p>
+								In
+								<a
+									href="https://elevenlabs.io/app/agents"
+									target="_blank"
+									rel="noopener noreferrer"
+									>ElevenLabs Agents</a
+								>, create an agent and paste these values so Anna matches the coffee-barista
+								scenario.
+							</p>
+
+							<label class="field">
+								<span class="field-label-row">
+									<span>First message</span>
+									<button type="button" class="btn btn-ghost" id="btn-copy-first" data-copy="first">
+										Copy
+									</button>
+								</span>
+								<textarea
+									id="suggested-first-message"
+									class="text-input text-area text-area-short"
+									readonly
+									rows="2"
+									aria-label="Suggested ElevenLabs first message"
+								></textarea>
+							</label>
+
+							<label class="field">
+								<span class="field-label-row">
+									<span>System prompt</span>
+									<button
+										type="button"
+										class="btn btn-ghost"
+										id="btn-copy-prompt"
+										data-copy="prompt"
+									>
+										Copy
+									</button>
+								</span>
+								<textarea
+									id="suggested-system-prompt"
+									class="text-input text-area"
+									readonly
+									rows="12"
+									aria-label="Suggested ElevenLabs system prompt"
+								></textarea>
+							</label>
+						</div>
+
+						<div class="control-card">
+							<h2>2. Unlock the player, then connect</h2>
+							<p>
+								First click <strong>Start experience</strong> on the avatar (unlocks audio).
+								Then paste your <strong>Agent ID</strong> and <strong>API key</strong> and start
+								the conversation. The local server mints a signed URL (demo-only — use a real
+								backend in production).
+							</p>
+
+							<form id="elevenlabs-form" class="credentials-form" autocomplete="off">
+								<label class="field">
+									<span>Agent ID</span>
+									<input
+										type="text"
+										id="agent-id"
+										name="elevenlabs-agent-id"
+										class="text-input"
+										placeholder="agent_…"
+										autocomplete="off"
+										spellcheck="false"
+									/>
+									<span class="field-note">Saved in this browser only. API key is never stored.</span>
+								</label>
+
+								<label class="field">
+									<span class="field-label-row">
+										<span>API key</span>
+										<button type="button" class="btn btn-ghost" id="btn-toggle-key" aria-pressed="false">
+											Show
+										</button>
+									</span>
+									<input
+										type="text"
+										id="api-key"
+										name="elevenlabs-api-key"
+										class="text-input"
+										placeholder="sk_… full secret from Create Key"
+										autocomplete="off"
+										autocapitalize="off"
+										autocorrect="off"
+										spellcheck="false"
+									/>
+								</label>
+								<p class="field-hint" id="api-key-hint" hidden></p>
+
+								<div class="actions">
+									<button type="submit" class="btn btn-primary" id="btn-start" disabled>
+										Start conversation
+									</button>
+									<button type="button" class="btn" id="btn-end" disabled>End</button>
+								</div>
+							</form>
+
+							<p class="hint">
+								Leave API key blank only for <strong>public</strong> agents. Private agents need
+								a signed URL. If you get <strong>401</strong>,
+								<a
+									href="https://elevenlabs.io/app/settings/api-keys"
+									target="_blank"
+									rel="noopener noreferrer"
+									>open the key → Edit</a
+								>
+								and set <strong>ElevenAgents → Write</strong> (needed for signed URLs). Dashboard
+								••••xxxx is only a hint — the form needs the full <code>sk_…</code> secret.
+							</p>
+
+							<p class="meta">
+								<span id="status-pill" class="status-pill">Loading…</span>
+								· Experience: <code id="experience-id-label"></code>
+							</p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+		<script src="./app.js?v=8" type="module"></script>
+	</body>
+</html>

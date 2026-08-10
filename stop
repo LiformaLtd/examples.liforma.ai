@@ -14,8 +14,8 @@ Stop example services started by ./start. Port occupancy is the source of truth.
 With no targets, stops every known service.
 
 Targets (one or more):
-  gallery, basic-embed, experience-widget, spanish-tutor, guided-practice, speak-playground
-  4000, 4001, 4002, 4003, 4004, 4005
+  gallery, basic-embed, experience-widget, spanish-tutor, guided-practice, speak-playground, elevenlabs-embed
+  4000, 4001, 4002, 4003, 4004, 4005, 4006
   Comma-separated lists are accepted (e.g. spanish-tutor,guided-practice)
 
 Options:
@@ -63,7 +63,7 @@ stop_targets() {
 					continue
 				fi
 				echo "error: unknown service or port: $part" >&2
-				echo "Known: $(known_service_names) (ports 4000–4005)" >&2
+				echo "Known: $(known_service_names) (ports 4000–4006)" >&2
 				exit 1
 			fi
 			stop_service_by_port "$RESOLVED_SERVICE_NAME" "$RESOLVED_SERVICE_PORT"

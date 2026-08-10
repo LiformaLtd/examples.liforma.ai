@@ -98,6 +98,20 @@ export const examples: ExampleMetadata[] = [
 		localPort: 4005,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/speak-playground/spec.md'
+	},
+	{
+		slug: 'elevenlabs-embed',
+		title: 'ElevenLabs embed',
+		description:
+			'Basic coffee-barista embed with ElevenLabs Agents as speech-to-speech — pipe agent PCM into createUtterance.',
+		category: 'Integration',
+		kind: 'embed',
+		frameworks: ['vanilla'],
+		features: ['Experience', 'ElevenLabs Agents', 'createUtterance', 'BYO voice'],
+		githubPath: 'examples/elevenlabs-embed',
+		localPort: 4006,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/elevenlabs-embed/spec.md'
 	}
 ];
 

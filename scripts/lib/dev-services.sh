@@ -11,6 +11,7 @@ EXAMPLE_SERVICES=(
 	"spanish-tutor|4003"
 	"guided-practice|4004"
 	"speak-playground|4005"
+	"elevenlabs-embed|4006"
 )
 
 # Liforma monorepo stack (api, player, CDN SDK preview) — used with ./start --local

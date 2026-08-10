@@ -20,7 +20,7 @@ From the examples repo (inside the monorepo):
 This:
 
 1. Starts **api** (`:3001`), **player** (`:3002`), and **cdn** SDK preview (`:3010`) from the parent monorepo when not already running.
-2. Starts gallery + examples on **4000**–**4005** with the local stack injected via repo scripts (not example source).
+2. Starts gallery + examples on **4000**–**4006** with the local stack injected via repo scripts (not example source).
 
 Check status:
 
