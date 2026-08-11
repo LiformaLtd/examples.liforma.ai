@@ -225,7 +225,7 @@
 					onReady={handleReady}
 					onStarted={handleStarted}
 					onUserTranscript={handleTranscript}
-					onStateUpdate={handleStateUpdate}
+					onPlayerStatusChange={handleStateUpdate}
 					onError={handleError}
 				/>
 			</div>

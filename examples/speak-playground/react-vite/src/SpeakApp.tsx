@@ -115,7 +115,7 @@ export function SpeakApp() {
 									log(`characterSpeechEnded: interrupted — “${event.text}”`, 'interrupt');
 								}
 							}}
-							onStateUpdate={(state) => {
+							onPlayerStatusChange={(state) => {
 								if (state === 'error') {
 									setStatus({ text: 'Experience error', tone: 'warn' });
 									setSessionReady(false);

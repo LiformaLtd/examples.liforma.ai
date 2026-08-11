@@ -333,7 +333,7 @@ export default function DemoApp() {
 								startButton={startButton}
 								onReady={handleReady}
 								onStarted={handleStarted}
-								onStateUpdate={(state) => {
+								onPlayerStatusChange={(state) => {
 									if (state === 'error') setStatus('Experience error', 'warn');
 								}}
 								onError={(error) => {

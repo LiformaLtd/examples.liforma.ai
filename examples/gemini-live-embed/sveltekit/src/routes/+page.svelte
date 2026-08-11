@@ -312,7 +312,7 @@
 					{startButton}
 					onReady={handleReady}
 					onStarted={handleStarted}
-					onStateUpdate={handleStateUpdate}
+					onPlayerStatusChange={handleStateUpdate}
 					onError={handleError}
 				/>
 			</div>

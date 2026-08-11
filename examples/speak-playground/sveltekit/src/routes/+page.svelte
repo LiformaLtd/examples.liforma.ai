@@ -118,7 +118,7 @@
 
 				await session.attach({
 					container: avatarHost,
-					onStateUpdate: (state: string) => {
+					onPlayerStatusChange: (state: string) => {
 						if (state === 'error') {
 							setStatus('Avatar error', 'warn');
 							sessionReady = false;

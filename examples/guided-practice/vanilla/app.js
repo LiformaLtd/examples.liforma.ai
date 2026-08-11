@@ -224,7 +224,7 @@ async function initExperience() {
 				shadow: 'strong'
 			}
 		},
-		onStateUpdate: (state) => {
+		onPlayerStatusChange: (state) => {
 			if (state === 'error') {
 				setPhase('error');
 				setStatus('Experience error', 'warn');

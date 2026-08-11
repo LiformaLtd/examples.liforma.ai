@@ -131,7 +131,7 @@ async function initExperience() {
 				shadow: 'soft'
 			}
 		},
-		onStateUpdate: (state) => {
+		onPlayerStatusChange: (state) => {
 			if (state === 'error') {
 				setStatus('Experience error', 'warn');
 				setInputEnabled(false);

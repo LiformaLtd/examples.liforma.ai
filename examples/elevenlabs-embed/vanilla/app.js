@@ -437,7 +437,7 @@ async function initExperience() {
 				shadow: 'soft'
 			}
 		},
-		onStateUpdate: (state) => {
+		onPlayerStatusChange: (state) => {
 			if (state === 'error') {
 				setStatus('Experience error', 'warn');
 				if (connectBtnEl) connectBtnEl.disabled = true;
