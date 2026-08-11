@@ -5,7 +5,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml" />
 	<title>Spanish Tutor — Liforma Example</title>
 	<meta
 		name="description"
