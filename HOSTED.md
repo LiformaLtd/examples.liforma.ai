@@ -51,15 +51,23 @@ Then in each new project (or via first `npx vercel link` from `examples/<slug>/s
 | livekit-embed | `LIVEKIT_URL`, `LIVEKIT_API_KEY`, `LIVEKIT_API_SECRET` |
 | spanish-tutor | `LIFORMA_API_KEY` (optional catalog) |
 
-## DNS
+## DNS (Cloudflare)
 
-Prefer wildcard:
+`liforma.ai` DNS is on Cloudflare (external to Vercel). Spanish Tutor has a per-host CNAME; new demo hosts need a wildcard (or one CNAME each).
 
-```text
-*.examples.liforma.ai → Vercel
-```
+In Cloudflare → **liforma.ai** → DNS → Add record:
 
-Spanish Tutor already proves the zone works for nested hosts.
+| Type | Name | Target | Proxy |
+|------|------|--------|-------|
+| CNAME | `*.examples` | `cname.vercel-dns.com` | **DNS only** (grey cloud) |
+
+That covers `https://{slug}.examples.liforma.ai/`.
+
+Do **not** use the `*.vercel.app` preview URL for mint tests — those origins are not on the `https://*.liforma.ai` allowlist. Use the custom domain after DNS propagates.
+
+### SDK version
+
+Hosted demos need `@liforma/client` **≥ 0.4.1** (`POST /v1/browser-sessions`). `0.4.0` still called removed `/v1/public-sessions` and failed CORS preflight.
 
 ## Gallery
 
