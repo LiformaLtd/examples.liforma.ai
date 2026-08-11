@@ -9,7 +9,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@liforma/client": "^0.4.0",
+		"@liforma/client": "^0.4.1",
 		"livekit-client": "^2.21.0",
 		"react": "^19.1.1",
 		"react-dom": "^19.1.1"
