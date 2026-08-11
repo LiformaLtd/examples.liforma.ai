@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { examples } from '$lib/examples';
+	import { examples, liveDemoLabel } from '$lib/examples';
 </script>
 
 <svelte:head>
@@ -32,7 +32,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						Live demo
+						{liveDemoLabel(example)}
 					</a>
 				{/if}
 			</article>

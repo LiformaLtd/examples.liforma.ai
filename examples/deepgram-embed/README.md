@@ -18,6 +18,8 @@ Framework ports use `@liforma/client/deepgram` via `helloByo.ts`. Vanilla `hello
 
 Docs: https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/deepgram
 
+**Hosted demo:** https://deepgram-embed.examples.liforma.ai/ shows a clone/run notice (the WS proxy cannot run on Vercel serverless). For Connect → Start, run locally on port `4008`.
+
 Install shared proxy deps once:
 
 ```bash

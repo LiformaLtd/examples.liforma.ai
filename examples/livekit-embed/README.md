@@ -30,6 +30,8 @@ export LIVEKIT_API_KEY=…
 export LIVEKIT_API_SECRET=…
 ```
 
+**Hosted demo:** https://livekit-embed.examples.liforma.ai/
+
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.
 
 **Note:** An agent (or remote participant whose identity starts with `agent`) must publish audio in the room for the avatar to lip-sync.

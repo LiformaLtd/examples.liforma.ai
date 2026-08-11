@@ -11,4 +11,6 @@ Corner launcher: collapsed thumb until click, then an in-page overlay conversati
 
 **Read first in each port:** `Demo.tsx` / `+page.svelte` — the `ExperienceWidget` mount.
 
+**Hosted demo:** https://experience-widget.examples.liforma.ai/
+
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.

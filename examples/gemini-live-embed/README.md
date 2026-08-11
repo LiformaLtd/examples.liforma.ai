@@ -18,6 +18,8 @@ Framework ports use `@liforma/client/google` via `helloByo.ts`. Vanilla `helloBy
 
 Docs: https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/google
 
+**Hosted demo:** https://gemini-live-embed.examples.liforma.ai/ shows a clone/run notice (the WS proxy cannot run on Vercel serverless). For Connect → Start, run locally on port `4010`.
+
 Install shared proxy deps once:
 
 ```bash

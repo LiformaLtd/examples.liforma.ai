@@ -13,6 +13,8 @@ Coffee-barista embed with ElevenLabs Agents as speech-to-speech.
 | Next.js | `nextjs/` | http://localhost:4006 |
 | React (Vite) | `react-vite/` | http://localhost:4006 |
 
+**Hosted demo:** https://elevenlabs-embed.examples.liforma.ai/ (needs `ELEVENLABS_API_KEY` on Vercel for live Connect).
+
 Framework ports use the SDK helper via `helloByo`. Vanilla keeps a CDN-compatible `bridge.js` that mirrors the same behavior (no bundler).
 
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.

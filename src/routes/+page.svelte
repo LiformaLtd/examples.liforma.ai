@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { examples } from '$lib/examples';
+	import { examples, liveDemoLabel } from '$lib/examples';
 	import { GITHUB_REPO } from '$lib/constants';
 	import { frameworks } from '$lib/frameworks';
 </script>
@@ -26,9 +26,10 @@
 		</a>
 	</div>
 	<p class="run-hint">
-		Clone the repo and run <code>./start</code> to open the gallery on
-		<code>localhost:4000</code> plus runnable demos on <code>4001</code>–<code>4005</code>.
-		See the <a href={GITHUB_REPO}>README</a> for single-example commands.
+		Try a <strong>Live demo</strong> on <code>*.examples.liforma.ai</code>, or clone and run
+		<code>./start</code> for the gallery on <code>localhost:4000</code> plus demos on
+		<code>4001</code>–<code>4010</code>. Deepgram / Gemini need a local WebSocket proxy
+		(hosted pages explain how).
 	</p>
 </section>
 
@@ -50,7 +51,7 @@
 						target="_blank"
 						rel="noopener noreferrer"
 					>
-						Live demo
+						{liveDemoLabel(example)}
 					</a>
 				{/if}
 			</article>

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import CopyPrompt from '$lib/components/CopyPrompt.svelte';
 	import { githubRawPath, githubTreePath, externalLinks, GITHUB_REPO } from '$lib/constants';
+	import { liveDemoLabel } from '$lib/examples';
 	import { getFramework } from '$lib/frameworks';
 	import { exampleOverviewBullets } from '$lib/prompts';
 	import type { PageData } from './$types';
@@ -69,7 +70,7 @@ Preserve lesson-based UX, Liforma Experience embed, and close-before-switch less
 				target="_blank"
 				rel="noopener noreferrer"
 			>
-				Live demo
+				{liveDemoLabel(example)}
 			</a>
 		{/if}
 		<a
@@ -123,8 +124,12 @@ Preserve lesson-based UX, Liforma Experience embed, and close-before-switch less
 	<ul>
 		{#if example.liveAppUrl}
 			<li>
-				<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer">Live demo</a>
-				— try the hosted app
+				<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer"
+					>{liveDemoLabel(example)}</a
+				>
+				— {example.liveDemoMode === 'local-only'
+					? 'hosted notice; clone to run the full WS-proxy demo'
+					: 'try the hosted app'}
 			</li>
 		{/if}
 		<li><a href={externalLinks.docsQuickStart}>Docs: Quick Start</a></li>

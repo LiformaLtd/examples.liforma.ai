@@ -12,4 +12,6 @@ Type text and press Enter — the experience speaks it. Toggle enqueue vs interr
 **Read first in React/Next:** `SpeakWorkspace.tsx` / `SpeakApp.tsx`.  
 **Canonical speak API:** `experience.speech.speak({ text, queue: 'append' | 'replace-active' })`.
 
+**Hosted demo:** https://speak-playground.examples.liforma.ai/
+
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.

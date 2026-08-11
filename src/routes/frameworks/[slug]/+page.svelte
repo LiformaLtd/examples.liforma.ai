@@ -1,7 +1,7 @@
 <script lang="ts">
 	import CodeBlock from '$lib/components/CodeBlock.svelte';
 	import { DEMO_EXPERIENCE_ID, githubTreePath } from '$lib/constants';
-	import { implementationSourcePath } from '$lib/examples';
+	import { implementationSourcePath, liveDemoLabel } from '$lib/examples';
 	import type { PageData } from './$types';
 
 	let { data }: { data: PageData } = $props();
@@ -41,7 +41,9 @@
 					· <code>http://localhost:{example.localPort}</code>
 					{#if example.liveAppUrl && framework.slug === 'sveltekit'}
 						·
-						<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer">live demo</a>
+						<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer"
+							>{liveDemoLabel(example).toLowerCase()}</a
+						>
 					{/if}
 				</li>
 			{/each}

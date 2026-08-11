@@ -13,7 +13,7 @@
 		"verify": "npm run verify:commit && npm run build"
 	},
 	"dependencies": {
-		"@liforma/client": "file:../../../../cdn.liforma.ai"
+		"@liforma/client": "^0.4.0"
 	},
 	"devDependencies": {
 		"@eslint/js": "^9.39.4",

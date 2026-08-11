@@ -6,9 +6,12 @@
 	import { EXPERIENCE_ID } from '$lib/config';
 	import { DemoProxyReadyError, buildGeminiProxyUrl, fetchDemoProxyReady } from '$lib/demoProxyReady';
 	import { startByoSpeech } from '$lib/helloByo';
+	import { HOSTED_WS_PROXY_NOTICE, isHostedExamplesDemo } from '$lib/hostedDemoNotice';
 	import type { StartButtonOptions } from '@liforma/client';
 	import type { GeminiLiveBridge } from '@liforma/client/google';
 	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
+
+	const hostedNotice = isHostedExamplesDemo();
 
 	const GEMINI_AI_STUDIO_URL = 'https://aistudio.google.com/apikey';
 	const GEMINI_API_KEY_MIN_LENGTH = 20;
@@ -316,6 +319,27 @@
 		</div>
 
 		<div class="control-card">
+			{#if hostedNotice}
+				<div class="hosted-notice" role="status">
+					<h2>{HOSTED_WS_PROXY_NOTICE.title}</h2>
+					<p>{HOSTED_WS_PROXY_NOTICE.body}</p>
+					<pre class="clone-hint"><code>{HOSTED_WS_PROXY_NOTICE.cloneHint}</code></pre>
+					<p>
+						<a href={HOSTED_WS_PROXY_NOTICE.githubUrl} target="_blank" rel="noopener noreferrer"
+							>View source on GitHub</a
+						>
+						·
+						<a
+							href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/google"
+							target="_blank"
+							rel="noopener noreferrer">Gemini BYO docs</a
+						>
+					</p>
+					<p class="meta">
+						Experience preview only on this host · <code>{EXPERIENCE_ID}</code>
+					</p>
+				</div>
+			{:else}
 			<h2>1. Connect Gemini, then start the player</h2>
 			<p>
 				Paste your <strong>Gemini API key</strong>, click <strong>Connect</strong>, then tap
@@ -388,6 +412,7 @@
 				<span class="status-pill" data-tone={statusTone}>{statusText}</span>
 				· Experience: <code>{EXPERIENCE_ID}</code>
 			</p>
+			{/if}
 		</div>
 	</section>
 
@@ -568,6 +593,34 @@
 		margin: 0.85rem 0 0;
 		font-size: 0.8125rem;
 		color: var(--text-muted);
+	}
+
+	.hosted-notice h2 {
+		margin: 0 0 0.5rem;
+		font-size: 1.125rem;
+	}
+
+	.hosted-notice p {
+		margin: 0.5rem 0;
+		color: var(--text-muted);
+		font-size: 0.9375rem;
+		line-height: 1.45;
+	}
+
+	.clone-hint {
+		margin: 0.75rem 0;
+		padding: 0.75rem 0.9rem;
+		border-radius: 8px;
+		background: var(--bg-subtle);
+		border: 1px solid var(--border);
+		overflow-x: auto;
+		font-size: 0.75rem;
+		line-height: 1.4;
+	}
+
+	.clone-hint code {
+		white-space: pre-wrap;
+		word-break: break-word;
 	}
 
 	.status-pill {

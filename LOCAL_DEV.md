@@ -2,6 +2,15 @@
 
 Examples always target production (`cdn.liforma.ai`, `api.liforma.ai`, `player.liforma.ai`), including when the example itself runs on `localhost`. Sample app code never configures a local stack — that keeps third-party copy-paste demos unambiguous.
 
+**SDK dependency:** example `package.json` files use npm `@liforma/client` (`^0.4.0+`) so Vercel / third-party clones work without the meta monorepo. For unpublished SDK changes:
+
+```bash
+cd ../cdn.liforma.ai && npm run build && npm link
+cd examples/<slug>/sveltekit && npm link @liforma/client
+```
+
+Hosted demos: see [`HOSTED.md`](./HOSTED.md).
+
 Local opt-in (no example-app helpers):
 
 - Append `?stack=local` to the host page URL (SDK reads it on the parent page)

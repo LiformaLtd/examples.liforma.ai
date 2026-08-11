@@ -12,6 +12,8 @@ From the examples repo root:
 
 Open http://localhost:4004
 
+**Hosted demo:** https://guided-practice.examples.liforma.ai/
+
 For local unpublished SDK/player changes:
 
 ```bash

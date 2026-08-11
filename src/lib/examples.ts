@@ -3,6 +3,9 @@ import type { SupportedFramework } from '$lib/frameworks';
 /** Drives gallery copy and framework detail pages. */
 export type ExampleKind = 'embed' | 'widget' | 'lessons' | 'presenter';
 
+/** How the hosted `*.examples.liforma.ai` demo behaves. */
+export type LiveDemoMode = 'live' | 'local-only';
+
 export type ExampleMetadata = {
 	slug: string;
 	title: string;
@@ -14,12 +17,21 @@ export type ExampleMetadata = {
 	githubPath: string;
 	/** Local dev port (shared by vanilla and SvelteKit for this example). */
 	localPort: number;
-	/** Hosted runnable app (full lesson UI), when deployed. */
+	/** Hosted runnable app (SvelteKit), when deployed. */
 	liveAppUrl?: string;
+	/**
+	 * `live` — full demo on Vercel.
+	 * `local-only` — hosted page explains clone/run (WS-proxy BYO).
+	 */
+	liveDemoMode?: LiveDemoMode;
 	/** Hosted Meet page for the underlying experience — not the full example app. */
 	meetExperienceUrl?: string;
 	specPath: string;
 };
+
+function hostedUrl(slug: string): string {
+	return `https://${slug}.examples.liforma.ai/`;
+}
 
 export const examples: ExampleMetadata[] = [
 	{
@@ -33,6 +45,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'Public session mint'],
 		githubPath: 'examples/basic-embed',
 		localPort: 4001,
+		liveAppUrl: hostedUrl('basic-embed'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/basic-embed/spec.md'
 	},
@@ -47,6 +61,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['ExperienceWidget', 'Public session mint', 'Overlay expand'],
 		githubPath: 'examples/experience-widget',
 		localPort: 4002,
+		liveAppUrl: hostedUrl('experience-widget'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/experience-widget/spec.md'
 	},
@@ -61,7 +77,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'Microphone', 'Transcript', 'Learning objective', 'Lessons'],
 		githubPath: 'examples/spanish-tutor',
 		localPort: 4003,
-		liveAppUrl: 'https://spanish-tutor.examples.liforma.ai/',
+		liveAppUrl: hostedUrl('spanish-tutor'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet/demo-spanish-cafe',
 		specPath: 'examples/spanish-tutor/spec.md'
 	},
@@ -82,6 +99,8 @@ export const examples: ExampleMetadata[] = [
 		],
 		githubPath: 'examples/guided-practice',
 		localPort: 4004,
+		liveAppUrl: hostedUrl('guided-practice'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/guided-practice/spec.md'
 	},
@@ -96,6 +115,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'speak()', 'Enqueue vs interrupt', 'Presenter mode'],
 		githubPath: 'examples/speak-playground',
 		localPort: 4005,
+		liveAppUrl: hostedUrl('speak-playground'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/speak-playground/spec.md'
 	},
@@ -110,6 +131,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'ElevenLabs Agents', 'createUtterance', 'BYO voice'],
 		githubPath: 'examples/elevenlabs-embed',
 		localPort: 4006,
+		liveAppUrl: hostedUrl('elevenlabs-embed'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/elevenlabs-embed/spec.md'
 	},
@@ -124,6 +147,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'OpenAI Realtime', 'createUtterance', 'BYO voice', 'transcript'],
 		githubPath: 'examples/openai-realtime-embed',
 		localPort: 4007,
+		liveAppUrl: hostedUrl('openai-realtime-embed'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/openai-realtime-embed/spec.md'
 	},
@@ -138,6 +163,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'Deepgram Voice Agent', 'createUtterance', 'BYO voice', 'transcript'],
 		githubPath: 'examples/deepgram-embed',
 		localPort: 4008,
+		liveAppUrl: hostedUrl('deepgram-embed'),
+		liveDemoMode: 'local-only',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/deepgram-embed/spec.md'
 	},
@@ -152,6 +179,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'LiveKit', 'createUtterance', 'BYO voice', 'token mint', 'transcript'],
 		githubPath: 'examples/livekit-embed',
 		localPort: 4009,
+		liveAppUrl: hostedUrl('livekit-embed'),
+		liveDemoMode: 'live',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/livekit-embed/spec.md'
 	},
@@ -166,6 +195,8 @@ export const examples: ExampleMetadata[] = [
 		features: ['Experience', 'Gemini Live', 'createUtterance', 'BYO voice', 'transcript'],
 		githubPath: 'examples/gemini-live-embed',
 		localPort: 4010,
+		liveAppUrl: hostedUrl('gemini-live-embed'),
+		liveDemoMode: 'local-only',
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/gemini-live-embed/spec.md'
 	}
@@ -187,4 +218,8 @@ export function isImplementationAvailable(
 	frameworkSlug: string
 ): boolean {
 	return example.frameworks.includes(frameworkSlug as SupportedFramework);
+}
+
+export function liveDemoLabel(example: ExampleMetadata): string {
+	return example.liveDemoMode === 'local-only' ? 'Hosted notice' : 'Live demo';
 }

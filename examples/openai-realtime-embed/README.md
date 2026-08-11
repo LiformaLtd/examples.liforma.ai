@@ -14,4 +14,6 @@ Coffee-barista embed with OpenAI Realtime as speech-to-speech.
 
 Framework ports use `@liforma/client/openai` via `helloByo.ts`. Vanilla `helloByo.js` calls the CDN-compatible `bridge.js`.
 
+**Hosted demo:** https://openai-realtime-embed.examples.liforma.ai/
+
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.

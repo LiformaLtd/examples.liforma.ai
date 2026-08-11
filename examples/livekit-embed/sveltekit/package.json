@@ -13,7 +13,7 @@
 		"verify": "npm run verify:commit && npm run build"
 	},
 	"dependencies": {
-		"@liforma/client": "file:../../../../cdn.liforma.ai",
+		"@liforma/client": "^0.4.0",
 		"livekit-client": "^2.21.0",
 		"livekit-server-sdk": "^2.13.2"
 	},

@@ -2,7 +2,7 @@
 	import CodeBlock from '$lib/components/CodeBlock.svelte';
 	import CopyPrompt from '$lib/components/CopyPrompt.svelte';
 	import { DEMO_EXPERIENCE_ID, githubTreePath, externalLinks } from '$lib/constants';
-	import { implementationSourcePath } from '$lib/examples';
+	import { implementationSourcePath, liveDemoLabel } from '$lib/examples';
 	import { exampleLocalUrl } from '$lib/examplePorts';
 	import {
 		frameworkEmbedSnippet,
@@ -257,7 +257,7 @@ npx serve . -l tcp://localhost:${example.localPort}
 					target="_blank"
 					rel="noopener noreferrer"
 				>
-					Try live demo
+					{liveDemoLabel(example)}
 				</a>
 			{/if}
 			<a
@@ -290,8 +290,11 @@ npx serve . -l tcp://localhost:${example.localPort}
 		<li><a href={externalLinks.docsWebComponent}>Web Component reference</a></li>
 		{#if example.liveAppUrl && framework.slug === 'sveltekit'}
 			<li>
-				<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer">Live demo</a>
-				— hosted {example.title} app (SvelteKit)
+				<a href={example.liveAppUrl} target="_blank" rel="noopener noreferrer"
+					>{liveDemoLabel(example)}</a
+				>
+				— hosted {example.title} app (SvelteKit){#if example.liveDemoMode === 'local-only'}
+					(clone/run notice — WS proxy){/if}
 			</li>
 		{/if}
 		{#if example.meetExperienceUrl}
