@@ -79,14 +79,13 @@ async function ensureProject(slug) {
 		method: 'POST',
 		body: JSON.stringify({
 			name,
-			framework: 'sveltekit',
+			// Match spanish-tutor.examples.liforma.ai — auto install/build via SvelteKit preset
+			framework: 'sveltekit-1',
 			gitRepository: {
 				type: 'github',
 				repo: 'LiformaLtd/examples.liforma.ai'
 			},
 			rootDirectory: `examples/${slug}/sveltekit`,
-			buildCommand: 'npm run build',
-			installCommand: 'npm install',
 			publicSource: true
 		})
 	});
