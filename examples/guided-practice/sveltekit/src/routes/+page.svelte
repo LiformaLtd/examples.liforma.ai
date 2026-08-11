@@ -168,8 +168,8 @@
 		}
 	}
 
-	function handleReady({ manifest }: ExperienceEvents['ready']): void {
-		modeLabel = `${manifest.experience.mode} / ${manifest.experience.responseMode} / ${manifest.experience.speechInputMode}`;
+	function handleReady({ session }: ExperienceEvents['ready']): void {
+		modeLabel = `${session.mode} · locale ${session.locale}`;
 		setPhase('await_begin');
 		setStatus('Tap Begin lesson in the player', 'default');
 		pushLog('Experience ready. Use the player start button to begin the lesson.');

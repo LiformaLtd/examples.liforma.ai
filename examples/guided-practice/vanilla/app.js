@@ -166,19 +166,6 @@ async function initExperience() {
 		experienceId: PRACTICE_EXPERIENCE_ID,
 		mode: 'presenter',
 		speechInputMode: 'manual',
-		startButton: {
-			label: 'Begin lesson',
-			ariaLabel: 'Begin guided practice lesson',
-			placement: 'bottom-center',
-			variant: 'primary',
-			appearance: {
-				backgroundColor: '#2563eb',
-				textColor: '#ffffff',
-				borderRadiusPx: 999,
-				size: 'large',
-				shadow: 'strong'
-			}
-		},
 		onUserTranscript: (update) => {
 			if (phase === 'recording' && update.text.trim() && transcriptTextEl) {
 				transcriptTextEl.textContent = update.text.trim();
@@ -190,21 +177,17 @@ async function initExperience() {
 	if (!experienceHostEl) throw new Error('Experience host element missing.');
 
 	let readyHandled = false;
-	const handleReady = ({ manifest }) => {
+	const handleReady = ({ session }) => {
 		if (readyHandled) return;
 		readyHandled = true;
 		experienceIdLabelEl.textContent = PRACTICE_EXPERIENCE_ID;
-		if (modeLabelEl && manifest?.experience) {
-			modeLabelEl.textContent = `${manifest.experience.mode} / ${manifest.experience.responseMode} / ${manifest.experience.speechInputMode}`;
+		if (modeLabelEl && session) {
+			modeLabelEl.textContent = `${session.mode} · locale ${session.locale}`;
 		}
 
-		if (
-			manifest?.experience?.mode !== 'presenter' ||
-			manifest.experience.responseMode !== 'manual' ||
-			manifest.experience.speechInputMode !== 'manual'
-		) {
+		if (session?.mode !== 'presenter') {
 			log(
-				'Warning: manifest modes are not presenter/manual/manual — the experience may run in conversation mode.'
+				'Warning: session mode is not presenter — the experience may run in conversation mode.'
 			);
 		}
 
@@ -228,6 +211,19 @@ async function initExperience() {
 
 	await experience.attach({
 		container: experienceHostEl,
+		startButton: {
+			label: 'Begin lesson',
+			ariaLabel: 'Begin guided practice lesson',
+			placement: 'bottom-center',
+			variant: 'primary',
+			appearance: {
+				backgroundColor: '#2563eb',
+				textColor: '#ffffff',
+				borderRadiusPx: 999,
+				size: 'large',
+				shadow: 'strong'
+			}
+		},
 		onStateUpdate: (state) => {
 			if (state === 'error') {
 				setPhase('error');

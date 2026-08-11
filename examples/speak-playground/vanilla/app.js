@@ -89,20 +89,7 @@ async function initExperience() {
 	experience = await Experience.startSession({
 		experienceId: SPEAK_EXPERIENCE_ID,
 		mode: 'presenter',
-		speechInputMode: 'off',
-		startButton: {
-			label: 'Start experience',
-			ariaLabel: 'Start experience session and unlock audio',
-			placement: 'bottom-center',
-			variant: 'primary',
-			appearance: {
-				backgroundColor: '#5c4ae0',
-				textColor: '#ffffff',
-				borderRadiusPx: 999,
-				size: 'large',
-				shadow: 'soft'
-			}
-		}
+		speechInputMode: 'off'
 	});
 
 	if (!experienceHostEl) throw new Error('Experience host element missing.');
@@ -131,6 +118,19 @@ async function initExperience() {
 
 	await experience.attach({
 		container: experienceHostEl,
+		startButton: {
+			label: 'Start experience',
+			ariaLabel: 'Start experience session and unlock audio',
+			placement: 'bottom-center',
+			variant: 'primary',
+			appearance: {
+				backgroundColor: '#5c4ae0',
+				textColor: '#ffffff',
+				borderRadiusPx: 999,
+				size: 'large',
+				shadow: 'soft'
+			}
+		},
 		onStateUpdate: (state) => {
 			if (state === 'error') {
 				setStatus('Experience error', 'warn');

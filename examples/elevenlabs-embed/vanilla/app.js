@@ -394,19 +394,6 @@ async function initExperience() {
 		experienceId: EXPERIENCE_ID,
 		mode: 'presenter',
 		speechInputMode: 'off',
-		startButton: {
-			label: 'Start experience',
-			ariaLabel: 'Start experience session and unlock audio',
-			placement: 'bottom-center',
-			variant: 'primary',
-			appearance: {
-				backgroundColor: '#0d7a5f',
-				textColor: '#ffffff',
-				borderRadiusPx: 999,
-				size: 'large',
-				shadow: 'soft'
-			}
-		},
 		onStart: () => {
 			sessionReady = true;
 			log('Player unlocked.');
@@ -437,6 +424,19 @@ async function initExperience() {
 
 	await experience.attach({
 		container: experienceHostEl,
+		startButton: {
+			label: 'Start experience',
+			ariaLabel: 'Start experience session and unlock audio',
+			placement: 'bottom-center',
+			variant: 'primary',
+			appearance: {
+				backgroundColor: '#0d7a5f',
+				textColor: '#ffffff',
+				borderRadiusPx: 999,
+				size: 'large',
+				shadow: 'soft'
+			}
+		},
 		onStateUpdate: (state) => {
 			if (state === 'error') {
 				setStatus('Experience error', 'warn');
