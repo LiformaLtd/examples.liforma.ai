@@ -1,4 +1,4 @@
-export const GITHUB_REPO = 'https://github.com/charlesatliforma/examples.liforma.ai';
+export const GITHUB_REPO = 'https://github.com/LiformaLtd/examples.liforma.ai';
 
 export const DEMO_EXPERIENCE_ID = 'exp_01EXAMPLES_COFFEE_BARISTA';
 

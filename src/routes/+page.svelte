@@ -2,6 +2,9 @@
 	import { examples, liveDemoLabel } from '$lib/examples';
 	import { GITHUB_REPO } from '$lib/constants';
 	import { frameworks } from '$lib/frameworks';
+
+	const byoExamples = examples.filter((example) => example.features.includes('BYO voice'));
+	const otherExamples = examples.filter((example) => !example.features.includes('BYO voice'));
 </script>
 
 <svelte:head>
@@ -19,6 +22,10 @@
 		Production-quality starter apps for adding intelligent animated avatars, speech, and real-time
 		AI experiences to your product.
 	</p>
+	<p class="byo-line">
+		Using ElevenLabs / OpenAI Realtime / Gemini / Deepgram / LiveKit?
+		<a href="#byo-voice">Add a Liforma avatar →</a>
+	</p>
 	<div class="hero-actions">
 		<a class="btn primary" href="/examples">Browse examples</a>
 		<a class="btn secondary" href={GITHUB_REPO} target="_blank" rel="noopener noreferrer">
@@ -33,10 +40,40 @@
 	</p>
 </section>
 
+<section id="byo-voice" class="page-shell" aria-label="Bring your own voice">
+	<h2>Bring your own voice</h2>
+	<p class="section-lead">
+		Already on ElevenLabs, OpenAI Realtime, Gemini Live, Deepgram, or LiveKit? Pipe vendor audio into
+		a Liforma avatar with these embeds.
+	</p>
+	<div class="card-grid">
+		{#each byoExamples as example (example.slug)}
+			<article class="card">
+				<a class="card-body" href="/examples/{example.slug}">
+					<span class="badge">{example.category}</span>
+					<h3>{example.title}</h3>
+					<p>{example.description}</p>
+					<span class="card-link">View example →</span>
+				</a>
+				{#if example.liveAppUrl}
+					<a
+						class="btn secondary card-live"
+						href={example.liveAppUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						{liveDemoLabel(example)}
+					</a>
+				{/if}
+			</article>
+		{/each}
+	</div>
+</section>
+
 <section class="page-shell" aria-label="Featured examples">
 	<h2>Examples</h2>
 	<div class="card-grid">
-		{#each examples as example (example.slug)}
+		{#each otherExamples as example (example.slug)}
 			<article class="card">
 				<a class="card-body" href="/examples/{example.slug}">
 					<span class="badge">{example.category}</span>
@@ -62,8 +99,9 @@
 <section class="page-shell" aria-label="Frameworks">
 	<h2>Frameworks</h2>
 	<p class="section-lead">
-		Each example can be ported across ecosystems. Phase 1 ships <strong>SvelteKit</strong> and
-		<strong>vanilla HTML</strong> — the web component works everywhere else.
+		<strong>SvelteKit</strong>, <strong>vanilla HTML</strong>, <strong>Next.js</strong>, and
+		<strong>React (Vite)</strong> are available today. Vue, Nuxt, Astro, and Angular are planned —
+		the web component also works in those stacks meanwhile.
 	</p>
 	<div class="card-grid">
 		{#each frameworks as framework (framework.slug)}
@@ -98,6 +136,18 @@
 		font-size: 1.125rem;
 		color: var(--text-muted);
 		max-width: 42rem;
+	}
+
+	.byo-line {
+		margin: 1rem 0 0;
+		font-size: 1rem;
+		color: var(--text-muted);
+		max-width: 42rem;
+	}
+
+	.byo-line a {
+		color: var(--accent-text);
+		font-weight: 600;
 	}
 
 	.hero-actions {

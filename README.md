@@ -9,7 +9,7 @@ Examples use the hosted Liforma platform (`cdn.liforma.ai`, `api.liforma.ai`, `p
 Clone the repo, install dependencies, and start everything:
 
 ```bash
-git clone https://github.com/charlesatliforma/examples.liforma.ai.git
+git clone https://github.com/LiformaLtd/examples.liforma.ai.git
 cd examples.liforma.ai
 npm install
 ./start
@@ -210,6 +210,6 @@ See [`LOCAL_DEV.md`](LOCAL_DEV.md) for details and manual overrides.
 - [Gallery (production)](https://examples.liforma.ai)
 - [Spanish Tutor live demo](https://spanish-tutor.examples.liforma.ai/)
 - [Docs: Quick Start](https://docs.liforma.ai/getting-started/quick-start)
-- [GitHub](https://github.com/charlesatliforma/examples.liforma.ai)
+- [GitHub](https://github.com/LiformaLtd/examples.liforma.ai)
 
 <!-- deploy verify: git reconnect probe, 2026-07-31 -->
