@@ -22,8 +22,8 @@ Start the examples gallery and runnable apps. Uses production Liforma APIs by de
 Modes:
   vanilla       Gallery + all vanilla examples (default)
   sveltekit     Gallery + SvelteKit examples (same ports per example)
-  nextjs        Gallery + all Next.js examples (:4001–:4007)
-  react-vite    Gallery + all React (Vite) examples (:4001–:4007)
+  nextjs        Gallery + all Next.js examples (:4001–:4010)
+  react-vite    Gallery + all React (Vite) examples (:4001–:4010)
 
 Options:
   --local     Use local Liforma stack (api :3001, player :3002, cdn :3010).
@@ -41,6 +41,9 @@ Ports (one port per example; framework modes share ports):
   4005  Speak playground
   4006  ElevenLabs embed
   4007  OpenAI Realtime embed
+  4008  Deepgram Voice Agent embed
+  4009  LiveKit embed
+  4010  Gemini Live embed
 
 Examples:
   ./start
@@ -157,6 +160,9 @@ if [[ "$RESTART" == true ]]; then
 	kill_port 4005
 	kill_port 4006
 	kill_port 4007
+	kill_port 4008
+	kill_port 4009
+	kill_port 4010
 fi
 
 start_on_port gallery "$GALLERY_PORT" "$ROOT" "npm run dev"
@@ -170,6 +176,10 @@ if [[ "$USE_LOCAL_STACK" == true ]]; then
 fi
 
 if [[ "$MODE" == "vanilla" ]]; then
+	if [[ ! -d "$ROOT/examples/deepgram-embed/node_modules" ]]; then
+		echo "Run: cd examples/deepgram-embed && npm install" >&2
+		exit 1
+	fi
 	start_on_port basic-embed 4001 "$ROOT" \
 		"${vanilla_stack_env}PORT=4001 node scripts/serve-example.mjs examples/basic-embed/vanilla"
 	start_on_port experience-widget 4002 "$ROOT" \
@@ -184,7 +194,33 @@ if [[ "$MODE" == "vanilla" ]]; then
 		"${vanilla_stack_env}PORT=4006 node examples/elevenlabs-embed/vanilla/server.mjs"
 	start_on_port openai-realtime-embed 4007 "$ROOT" \
 		"${vanilla_stack_env}PORT=4007 node examples/openai-realtime-embed/vanilla/server.mjs"
+	start_on_port deepgram-embed 4008 "$ROOT/examples/deepgram-embed/vanilla" \
+		"${vanilla_stack_env}PORT=4008 node server.mjs"
+	if [[ ! -d "$ROOT/examples/livekit-embed/node_modules" ]]; then
+		echo "Run: cd examples/livekit-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/gemini-live-embed/node_modules" ]]; then
+		echo "Run: cd examples/gemini-live-embed && npm install" >&2
+		exit 1
+	fi
+	start_on_port livekit-embed 4009 "$ROOT/examples/livekit-embed/vanilla" \
+		"${vanilla_stack_env}PORT=4009 node server.mjs"
+	start_on_port gemini-live-embed 4010 "$ROOT/examples/gemini-live-embed/vanilla" \
+		"${vanilla_stack_env}PORT=4010 node server.mjs"
 elif [[ "$MODE" == "nextjs" ]]; then
+	if [[ ! -d "$ROOT/examples/deepgram-embed/node_modules" ]]; then
+		echo "Run: cd examples/deepgram-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/livekit-embed/node_modules" ]]; then
+		echo "Run: cd examples/livekit-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/gemini-live-embed/node_modules" ]]; then
+		echo "Run: cd examples/gemini-live-embed && npm install" >&2
+		exit 1
+	fi
 	for dir in \
 		basic-embed \
 		experience-widget \
@@ -192,7 +228,10 @@ elif [[ "$MODE" == "nextjs" ]]; then
 		guided-practice \
 		speak-playground \
 		elevenlabs-embed \
-		openai-realtime-embed
+		openai-realtime-embed \
+		deepgram-embed \
+		livekit-embed \
+		gemini-live-embed
 	do
 		if [[ ! -d "$ROOT/examples/$dir/nextjs/node_modules" ]]; then
 			echo "Run: cd examples/$dir/nextjs && npm install" >&2
@@ -209,7 +248,22 @@ elif [[ "$MODE" == "nextjs" ]]; then
 	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/nextjs" "npm run dev"
 	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/nextjs" "npm run dev"
 	start_on_port openai-realtime-embed 4007 "$ROOT/examples/openai-realtime-embed/nextjs" "npm run dev"
+	start_on_port deepgram-embed 4008 "$ROOT/examples/deepgram-embed/nextjs" "npm run dev"
+	start_on_port livekit-embed 4009 "$ROOT/examples/livekit-embed/nextjs" "npm run dev"
+	start_on_port gemini-live-embed 4010 "$ROOT/examples/gemini-live-embed/nextjs" "npm run dev"
 elif [[ "$MODE" == "react-vite" ]]; then
+	if [[ ! -d "$ROOT/examples/deepgram-embed/node_modules" ]]; then
+		echo "Run: cd examples/deepgram-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/livekit-embed/node_modules" ]]; then
+		echo "Run: cd examples/livekit-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/gemini-live-embed/node_modules" ]]; then
+		echo "Run: cd examples/gemini-live-embed && npm install" >&2
+		exit 1
+	fi
 	for dir in \
 		basic-embed \
 		experience-widget \
@@ -217,7 +271,10 @@ elif [[ "$MODE" == "react-vite" ]]; then
 		guided-practice \
 		speak-playground \
 		elevenlabs-embed \
-		openai-realtime-embed
+		openai-realtime-embed \
+		deepgram-embed \
+		livekit-embed \
+		gemini-live-embed
 	do
 		if [[ ! -d "$ROOT/examples/$dir/react-vite/node_modules" ]]; then
 			echo "Run: cd examples/$dir/react-vite && npm install" >&2
@@ -231,6 +288,9 @@ elif [[ "$MODE" == "react-vite" ]]; then
 	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/react-vite" "$framework_dev_cmd"
 	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/react-vite" "$framework_dev_cmd"
 	start_on_port openai-realtime-embed 4007 "$ROOT/examples/openai-realtime-embed/react-vite" "$framework_dev_cmd"
+	start_on_port deepgram-embed 4008 "$ROOT/examples/deepgram-embed/react-vite" "$framework_dev_cmd"
+	start_on_port livekit-embed 4009 "$ROOT/examples/livekit-embed/react-vite" "$framework_dev_cmd"
+	start_on_port gemini-live-embed 4010 "$ROOT/examples/gemini-live-embed/react-vite" "$framework_dev_cmd"
 else
 	if [[ ! -d "$ROOT/examples/basic-embed/sveltekit/node_modules" ]]; then
 		echo "Run: cd examples/basic-embed/sveltekit && npm install" >&2
@@ -260,6 +320,30 @@ else
 		echo "Run: cd examples/openai-realtime-embed/sveltekit && npm install" >&2
 		exit 1
 	fi
+	if [[ ! -d "$ROOT/examples/deepgram-embed/node_modules" ]]; then
+		echo "Run: cd examples/deepgram-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/deepgram-embed/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/deepgram-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/livekit-embed/node_modules" ]]; then
+		echo "Run: cd examples/livekit-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/livekit-embed/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/livekit-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/gemini-live-embed/node_modules" ]]; then
+		echo "Run: cd examples/gemini-live-embed && npm install" >&2
+		exit 1
+	fi
+	if [[ ! -d "$ROOT/examples/gemini-live-embed/sveltekit/node_modules" ]]; then
+		echo "Run: cd examples/gemini-live-embed/sveltekit && npm install" >&2
+		exit 1
+	fi
 	start_on_port basic-embed 4001 "$ROOT/examples/basic-embed/sveltekit" "$framework_dev_cmd"
 	start_on_port experience-widget 4002 "$ROOT/examples/experience-widget/sveltekit" "$framework_dev_cmd"
 	start_on_port spanish-tutor 4003 "$ROOT/examples/spanish-tutor/sveltekit" "$framework_dev_cmd"
@@ -267,6 +351,9 @@ else
 	start_on_port speak-playground 4005 "$ROOT/examples/speak-playground/sveltekit" "$framework_dev_cmd"
 	start_on_port elevenlabs-embed 4006 "$ROOT/examples/elevenlabs-embed/sveltekit" "$framework_dev_cmd"
 	start_on_port openai-realtime-embed 4007 "$ROOT/examples/openai-realtime-embed/sveltekit" "$framework_dev_cmd"
+	start_on_port deepgram-embed 4008 "$ROOT/examples/deepgram-embed/sveltekit" "$framework_dev_cmd"
+	start_on_port livekit-embed 4009 "$ROOT/examples/livekit-embed/sveltekit" "$framework_dev_cmd"
+	start_on_port gemini-live-embed 4010 "$ROOT/examples/gemini-live-embed/sveltekit" "$framework_dev_cmd"
 fi
 
 echo ""

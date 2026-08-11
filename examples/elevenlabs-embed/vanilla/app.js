@@ -2,7 +2,7 @@
  * Demo page shell for the ElevenLabs embed example.
  *
  * Integration pattern (copy this into your product):
- *   → @liforma/client/elevenlabs (npm) or bridge.js (CDN port)
+ *   → helloByo.js → startByoSpeech (wraps bridge.js / connectElevenLabsAgent)
  *
  * This file only wires demo UI: Connect/End, credential form, agent prompt
  * copy fields, and Connect-before-Start arming.
@@ -14,8 +14,8 @@ import {
 	SUGGESTED_SYSTEM_PROMPT
 } from './config.js';
 import { loadAgentId, saveAgentId } from './agentIdStore.js';
-import { startElevenLabsLiformaBridge } from './bridge.js';
 import { fetchDemoSignedUrl } from './demoSignedUrl.js';
+import { startByoSpeech } from './helloByo.js';
 
 const experienceHostEl = document.getElementById('experience-host');
 const statusPillEl = document.getElementById('status-pill');
@@ -51,7 +51,7 @@ let armed = false;
 let cachedSignedUrl = null;
 let connecting = false;
 
-/** @type {Awaited<ReturnType<typeof startElevenLabsLiformaBridge>> | null} */
+/** @type {Awaited<ReturnType<typeof startByoSpeech>> | null} */
 let bridge = null;
 
 function setStatus(text, tone = 'default') {
@@ -336,8 +336,7 @@ async function openBridge() {
 			cachedSignedUrl = signedUrl;
 		}
 
-		bridge = await startElevenLabsLiformaBridge({
-			experience,
+		bridge = await startByoSpeech(experience, {
 			agentId: signedUrl ? undefined : agentId,
 			signedUrl: signedUrl ?? undefined,
 			onLog: (line, kind) => log(line, kind),
@@ -522,7 +521,7 @@ endBtnEl?.addEventListener('click', () => {
 });
 
 log(
-	'Developer tip: use connectElevenLabsAgent from @liforma/client/elevenlabs (bridge.js is the CDN port). Flow: Connect → Start experience.'
+	'Developer tip: copy helloByo.js (startByoSpeech) into your product. Flow: Connect → Start experience.'
 );
 
 async function restoreAgentId() {

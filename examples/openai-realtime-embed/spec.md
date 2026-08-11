@@ -25,18 +25,18 @@ https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/openai
 
 | Surface | Role |
 |---|---|
-| **`@liforma/client/openai`** | Canonical integration — `connectOpenAiRealtime` |
-| Framework `DemoApp` / `+page.svelte` | Demo UI (Connect arming, modal, form) |
-| `vanilla/bridge.js` | CDN/vanilla port of the same helper |
+| **`helloByo.ts` / `helloByo.js`** | Copy-paste integration — `startByoSpeech` → `connectOpenAiRealtime` |
+| Framework `DemoApp` / `+page.svelte` / `app.js` | Demo scaffolding only (Connect arming, modal, form) |
+| `vanilla/bridge.js` | CDN/vanilla port of the SDK helper (used by vanilla `helloByo.js`) |
 | Demo API routes / `server.mjs` | Ephemeral client-secret mint only (replace in production) |
 
 ## Liforma integration
 
 ```ts
-import { connectOpenAiRealtime } from '@liforma/client/openai';
+import { startByoSpeech } from './helloByo'; // copy from */lib/helloByo.ts
 
 // After Experience started (audio unlocked):
-const bridge = await connectOpenAiRealtime(experience, {
+const bridge = await startByoSpeech(experience, {
   ephemeralKey, // from POST /api/openai-realtime-session
   instructions: '…' // optional; demos pass barista copy
 });

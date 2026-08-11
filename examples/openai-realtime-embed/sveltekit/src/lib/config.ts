@@ -1,6 +1,6 @@
 /**
  * Demo content only — not part of the Liforma ↔ OpenAI Realtime integration.
- * Integration: @liforma/client/openai → connectOpenAiRealtime
+ * Integration: copy helloByo.ts → startByoSpeech → connectOpenAiRealtime
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */

@@ -17,18 +17,19 @@ Same shape as **basic embed**: one coffee-barista experience on the page. Eleven
 
 | Surface | Role |
 |---|---|
-| **`@liforma/client/elevenlabs`** | Canonical integration — `connectElevenLabsAgent` |
-| Framework `DemoApp` / `+page.svelte` | Demo UI (Connect arming, modal, form) |
-| `vanilla/bridge.js` | CDN/vanilla port of the same helper |
+| **`helloByo.ts` / `helloByo.js`** | **Copy into product** — thin `startByoSpeech` (only caller of connect) |
+| **`@liforma/client/elevenlabs`** | Canonical SDK helper — `connectElevenLabsAgent` |
+| Framework `DemoApp` / `+page.svelte` / `app.js` | Demo scaffolding only (Connect arming, modal, form) |
+| `vanilla/bridge.js` | CDN/vanilla port of the same helper (wrapped by vanilla `helloByo.js`) |
 | Demo API routes / `server.mjs` | Signed-URL mint only (replace in production) |
 
 ## Liforma integration
 
 ```ts
-import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
+import { startByoSpeech } from './helloByo';
 
 // After Experience started (audio unlocked):
-const bridge = await connectElevenLabsAgent(experience, {
+const bridge = await startByoSpeech(experience, {
   signedUrl // or agentId for public agents
 });
 // bridge.end() when done

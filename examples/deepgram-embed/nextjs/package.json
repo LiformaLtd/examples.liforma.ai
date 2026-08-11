@@ -1,0 +1,27 @@
+{
+	"name": "deepgram-embed-nextjs",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "node server.mjs",
+		"build": "next build",
+		"start": "NODE_ENV=production node server.mjs",
+		"lint": "eslint ."
+	},
+	"dependencies": {
+		"@liforma/client": "file:../../../../cdn.liforma.ai",
+		"next": "^15.5.2",
+		"react": "^19.1.1",
+		"react-dom": "^19.1.1",
+		"ws": "^8.18.3"
+	},
+	"devDependencies": {
+		"@types/node": "^25.9.3",
+		"@types/react": "^19.1.12",
+		"@types/react-dom": "^19.1.9",
+		"eslint": "^9.39.4",
+		"eslint-config-next": "^15.5.2",
+		"typescript": "^6.0.3"
+	}
+}

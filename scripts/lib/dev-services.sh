@@ -13,6 +13,9 @@ EXAMPLE_SERVICES=(
 	"speak-playground|4005"
 	"elevenlabs-embed|4006"
 	"openai-realtime-embed|4007"
+	"deepgram-embed|4008"
+	"livekit-embed|4009"
+	"gemini-live-embed|4010"
 )
 
 # Liforma monorepo stack (api, player, CDN SDK preview) — used with ./start --local

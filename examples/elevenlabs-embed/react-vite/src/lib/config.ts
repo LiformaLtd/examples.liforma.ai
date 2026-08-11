@@ -1,6 +1,6 @@
 /**
  * Demo content only — not part of the Liforma ↔ ElevenLabs integration.
- * Integration: @liforma/client/elevenlabs → connectElevenLabsAgent
+ * Integration: copy helloByo.ts → startByoSpeech → connectElevenLabsAgent
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */

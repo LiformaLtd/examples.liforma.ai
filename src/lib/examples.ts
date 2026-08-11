@@ -126,6 +126,48 @@ export const examples: ExampleMetadata[] = [
 		localPort: 4007,
 		meetExperienceUrl: 'https://www.liforma.ai/meet',
 		specPath: 'examples/openai-realtime-embed/spec.md'
+	},
+	{
+		slug: 'deepgram-embed',
+		title: 'Deepgram Voice Agent embed',
+		description:
+			'Basic coffee-barista embed with Deepgram Voice Agent as speech-to-speech — pipe PCM + transcript into createUtterance via a WS proxy.',
+		category: 'Integration',
+		kind: 'embed',
+		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],
+		features: ['Experience', 'Deepgram Voice Agent', 'createUtterance', 'BYO voice', 'transcript'],
+		githubPath: 'examples/deepgram-embed',
+		localPort: 4008,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/deepgram-embed/spec.md'
+	},
+	{
+		slug: 'livekit-embed',
+		title: 'LiveKit embed',
+		description:
+			'Basic coffee-barista embed with LiveKit remote agent audio — mint a token and bridge tracks via createUtterance (+ transcript).',
+		category: 'Integration',
+		kind: 'embed',
+		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],
+		features: ['Experience', 'LiveKit', 'createUtterance', 'BYO voice', 'token mint', 'transcript'],
+		githubPath: 'examples/livekit-embed',
+		localPort: 4009,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/livekit-embed/spec.md'
+	},
+	{
+		slug: 'gemini-live-embed',
+		title: 'Gemini Live embed',
+		description:
+			'Basic coffee-barista embed with Gemini Live as speech-to-speech — pipe PCM + transcript into createUtterance via a WS proxy.',
+		category: 'Integration',
+		kind: 'embed',
+		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],
+		features: ['Experience', 'Gemini Live', 'createUtterance', 'BYO voice', 'transcript'],
+		githubPath: 'examples/gemini-live-embed',
+		localPort: 4010,
+		meetExperienceUrl: 'https://www.liforma.ai/meet',
+		specPath: 'examples/gemini-live-embed/spec.md'
 	}
 ];
 

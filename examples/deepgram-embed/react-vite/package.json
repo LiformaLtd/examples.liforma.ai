@@ -1,0 +1,24 @@
+{
+	"name": "deepgram-embed-react-vite",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"preview": "vite preview"
+	},
+	"dependencies": {
+		"@liforma/client": "file:../../../../cdn.liforma.ai",
+		"react": "^19.1.1",
+		"react-dom": "^19.1.1",
+		"ws": "^8.18.3"
+	},
+	"devDependencies": {
+		"@types/react": "^19.1.12",
+		"@types/react-dom": "^19.1.9",
+		"@vitejs/plugin-react": "^5.0.2",
+		"typescript": "^6.0.3",
+		"vite": "^8.0.16"
+	}
+}

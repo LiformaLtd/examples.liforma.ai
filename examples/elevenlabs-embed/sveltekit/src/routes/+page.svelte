@@ -3,7 +3,7 @@
 	 * Demo page shell — Connect/End UI, agent prompt copy fields, arm-then-start.
 	 *
 	 * Integration (copy into your product):
-	 *   import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
+	 *   import { startByoSpeech } from '$lib/helloByo';
 	 */
 	import { loadAgentId, saveAgentId } from '$lib/agentIdStore';
 	import {
@@ -12,11 +12,9 @@
 		SUGGESTED_SYSTEM_PROMPT
 	} from '$lib/config';
 	import { DemoSignedUrlError, fetchDemoSignedUrl } from '$lib/demoSignedUrl';
+	import { startByoSpeech } from '$lib/helloByo';
 	import type { StartButtonOptions } from '@liforma/client';
-	import {
-		connectElevenLabsAgent,
-		type ElevenLabsAgentBridge
-	} from '@liforma/client/elevenlabs';
+	import type { ElevenLabsAgentBridge } from '@liforma/client/elevenlabs';
 	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
 	import { onMount } from 'svelte';
 
@@ -47,7 +45,7 @@
 	let statusTone = $state<StatusTone>('default');
 	let logs = $state<LogEntry[]>([
 		{
-			text: 'Developer tip: use connectElevenLabsAgent from @liforma/client/elevenlabs. Flow: Connect → Start experience.',
+			text: 'Developer tip: copy helloByo.ts (startByoSpeech) into your product. Flow: Connect → Start experience.',
 			kind: 'info'
 		}
 	]);
@@ -221,7 +219,7 @@
 				cachedSignedUrl = signedUrl;
 			}
 
-			bridge = await connectElevenLabsAgent(experience, {
+			bridge = await startByoSpeech(experience, {
 				agentId: signedUrl ? undefined : id,
 				signedUrl: signedUrl ?? undefined,
 				onLog: (line, kind) => pushLog(line, kind),

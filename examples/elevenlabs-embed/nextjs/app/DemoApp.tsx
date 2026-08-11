@@ -4,13 +4,10 @@
  * Demo page shell — Connect/End UI, agent prompt copy fields, arm-then-start.
  *
  * Integration (copy into your product):
- *   import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
+ *   import { startByoSpeech } from '@/lib/helloByo';
  */
 import type { StartButtonOptions } from '@liforma/client';
-import {
-	connectElevenLabsAgent,
-	type ElevenLabsAgentBridge
-} from '@liforma/client/elevenlabs';
+import type { ElevenLabsAgentBridge } from '@liforma/client/elevenlabs';
 import { Experience, type ExperienceHandle } from '@liforma/client/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -21,6 +18,7 @@ import {
 	SUGGESTED_SYSTEM_PROMPT
 } from '@/lib/config';
 import { DemoSignedUrlError, fetchDemoSignedUrl } from '@/lib/demoSignedUrl';
+import { startByoSpeech } from '@/lib/helloByo';
 
 import './demo.css';
 
@@ -75,7 +73,7 @@ export default function DemoApp() {
 	const [statusTone, setStatusTone] = useState<StatusTone>('default');
 	const [logs, setLogs] = useState<LogEntry[]>([
 		{
-			text: 'Developer tip: use connectElevenLabsAgent from @liforma/client/elevenlabs. Flow: Connect → Start experience.',
+			text: 'Developer tip: copy helloByo.ts (startByoSpeech) into your product. Flow: Connect → Start experience.',
 			kind: 'info'
 		}
 	]);
@@ -239,7 +237,7 @@ export default function DemoApp() {
 				setCachedSignedUrl(signedUrl);
 			}
 
-			const nextBridge = await connectElevenLabsAgent(experience, {
+			const nextBridge = await startByoSpeech(experience, {
 				agentId: signedUrl ? undefined : id,
 				signedUrl: signedUrl ?? undefined,
 				onLog: (line, kind) => pushLog(line, kind),

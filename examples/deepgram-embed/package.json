@@ -1,0 +1,10 @@
+{
+	"name": "deepgram-embed",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"description": "Shared deps for Deepgram Voice Agent WS proxy (used by vanilla/sveltekit/nextjs/react-vite)",
+	"dependencies": {
+		"ws": "^8.18.3"
+	}
+}

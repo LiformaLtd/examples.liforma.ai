@@ -9,7 +9,10 @@ export const EXAMPLE_PORTS: Record<string, number> = {
 	'guided-practice': 4004,
 	'speak-playground': 4005,
 	'elevenlabs-embed': 4006,
-	'openai-realtime-embed': 4007
+	'openai-realtime-embed': 4007,
+	'deepgram-embed': 4008,
+	'livekit-embed': 4009,
+	'gemini-live-embed': 4010
 };
 
 export function getExamplePort(slug: string): number | undefined {

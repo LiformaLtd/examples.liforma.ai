@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Gemini Live embed — Liforma example</title>
+		<meta
+			name="description"
+			content="Basic Liforma experience embed with Gemini Live as the speech-to-speech system."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+		<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+	</head>
+	<body>
+		<!--
+			Developer map:
+			  @liforma/client/google  ← npm helper (prefer in bundled apps)
+			  bridge.js                 ← CDN/vanilla port of the same helper
+			  app.js                    ← demo UI only
+			  config.js                 ← suggested agent Settings defaults
+			  demoProxyReady.js         ← local proxy arming helper
+		-->
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>Gemini Live embed</h1>
+						<p class="lede">
+							Same coffee-barista embed as
+							<a href="http://localhost:4001">basic embed</a>, but Gemini Live is the
+							speech-to-speech stack. Prefer
+							<code>@liforma/client/google</code>; this page uses
+							<code>bridge.js</code> (CDN port of the same helper).
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/gemini"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						BYO voice docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="Gemini Live embed">
+						<div class="experience-panel">
+							<div id="experience-host" aria-label="Liforma experience embed"></div>
+						</div>
+
+						<div class="control-card">
+							<h2>1. Connect Gemini, then start the player</h2>
+							<p>
+								Paste your <strong>Gemini API key</strong>, click <strong>Connect</strong>, then
+								tap <strong>Start experience</strong> on the avatar. This app’s WebSocket proxy
+								forwards to Gemini with your key (demo-only — use a real backend in production).
+							</p>
+
+							<form class="credentials-form" id="gemini-form">
+								<label class="field">
+									<span class="field-label-row">
+										<span>API key</span>
+										<button type="button" class="btn btn-ghost" id="btn-toggle-key">Show</button>
+									</span>
+									<input
+										id="api-key"
+										class="text-input"
+										type="password"
+										placeholder="Gemini API key (or leave blank if GEMINI_API_KEY / GOOGLE_API_KEY is set)"
+										autocomplete="off"
+										autocapitalize="off"
+										spellcheck="false"
+									/>
+									<span class="field-note"
+										>Never stored in this browser. Prefer env GEMINI_API_KEY or GOOGLE_API_KEY locally.</span
+									>
+								</label>
+								<p class="field-hint" id="api-key-hint" hidden></p>
+
+								<div class="actions">
+									<button type="submit" class="btn btn-primary" id="btn-connect" disabled>
+										Connect
+									</button>
+									<button type="button" class="btn" id="btn-end" disabled>End</button>
+								</div>
+							</form>
+
+							<p class="hint">
+								API keys stay on the server — this demo uses a
+								same-origin WS proxy at <code>/api/gemini-live</code>. Setup (model / system instruction) is injected by the proxy; see
+								<code>config.js</code> (<code>GEMINI_LIVE_*</code> env). See the
+								<a
+									href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/gemini"
+									target="_blank"
+									rel="noopener noreferrer"
+									>Gemini BYO docs</a
+								>
+								and
+								<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener noreferrer"
+									>Gemini console</a
+								>.
+							</p>
+
+							<p class="meta">
+								<span id="status-pill" class="status-pill">Loading…</span>
+								· Experience: <code id="experience-id-label"></code>
+							</p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+
+		<dialog id="connect-first-dialog" class="connect-dialog" aria-labelledby="connect-first-title">
+			<form method="dialog" class="connect-dialog-body">
+				<h2 id="connect-first-title">Connect Gemini</h2>
+				<p>The experience will start after you connect to Gemini Live below.</p>
+				<button type="submit" class="btn btn-primary" value="ok">OK</button>
+			</form>
+		</dialog>
+
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

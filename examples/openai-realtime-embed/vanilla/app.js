@@ -1,17 +1,14 @@
 /**
  * Demo page shell for the OpenAI Realtime embed example.
- *
- * Integration pattern (copy this into your product):
- * Prefer npm: import { connectOpenAiRealtime } from '@liforma/client/openai'
- * Vanilla: bridge.js (CDN port of the same helper)
+ * Integration: copy `helloByo.js` into your product (npm apps: helloByo.ts).
  *
  * This file only wires demo UI: Connect/End, credential form, instructions
  * copy field, and Connect-before-Start arming.
  */
 
 import { EXPERIENCE_ID, SUGGESTED_INSTRUCTIONS } from './config.js';
-import { startOpenAiRealtimeLiformaBridge } from './bridge.js';
 import { DemoClientSecretError, fetchDemoClientSecret } from './demoClientSecret.js';
+import { startByoSpeech } from './helloByo.js';
 
 const experienceHostEl = document.getElementById('experience-host');
 const statusPillEl = document.getElementById('status-pill');
@@ -37,7 +34,7 @@ let armed = false;
 /** @type {string | null} */
 let cachedEphemeralKey = null;
 let connecting = false;
-/** @type {Awaited<ReturnType<typeof startOpenAiRealtimeLiformaBridge>> | null} */
+/** @type {Awaited<ReturnType<typeof startByoSpeech>> | null} */
 let bridge = null;
 
 function setStatus(text, tone = 'default') {
@@ -163,8 +160,7 @@ async function openBridge() {
 			ephemeralKey = await fetchDemoClientSecret(normalizeApiKey(apiKeyEl?.value ?? ''));
 			cachedEphemeralKey = ephemeralKey;
 		}
-		bridge = await startOpenAiRealtimeLiformaBridge({
-			experience,
+		bridge = await startByoSpeech(experience, {
 			ephemeralKey,
 			onLog: (line, kind) => log(line, kind),
 			onDisconnect: () => {
@@ -350,7 +346,7 @@ endBtnEl?.addEventListener('click', () => {
 });
 
 log(
-	'Developer tip: read bridge.js for the OpenAI Realtime → Liforma integration. Flow: Connect → Start experience.'
+	'Developer tip: copy helloByo.js (startByoSpeech). Flow: Connect → Start experience.'
 );
 
 refreshStatus();

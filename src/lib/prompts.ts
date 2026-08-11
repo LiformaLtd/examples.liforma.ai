@@ -8,12 +8,12 @@ export function sveltekitAgentPrompt(example: ExampleMetadata): string {
 
 Source repo folder: ${example.githubPath}/sveltekit
 
-Use \`connectElevenLabsAgent\` from \`@liforma/client/elevenlabs\` — that is the ElevenLabs → Liforma integration.
-\`src/routes/+page.svelte\` is demo UI only; \`src/lib/config.ts\` is suggested agent prompt text.
+Copy \`src/lib/helloByo.ts\` (\`startByoSpeech\` → \`connectElevenLabsAgent\`) into your product — that is the integration.
+\`src/routes/+page.svelte\` is demo scaffolding only; \`src/lib/config.ts\` is suggested agent prompt text.
 
 Preserve:
 - \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
-- \`connectElevenLabsAgent(experience, { signedUrl })\` after audio unlock
+- \`startByoSpeech(experience, { signedUrl })\` after audio unlock (thin wrapper over \`connectElevenLabsAgent\`)
 - signed-URL mint on a server route (never ship ElevenLabs API keys to production browsers)
 - TypeScript and normal CSS (no Tailwind)
 
@@ -29,12 +29,12 @@ Adapt:
 
 Source repo folder: ${example.githubPath}/sveltekit
 
-Use \`connectOpenAiRealtime\` from \`@liforma/client/openai\` — that is the OpenAI Realtime → Liforma integration.
-\`src/routes/+page.svelte\` is demo UI only; \`src/lib/config.ts\` is suggested Realtime instructions.
+Copy \`src/lib/helloByo.ts\` (\`startByoSpeech\` → \`connectOpenAiRealtime\`) into your product — that is the integration.
+\`src/routes/+page.svelte\` is demo scaffolding only; \`src/lib/config.ts\` is suggested Realtime instructions.
 
 Preserve:
 - \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
-- \`connectOpenAiRealtime(experience, { ephemeralKey, instructions })\` after audio unlock
+- \`startByoSpeech(experience, { ephemeralKey, instructions })\` after audio unlock (thin wrapper over \`connectOpenAiRealtime\`)
 - ephemeral Realtime client secret minted on a server route (never ship OPENAI_API_KEY to production browsers)
 - TypeScript and normal CSS (no Tailwind)
 
@@ -44,6 +44,73 @@ Adapt:
 - Realtime model / voice / instructions
 - production ephemeral-secret backend`;
 	}
+
+	if (example.slug === 'deepgram-embed') {
+		return `Use the Liforma Deepgram Voice Agent embed SvelteKit example as source material.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Copy \`src/lib/helloByo.ts\` (\`startByoSpeech\` → \`connectDeepgramAgent\`) into your product — that is the integration.
+\`src/routes/+page.svelte\` is demo scaffolding only; \`src/lib/config.ts\` is suggested agent Settings defaults.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
+- \`startByoSpeech(experience, { proxyUrl, agent? })\` after audio unlock (thin wrapper over \`connectDeepgramAgent\`)
+- same-origin WebSocket proxy that adds \`Authorization: Token …\` upstream (browsers cannot set WS auth headers)
+- Vite plugin attaching \`shared/deepgram-agent-proxy.mjs\` (SvelteKit HTTP handlers cannot upgrade WebSockets)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- Deepgram agent Settings
+- production WebSocket proxy backend`;
+	}
+
+	if (example.slug === 'livekit-embed') {
+		return `Use the Liforma LiveKit embed SvelteKit example as source material.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Copy \`src/lib/helloByo.ts\` (\`startByoSpeech\` → \`connectLiveKitAgent\`) into your product — that is the integration.
+\`src/routes/+page.svelte\` is demo scaffolding only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
+- \`startByoSpeech(experience, { url, token })\` after audio unlock (thin wrapper over \`connectLiveKitAgent\`)
+- participant token minted on a server route (never ship LIVEKIT_API_SECRET to browsers)
+- peer dependency \`livekit-client\`
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- LiveKit room / agent identity filter
+- production token-mint backend`;
+	}
+
+	if (example.slug === 'gemini-live-embed') {
+		return `Use the Liforma Gemini Live embed SvelteKit example as source material.
+
+Source repo folder: ${example.githubPath}/sveltekit
+
+Copy \`src/lib/helloByo.ts\` (\`startByoSpeech\` → \`connectGeminiLive\`) into your product — that is the integration.
+\`src/routes/+page.svelte\` is demo scaffolding only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/svelte\` in presenter mode with \`speechInputMode="off"\`
+- \`startByoSpeech(experience, { proxyUrl })\` after audio unlock (thin wrapper over \`connectGeminiLive\`)
+- same-origin WebSocket proxy that terminates Gemini Live with server-side API key + setup inject
+- Vite plugin attaching \`shared/gemini-live-proxy.mjs\` (SvelteKit HTTP handlers cannot upgrade WebSockets)
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- Gemini Live model / system instruction
+- production WebSocket proxy backend`;
+	}
+
 
 	if (example.kind === 'widget') {
 		return `Use the Liforma ${example.title} SvelteKit example as source material.
@@ -123,8 +190,8 @@ export function vanillaAgentPrompt(example: ExampleMetadata): string {
 
 Source repo folder: ${example.githubPath}/vanilla
 
-Prefer \`connectElevenLabsAgent\` from \`@liforma/client/elevenlabs\` in bundled apps.
-Vanilla \`bridge.js\` is a CDN port of that helper. \`app.js\` is demo UI only.
+Copy \`helloByo.js\` (\`startByoSpeech\`) — thin wrapper over \`bridge.js\` / \`connectElevenLabsAgent\`.
+\`app.js\` is demo scaffolding only. Prefer \`@liforma/client/elevenlabs\` in bundled apps.
 
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
@@ -144,8 +211,8 @@ Adapt:
 
 Source repo folder: ${example.githubPath}/vanilla
 
-Prefer \`connectOpenAiRealtime\` from \`@liforma/client/openai\` in bundled apps.
-Vanilla \`bridge.js\` is a CDN port of that helper. \`app.js\` is demo UI only.
+Copy \`helloByo.js\` (\`startByoSpeech\`) — thin wrapper over \`bridge.js\` / \`connectOpenAiRealtime\`.
+\`app.js\` is demo scaffolding only. Prefer \`@liforma/client/openai\` in bundled apps.
 
 Preserve:
 - CDN script: https://cdn.liforma.ai/sdk/v2/client.js
@@ -159,6 +226,70 @@ Adapt:
 - Realtime model / voice / instructions
 - production ephemeral-secret backend`;
 	}
+
+	if (example.slug === 'deepgram-embed') {
+		return `Use the Liforma Deepgram Voice Agent embed example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Copy \`helloByo.js\` (\`startByoSpeech\`) — thin wrapper over \`bridge.js\` / \`connectDeepgramAgent\`.
+\`app.js\` is demo scaffolding only. Prefer \`@liforma/client/deepgram\` in bundled apps.
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
+- Deepgram Voice Agent → Liforma bridge (pipe PCM + transcript into createUtterance)
+- same-origin WebSocket proxy (\`server.mjs\` + \`shared/deepgram-agent-proxy.mjs\`) — never ship Deepgram API keys to production browsers as WS Authorization
+
+Adapt:
+- branding
+- experience id
+- Deepgram agent Settings
+- production WebSocket proxy backend`;
+	}
+
+	if (example.slug === 'livekit-embed') {
+		return `Use the Liforma LiveKit embed example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Copy \`helloByo.js\` (\`startByoSpeech\`) — thin wrapper over \`bridge.js\` / \`connectLiveKitAgent\`.
+\`app.js\` is demo scaffolding only. Prefer \`@liforma/client/livekit\` in bundled apps.
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
+- LiveKit → Liforma bridge (pipe remote MediaStreamTrack into createUtterance + transcript)
+- local participant-token mint pattern (never ship LIVEKIT_API_SECRET to production browsers)
+
+Adapt:
+- branding
+- experience id
+- LiveKit room / agent
+- production token-mint backend`;
+	}
+
+	if (example.slug === 'gemini-live-embed') {
+		return `Use the Liforma Gemini Live embed example as source material to build a vanilla HTML app.
+
+Source repo folder: ${example.githubPath}/vanilla
+
+Copy \`helloByo.js\` (\`startByoSpeech\`) — thin wrapper over \`bridge.js\` / \`connectGeminiLive\`.
+\`app.js\` is demo scaffolding only. Prefer \`@liforma/client/google\` in bundled apps.
+
+Preserve:
+- CDN script: https://cdn.liforma.ai/sdk/v2/client.js
+- \`Experience.startSession\` in presenter mode with \`speechInputMode: 'off'\`
+- Gemini Live → Liforma bridge (pipe PCM + transcript into createUtterance)
+- same-origin WebSocket proxy (\`server.mjs\` + \`shared/gemini-live-proxy.mjs\`) — never ship Google API keys to production browsers
+
+Adapt:
+- branding
+- experience id
+- Gemini Live model / system instruction
+- production WebSocket proxy backend`;
+	}
+
 
 	if (example.kind === 'embed') {
 		return `Use the Liforma ${example.title} example as source material to build a vanilla HTML app.
@@ -247,13 +378,13 @@ export function reactAgentPrompt(
 
 Source repo folder: ${folder}
 
-Use \`connectElevenLabsAgent\` from \`@liforma/client/elevenlabs\` — that is the ElevenLabs → Liforma integration.
-\`DemoApp.tsx\` is demo UI only.
+Copy \`helloByo.ts\` (\`startByoSpeech\` → \`connectElevenLabsAgent\`) into your product — that is the integration.
+\`DemoApp.tsx\` is demo scaffolding only.
 
 Preserve:
 - \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
 ${nextNote}
-- \`connectElevenLabsAgent(experience, { signedUrl })\` after audio unlock
+- \`startByoSpeech(experience, { signedUrl })\` after audio unlock (thin wrapper over \`connectElevenLabsAgent\`)
 - signed-URL mint on a server route / Vite middleware (never ship ElevenLabs API keys to production browsers)
 - TypeScript and normal CSS (no Tailwind)
 
@@ -269,13 +400,13 @@ Adapt:
 
 Source repo folder: ${folder}
 
-Use \`connectOpenAiRealtime\` from \`@liforma/client/openai\` — that is the OpenAI Realtime → Liforma integration.
-\`DemoApp.tsx\` is demo UI only.
+Copy \`helloByo.ts\` (\`startByoSpeech\` → \`connectOpenAiRealtime\`) into your product — that is the integration.
+\`DemoApp.tsx\` is demo scaffolding only.
 
 Preserve:
 - \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
 ${nextNote}
-- \`connectOpenAiRealtime(experience, { ephemeralKey, instructions })\` after audio unlock
+- \`startByoSpeech(experience, { ephemeralKey, instructions })\` after audio unlock (thin wrapper over \`connectOpenAiRealtime\`)
 - ephemeral Realtime client secret minted on a server route / Vite middleware (never ship OPENAI_API_KEY to browsers)
 - TypeScript and normal CSS (no Tailwind)
 
@@ -285,6 +416,84 @@ Adapt:
 - Realtime model / voice / instructions
 - production ephemeral-secret backend`;
 	}
+
+	if (example.slug === 'deepgram-embed') {
+		const proxyNote =
+			framework === 'nextjs'
+				? `- custom \`server.mjs\` wrapping Next + \`attachDeepgramAgentProxy\` (App Router cannot upgrade WebSockets)`
+				: `- Vite plugin attaching \`shared/deepgram-agent-proxy.mjs\` via \`configureServer\` / \`configurePreviewServer\``;
+		return `Use the Liforma Deepgram Voice Agent embed ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Copy \`helloByo.ts\` (\`startByoSpeech\` → \`connectDeepgramAgent\`) into your product — that is the integration.
+\`DemoApp.tsx\` is demo scaffolding only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
+${nextNote}
+- \`startByoSpeech(experience, { proxyUrl, agent? })\` after audio unlock (thin wrapper over \`connectDeepgramAgent\`)
+- same-origin WebSocket proxy that adds \`Authorization: Token …\` upstream (browsers cannot set WS auth headers)
+${proxyNote}
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- Deepgram agent Settings
+- production WebSocket proxy backend`;
+	}
+
+	if (example.slug === 'livekit-embed') {
+		return `Use the Liforma LiveKit embed ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Copy \`helloByo.ts\` (\`startByoSpeech\` → \`connectLiveKitAgent\`) into your product — that is the integration.
+\`DemoApp.tsx\` is demo scaffolding only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
+${nextNote}
+- \`startByoSpeech(experience, { url, token })\` after audio unlock (thin wrapper over \`connectLiveKitAgent\`)
+- participant token minted on a server route / Vite middleware (never ship LIVEKIT_API_SECRET to browsers)
+- peer dependency \`livekit-client\`
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- LiveKit room / agent
+- production token-mint backend`;
+	}
+
+	if (example.slug === 'gemini-live-embed') {
+		const proxyNote =
+			framework === 'nextjs'
+				? `- custom \`server.mjs\` wrapping Next + \`attachGeminiLiveProxy\` (App Router cannot upgrade WebSockets)`
+				: `- Vite plugin attaching \`shared/gemini-live-proxy.mjs\` via \`configureServer\` / \`configurePreviewServer\``;
+		return `Use the Liforma Gemini Live embed ${frameworkLabel} example as source material.
+
+Source repo folder: ${folder}
+
+Copy \`helloByo.ts\` (\`startByoSpeech\` → \`connectGeminiLive\`) into your product — that is the integration.
+\`DemoApp.tsx\` is demo scaffolding only.
+
+Preserve:
+- \`<Experience />\` from \`@liforma/client/react\` in presenter mode with \`speechInputMode="off"\`
+${nextNote}
+- \`startByoSpeech(experience, { proxyUrl })\` after audio unlock (thin wrapper over \`connectGeminiLive\`)
+- same-origin WebSocket proxy that terminates Gemini Live with server-side API key + setup inject
+${proxyNote}
+- TypeScript and normal CSS (no Tailwind)
+
+Adapt:
+- branding
+- experience id
+- Gemini Live model / system instruction
+- production WebSocket proxy backend`;
+	}
+
 
 	if (example.kind === 'widget') {
 		return `Use the Liforma ${example.title} ${frameworkLabel} example as source material.

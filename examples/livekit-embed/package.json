@@ -1,0 +1,10 @@
+{
+	"name": "livekit-embed",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"description": "Shared deps for LiveKit token mint (used by vanilla/sveltekit/nextjs/react-vite)",
+	"dependencies": {
+		"livekit-server-sdk": "^2.13.2"
+	}
+}

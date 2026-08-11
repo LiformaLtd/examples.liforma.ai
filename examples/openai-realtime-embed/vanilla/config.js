@@ -1,6 +1,6 @@
 /**
  * Demo content only — not part of the Liforma ↔ OpenAI Realtime integration.
- * Integration code: bridge.js
+ * Integration: copy helloByo.js → startByoSpeech → connectOpenAiRealtime
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */

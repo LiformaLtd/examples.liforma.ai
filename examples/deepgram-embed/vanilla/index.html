@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Deepgram Voice Agent embed — Liforma example</title>
+		<meta
+			name="description"
+			content="Basic Liforma experience embed with Deepgram Voice Agent as the speech-to-speech system."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+		<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+	</head>
+	<body>
+		<!--
+			Developer map:
+			  @liforma/client/deepgram  ← npm helper (prefer in bundled apps)
+			  bridge.js                 ← CDN/vanilla port of the same helper
+			  app.js                    ← demo UI only
+			  config.js                 ← suggested agent Settings defaults
+			  demoProxyReady.js         ← local proxy arming helper
+		-->
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>Deepgram Voice Agent embed</h1>
+						<p class="lede">
+							Same coffee-barista embed as
+							<a href="http://localhost:4001">basic embed</a>, but Deepgram Voice Agent is the
+							speech-to-speech stack. Prefer
+							<code>@liforma/client/deepgram</code>; this page uses
+							<code>bridge.js</code> (CDN port of the same helper).
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/deepgram"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						BYO voice docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="Deepgram Voice Agent embed">
+						<div class="experience-panel">
+							<div id="experience-host" aria-label="Liforma experience embed"></div>
+						</div>
+
+						<div class="control-card">
+							<h2>1. Connect Deepgram, then start the player</h2>
+							<p>
+								Paste your <strong>Deepgram API key</strong>, click <strong>Connect</strong>, then
+								tap <strong>Start experience</strong> on the avatar. This app’s WebSocket proxy
+								forwards to Deepgram with your key (demo-only — use a real backend in production).
+							</p>
+
+							<form class="credentials-form" id="deepgram-form">
+								<label class="field">
+									<span class="field-label-row">
+										<span>API key</span>
+										<button type="button" class="btn btn-ghost" id="btn-toggle-key">Show</button>
+									</span>
+									<input
+										id="api-key"
+										class="text-input"
+										type="password"
+										placeholder="Deepgram API key (or leave blank if DEEPGRAM_API_KEY is set)"
+										autocomplete="off"
+										autocapitalize="off"
+										spellcheck="false"
+									/>
+									<span class="field-note"
+										>Never stored in this browser. Prefer env DEEPGRAM_API_KEY locally.</span
+									>
+								</label>
+								<p class="field-hint" id="api-key-hint" hidden></p>
+
+								<div class="actions">
+									<button type="submit" class="btn btn-primary" id="btn-connect" disabled>
+										Connect
+									</button>
+									<button type="button" class="btn" id="btn-end" disabled>End</button>
+								</div>
+							</form>
+
+							<p class="hint">
+								Browsers cannot set <code>Authorization</code> on WebSocket — this demo uses a
+								same-origin WS proxy at <code>/api/deepgram-agent</code>. Agent defaults live in
+								<code>config.js</code> (<code>SUGGESTED_AGENT</code>). See the
+								<a
+									href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/deepgram"
+									target="_blank"
+									rel="noopener noreferrer"
+									>Deepgram BYO docs</a
+								>
+								and
+								<a href="https://console.deepgram.com/" target="_blank" rel="noopener noreferrer"
+									>Deepgram console</a
+								>.
+							</p>
+
+							<p class="meta">
+								<span id="status-pill" class="status-pill">Loading…</span>
+								· Experience: <code id="experience-id-label"></code>
+							</p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+
+		<dialog id="connect-first-dialog" class="connect-dialog" aria-labelledby="connect-first-title">
+			<form method="dialog" class="connect-dialog-body">
+				<h2 id="connect-first-title">Connect Deepgram</h2>
+				<p>The experience will start after you connect to Deepgram Voice Agent below.</p>
+				<button type="submit" class="btn btn-primary" value="ok">OK</button>
+			</form>
+		</dialog>
+
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

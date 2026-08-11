@@ -6,16 +6,17 @@ SvelteKit coffee-barista embed with **ElevenLabs Agents** as speech-to-speech.
 
 | File | What it is |
 |---|---|
-| **`@liforma/client/elevenlabs`** | **Read this first.** `connectElevenLabsAgent` — ElevenLabs → Liforma BYO helper. |
-| `src/routes/+page.svelte` | Demo page shell only (Connect/End UI, arm-then-start flow, modal). |
+| **`src/lib/helloByo.ts`** | **Copy this into your product.** Thin `startByoSpeech` → `connectElevenLabsAgent`. |
+| **`@liforma/client/elevenlabs`** | SDK helper called only from `helloByo.ts`. |
+| `src/routes/+page.svelte` | Demo scaffolding only (Connect/End UI, arm-then-start flow, modal). |
 | `src/lib/config.ts` | Suggested agent first message + system prompt (dashboard paste content). |
 | `src/lib/demoSignedUrl.ts` | Client helper for the demo API route. |
 | `src/routes/api/elevenlabs-signed-url/+server.ts` | Demo signed-URL proxy — replace with your backend in production. |
 
 ```ts
-import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
+import { startByoSpeech } from './helloByo';
 
-const bridge = await connectElevenLabsAgent(experience, { signedUrl });
+const bridge = await startByoSpeech(experience, { signedUrl });
 // … later
 await bridge.end();
 ```

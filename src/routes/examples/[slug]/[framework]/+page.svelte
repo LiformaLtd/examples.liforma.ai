@@ -154,43 +154,56 @@ npx serve . -l tcp://localhost:${example.localPort}
 
 		<h2>Key files</h2>
 		<ul>
-			{#if example.slug === 'elevenlabs-embed'}
-				<li>
-					<code>@liforma/client/elevenlabs</code> — <strong>read first</strong> —
-					<code>connectElevenLabsAgent</code>
-				</li>
+			{#if example.slug === 'elevenlabs-embed' || example.slug === 'openai-realtime-embed' || example.slug === 'deepgram-embed' || example.slug === 'livekit-embed' || example.slug === 'gemini-live-embed'}
 				{#if framework.slug === 'sveltekit'}
-					<li><code>src/routes/+page.svelte</code> — demo Connect / Start UI only</li>
-					<li><code>src/routes/api/…/+server.ts</code> — demo secret mint (replace in production)</li>
+					<li>
+						<code>src/lib/helloByo.ts</code> — <strong>copy into your product</strong> —
+						<code>startByoSpeech</code> (thin SDK call)
+					</li>
+					<li><code>src/routes/+page.svelte</code> — demo scaffolding only (Connect / Start UI)</li>
+					{#if example.slug === 'deepgram-embed'}
+						<li><code>../../shared/deepgram-agent-proxy.mjs</code> — demo WS proxy</li>
+						<li><code>vite.config.ts</code> — attaches WS proxy</li>
+					{:else if example.slug === 'gemini-live-embed'}
+						<li><code>../../shared/gemini-live-proxy.mjs</code> — demo WS proxy</li>
+						<li><code>vite.config.ts</code> — attaches WS proxy</li>
+					{:else if example.slug === 'livekit-embed'}
+						<li><code>src/routes/api/livekit-token/+server.ts</code> — demo token mint</li>
+					{:else}
+						<li><code>src/routes/api/…/+server.ts</code> — demo credential mint</li>
+					{/if}
 				{:else if framework.slug === 'nextjs'}
-					<li><code>app/DemoApp.tsx</code> — demo Connect / Start UI only</li>
-					<li><code>app/api/…/route.ts</code> — demo secret mint (replace in production)</li>
+					<li>
+						<code>lib/helloByo.ts</code> — <strong>copy into your product</strong> —
+						<code>startByoSpeech</code> (thin SDK call)
+					</li>
+					<li><code>app/DemoApp.tsx</code> — demo scaffolding only (Connect / Start UI)</li>
+					{#if example.slug === 'deepgram-embed' || example.slug === 'gemini-live-embed'}
+						<li><code>server.mjs</code> — custom server: Next + WS proxy</li>
+					{:else if example.slug === 'livekit-embed'}
+						<li><code>app/api/livekit-token/route.ts</code> — demo token mint</li>
+					{:else}
+						<li><code>app/api/…/route.ts</code> — demo credential mint</li>
+					{/if}
 				{:else if framework.slug === 'react-vite'}
-					<li><code>src/DemoApp.tsx</code> — demo Connect / Start UI only</li>
-					<li><code>server/api-handlers.mjs</code> + Vite middleware — demo secret mint</li>
+					<li>
+						<code>src/lib/helloByo.ts</code> — <strong>copy into your product</strong> —
+						<code>startByoSpeech</code> (thin SDK call)
+					</li>
+					<li><code>src/DemoApp.tsx</code> — demo scaffolding only (Connect / Start UI)</li>
+					{#if example.slug === 'deepgram-embed' || example.slug === 'gemini-live-embed'}
+						<li><code>vite.config.ts</code> — attaches WS proxy</li>
+					{:else}
+						<li><code>server/api-handlers.mjs</code> — demo credential mint</li>
+					{/if}
 				{:else}
-					<li><code>bridge.js</code> — CDN/vanilla port of the same helper</li>
-					<li><code>app.js</code> — demo Connect / Start UI only</li>
-					<li><code>server.mjs</code> — demo secret mint (replace in production)</li>
-				{/if}
-			{:else if example.slug === 'openai-realtime-embed'}
-				<li>
-					<code>@liforma/client/openai</code> — <strong>read first</strong> —
-					<code>connectOpenAiRealtime</code>
-				</li>
-				{#if framework.slug === 'sveltekit'}
-					<li><code>src/routes/+page.svelte</code> — demo Connect / Start UI only</li>
-					<li><code>src/routes/api/…/+server.ts</code> — demo secret mint (replace in production)</li>
-				{:else if framework.slug === 'nextjs'}
-					<li><code>app/DemoApp.tsx</code> — demo Connect / Start UI only</li>
-					<li><code>app/api/…/route.ts</code> — demo secret mint (replace in production)</li>
-				{:else if framework.slug === 'react-vite'}
-					<li><code>src/DemoApp.tsx</code> — demo Connect / Start UI only</li>
-					<li><code>server/api-handlers.mjs</code> + Vite middleware — demo secret mint</li>
-				{:else}
-					<li><code>bridge.js</code> — CDN/vanilla port of the same helper</li>
-					<li><code>app.js</code> — demo Connect / Start UI only</li>
-					<li><code>server.mjs</code> — demo secret mint (replace in production)</li>
+					<li>
+						<code>helloByo.js</code> — <strong>copy the npm pattern from docs</strong> —
+						vanilla wraps <code>bridge.js</code>
+					</li>
+					<li><code>app.js</code> — demo scaffolding only</li>
+					<li><code>bridge.js</code> — CDN port of the SDK helper</li>
+					<li><code>server.mjs</code> — demo mint / proxy</li>
 				{/if}
 			{:else if example.kind === 'embed' && framework.slug === 'sveltekit'}
 				<li><code>src/routes/+page.svelte</code> — <code>&lt;Experience /&gt;</code> from <code>@liforma/client/svelte</code></li>

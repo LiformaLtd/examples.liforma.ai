@@ -2,7 +2,8 @@
 
 Coffee-barista embed with OpenAI Realtime as speech-to-speech.
 
-**Integration (npm):** `connectOpenAiRealtime` from `@liforma/client/openai`.
+**Copy `*/lib/helloByo.ts` (or `vanilla/helloByo.js`) into your app — that is the integration.**
+`DemoApp` / `+page` / `app.js` are scaffolding only (Connect UI, API key form, arming).
 
 | Framework | Folder | Local URL |
 | --- | --- | --- |
@@ -11,6 +12,6 @@ Coffee-barista embed with OpenAI Realtime as speech-to-speech.
 | Next.js | `nextjs/` | http://localhost:4007 |
 | React (Vite) | `react-vite/` | http://localhost:4007 |
 
-Framework ports use the SDK helper. Vanilla keeps a CDN-compatible `bridge.js` that mirrors the same behavior (no bundler).
+Framework ports use `@liforma/client/openai` via `helloByo.ts`. Vanilla `helloByo.js` calls the CDN-compatible `bridge.js`.
 
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.

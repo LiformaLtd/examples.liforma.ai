@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>LiveKit embed — Liforma example</title>
+		<meta
+			name="description"
+			content="Basic Liforma experience embed with LiveKit remote audio as bring-your-own voice."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+		<script type="importmap">
+			{
+				"imports": {
+					"livekit-client": "https://esm.sh/livekit-client@2.21.0"
+				}
+			}
+		</script>
+		<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+	</head>
+	<body>
+		<!--
+			Developer map:
+			  @liforma/client/livekit  ← npm helper (prefer in bundled apps)
+			  bridge.js                ← CDN/vanilla port (uses livekit-client import map)
+			  app.js                   ← demo UI only
+			  demoLiveKitToken.js      ← local token mint helper
+		-->
+		<div class="app-shell">
+			<header class="app-header">
+				<div class="header-inner">
+					<div>
+						<p class="eyebrow">Liforma example</p>
+						<h1>LiveKit embed</h1>
+						<p class="lede">
+							Same coffee-barista embed as
+							<a href="http://localhost:4001">basic embed</a>, but LiveKit is the
+							bring-your-own voice stack. Prefer
+							<code>@liforma/client/livekit</code>; this page uses
+							<code>bridge.js</code> (CDN port of the same helper).
+						</p>
+					</div>
+					<a
+						class="docs-link"
+						href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/livekit"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
+						BYO voice docs
+					</a>
+				</div>
+			</header>
+
+			<main class="app-main">
+				<div class="layout">
+					<section class="workspace" aria-label="LiveKit embed">
+						<div class="experience-panel">
+							<div id="experience-host" aria-label="Liforma experience embed"></div>
+						</div>
+
+						<div class="control-card">
+							<h2>1. Connect LiveKit, then start the player</h2>
+							<p>
+								Click <strong>Connect</strong> to mint a participant token (server env
+								<code>LIVEKIT_URL</code> / <code>LIVEKIT_API_KEY</code> /
+								<code>LIVEKIT_API_SECRET</code>), then tap <strong>Start experience</strong> on
+								the avatar. An agent in the room (identity starting with <code>agent</code>) must
+								publish audio.
+							</p>
+
+							<form class="credentials-form" id="livekit-form">
+								<label class="field">
+									<span>Room name</span>
+									<input
+										id="room-name"
+										class="text-input"
+										type="text"
+										placeholder="liforma-coffee-barista"
+										autocomplete="off"
+									/>
+								</label>
+								<label class="field">
+									<span>Participant identity</span>
+									<input
+										id="identity"
+										class="text-input"
+										type="text"
+										placeholder="listener"
+										autocomplete="off"
+									/>
+									<span class="field-note"
+										>Secrets stay on the server. Do not also attach the remote track to an
+										<code>&lt;audio&gt;</code> element.</span
+									>
+								</label>
+
+								<div class="actions">
+									<button type="submit" class="btn btn-primary" id="btn-connect" disabled>
+										Connect
+									</button>
+									<button type="button" class="btn" id="btn-end" disabled>End</button>
+								</div>
+							</form>
+
+							<p class="hint">
+								This is bring-your-own LiveKit voice — not Liforma’s future
+								<code>transport: livekit</code> adapter. See the
+								<a
+									href="https://docs.liforma.ai/avatar-experiences/bring-your-own-voice/livekit"
+									target="_blank"
+									rel="noopener noreferrer"
+									>LiveKit BYO docs</a
+								>.
+							</p>
+
+							<p class="meta">
+								<span id="status-pill" class="status-pill">Loading…</span>
+								· Experience: <code id="experience-id-label"></code>
+							</p>
+						</div>
+					</section>
+
+					<aside class="sidebar" aria-label="Session log">
+						<h2>Session log</h2>
+						<ul id="log-list" class="log-list"></ul>
+					</aside>
+				</div>
+			</main>
+		</div>
+
+		<dialog id="connect-first-dialog" class="connect-dialog" aria-labelledby="connect-first-title">
+			<form method="dialog" class="connect-dialog-body">
+				<h2 id="connect-first-title">Connect LiveKit</h2>
+				<p>The experience will start after you connect to LiveKit below.</p>
+				<button type="submit" class="btn btn-primary" value="ok">OK</button>
+			</form>
+		</dialog>
+
+		<script src="./app.js" type="module"></script>
+	</body>
+</html>

@@ -27,6 +27,9 @@ npm install
 | Speak playground — enqueue vs interrupt (vanilla) | http://localhost:4005 |
 | ElevenLabs embed — Agents → avatar (vanilla) | http://localhost:4006 |
 | OpenAI Realtime embed — Realtime → avatar (vanilla) | http://localhost:4007 |
+| Deepgram Voice Agent embed — Agent → avatar (vanilla) | http://localhost:4008 |
+| LiveKit embed — Agent → avatar (vanilla) | http://localhost:4009 |
+| Gemini Live embed — Agent → avatar (vanilla) | http://localhost:4010 |
 
 To run SvelteKit implementations instead of vanilla:
 
@@ -34,9 +37,9 @@ To run SvelteKit implementations instead of vanilla:
 ./start sveltekit
 ```
 
-That starts the gallery on **4000**, basic embed on **4001**, experience widget on **4002**, Spanish Tutor on **4003**, guided practice on **4004**, speak playground on **4005**, ElevenLabs embed on **4006**, and OpenAI Realtime embed on **4007**.
+That starts the gallery on **4000**, basic embed on **4001**, experience widget on **4002**, Spanish Tutor on **4003**, guided practice on **4004**, speak playground on **4005**, ElevenLabs embed on **4006**, OpenAI Realtime embed on **4007**, Deepgram Voice Agent embed on **4008**, LiveKit embed on **4009**, and Gemini Live embed on **4010**.
 
-Next.js / React (Vite) modes start the gallery plus every example on its canonical port (**4001**–**4007**):
+Next.js / React (Vite) modes start the gallery plus every example on its canonical port (**4001**–**4010**):
 
 ```bash
 ./start nextjs
@@ -147,6 +150,28 @@ PORT=4006 node examples/elevenlabs-embed/vanilla/server.mjs
 
 ```bash
 PORT=4007 node examples/openai-realtime-embed/vanilla/server.mjs
+```
+
+**Deepgram Voice Agent embed (vanilla)** — port 4008:
+
+```bash
+cd examples/deepgram-embed && npm install
+cd vanilla && PORT=4008 node server.mjs
+
+**LiveKit embed (vanilla)** — port 4009:
+
+```bash
+cd examples/livekit-embed && npm install
+cd vanilla && npm install
+LIVEKIT_URL=wss://… LIVEKIT_API_KEY=… LIVEKIT_API_SECRET=… PORT=4009 node server.mjs
+```
+
+**Gemini Live embed (vanilla)** — port 4010:
+
+```bash
+cd examples/gemini-live-embed && npm install
+cd vanilla && PORT=4010 node server.mjs
+```
 ```
 
 Use **http://localhost:** ports (not a LAN IP) so WebGPU and microphone APIs work in the browser.

@@ -6,14 +6,15 @@ React (Vite) coffee-barista embed with **ElevenLabs Agents** as speech-to-speech
 
 | File | What it is |
 |---|---|
-| **`@liforma/client/elevenlabs`** | **Read this first.** `connectElevenLabsAgent` — ElevenLabs → Liforma BYO helper. |
-| `src/DemoApp.tsx` | Demo Connect / Start UI only. |
+| **`src/lib/helloByo.ts`** | **Copy this into your product.** Thin `startByoSpeech` → `connectElevenLabsAgent`. |
+| **`@liforma/client/elevenlabs`** | SDK helper called only from `helloByo.ts`. |
+| `src/DemoApp.tsx` | Demo scaffolding only (Connect / Start UI). |
 | `server/api-handlers.mjs` + Vite middleware | Demo secret mint — replace in production. |
 
 ```ts
-import { connectElevenLabsAgent } from '@liforma/client/elevenlabs';
+import { startByoSpeech } from './helloByo';
 
-const bridge = await connectElevenLabsAgent(experience, { signedUrl });
+const bridge = await startByoSpeech(experience, { signedUrl });
 ```
 
 ## Run

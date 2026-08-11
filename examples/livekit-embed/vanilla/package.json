@@ -1,0 +1,13 @@
+{
+	"name": "livekit-embed-vanilla",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"scripts": {
+		"dev": "node server.mjs",
+		"start": "node server.mjs"
+	},
+	"dependencies": {
+		"livekit-server-sdk": "^2.13.2"
+	}
+}

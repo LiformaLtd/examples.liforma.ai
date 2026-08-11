@@ -1,17 +1,13 @@
 <script lang="ts">
 	/**
 	 * Demo page shell — Connect/End UI, instructions copy, arm-then-start.
-	 *
-	 * Integration (copy into your product):
-	 *   import { connectOpenAiRealtime } from '@liforma/client/openai';
+	 * Integration: copy `$lib/helloByo.ts` into your product.
 	 */
 	import { EXPERIENCE_ID, SUGGESTED_INSTRUCTIONS } from '$lib/config';
 	import { DemoClientSecretError, fetchDemoClientSecret } from '$lib/demoClientSecret';
+	import { startByoSpeech } from '$lib/helloByo';
 	import type { StartButtonOptions } from '@liforma/client';
-	import {
-		connectOpenAiRealtime,
-		type OpenAiRealtimeBridge
-	} from '@liforma/client/openai';
+	import type { OpenAiRealtimeBridge } from '@liforma/client/openai';
 	import { Experience, type ExperienceHandle } from '@liforma/client/svelte';
 
 	const OPENAI_API_KEYS_URL = 'https://platform.openai.com/api-keys';
@@ -39,7 +35,7 @@
 	let statusTone = $state<StatusTone>('default');
 	let logs = $state<LogEntry[]>([
 		{
-			text: 'Developer tip: use connectOpenAiRealtime from @liforma/client/openai. Flow: Connect → Start experience.',
+			text: 'Developer tip: copy helloByo.ts (startByoSpeech). Flow: Connect → Start experience.',
 			kind: 'info'
 		}
 	]);
@@ -164,7 +160,7 @@
 				cachedEphemeralKey = ephemeralKey;
 			}
 
-			bridge = await connectOpenAiRealtime(experience, {
+			bridge = await startByoSpeech(experience, {
 				ephemeralKey,
 				instructions: SUGGESTED_INSTRUCTIONS,
 				onLog: (line, kind) => pushLog(line, kind),
@@ -320,7 +316,7 @@
 			<h2>1. Suggested Realtime instructions</h2>
 			<p>
 				These instructions are applied when minting the ephemeral session (and again via
-				<code>session.update</code> via <code>connectOpenAiRealtime</code>) so Anna matches the coffee-barista
+				<code>session.update</code> via <code>startByoSpeech</code>) so Anna matches the coffee-barista
 				scenario.
 			</p>
 
