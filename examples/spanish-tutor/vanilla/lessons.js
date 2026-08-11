@@ -63,5 +63,3 @@ export const fallbackLessons = [
 		experienceId: 'exp_01EXAMPLES_PRACTICE_NURSE'
 	}
 ];
-
-export const SPANISH_TUTOR_LANGUAGE = 'es';

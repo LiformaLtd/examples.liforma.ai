@@ -1,5 +1,10 @@
 <script lang="ts">
 	import LessonList from '$lib/components/LessonList.svelte';
+	import {
+		DEFAULT_LEARNING_LOCALE,
+		LEARNING_LANGUAGE_OPTIONS,
+		learningLanguageLabel
+	} from '$lib/learningLanguages';
 	import { getLesson } from '$lib/lessons';
 	import { Experience } from '@liforma/client/svelte';
 	import type { PageData } from './$types';
@@ -9,6 +14,7 @@
 	let { data }: { data: PageData } = $props();
 
 	let selectedLessonId = $state<string | null>(null);
+	let learningLocale = $state(DEFAULT_LEARNING_LOCALE);
 	let sessionStatus = $state<SessionStatus>('idle');
 	let transcriptNotes = $state<string[]>([]);
 
@@ -33,8 +39,10 @@
 	function startSession(): void {
 		if (!selectedLesson || sessionActive) return;
 		sessionStatus = 'active';
+		const learningLabel = learningLanguageLabel(learningLocale);
 		transcriptNotes = [
 			`Session started for “${selectedLesson.title}”.`,
+			`Learning language: ${learningLabel} (Experience learningLocale="${learningLocale}").`,
 			'Allow microphone access when prompted to speak with your tutor.',
 			'Transcript events from the SDK can be wired here in a production app.'
 		];
@@ -76,6 +84,30 @@
 				<p>{selectedLesson.goal}</p>
 			</div>
 
+			<label class="learning-row">
+				<span class="learning-label">I am learning:</span>
+				<select
+					class="learning-select"
+					bind:value={learningLocale}
+					disabled={sessionActive}
+					aria-label="I am learning"
+				>
+					{#each LEARNING_LANGUAGE_OPTIONS as option (option.id)}
+						<option value={option.locale}>{option.label}</option>
+					{/each}
+				</select>
+			</label>
+			{#if sessionActive}
+				<p class="learning-lock" role="status">
+					End the session before changing the learning language.
+				</p>
+			{:else}
+				<p class="learning-hint">
+					Passed to <code>&lt;Experience learningLocale&gt;</code>. Your browser language stays the
+					native/user locale.
+				</p>
+			{/if}
+
 			<div class="status-row">
 				<span class="status-pill" data-status={sessionStatus}>
 					{#if sessionStatus === 'active'}
@@ -100,15 +132,16 @@
 				<div class="embed-shell">
 					<Experience
 						experienceId={experienceId}
-						language="es"
+						learningLocale={learningLocale}
 						onClose={handleEmbedClose}
 					/>
 				</div>
 			{:else}
 				<div class="experience-placeholder">
-					<p>Select a lesson and start practice to load your Spanish tutor experience.</p>
+					<p>Select a lesson and start practice to load your tutor experience.</p>
 					<p class="muted">
 						Experience ID: <code>{experienceId}</code>
+						· learningLocale: <code>{learningLocale}</code>
 					</p>
 				</div>
 			{/if}
@@ -175,6 +208,40 @@
 
 	.goal-card p:last-child {
 		margin: 0;
+		color: var(--text-muted);
+	}
+
+	.learning-row {
+		display: flex;
+		align-items: center;
+		gap: 0.65rem;
+		flex-wrap: wrap;
+		margin-bottom: 0.35rem;
+	}
+
+	.learning-label {
+		font-size: 0.875rem;
+		font-weight: 600;
+	}
+
+	.learning-select {
+		min-width: 10rem;
+		padding: 0.45rem 0.65rem;
+		border: 1px solid var(--border-strong);
+		border-radius: var(--radius-sm);
+		background: var(--bg-elevated);
+		color: var(--text);
+	}
+
+	.learning-select:disabled {
+		opacity: 0.65;
+		cursor: not-allowed;
+	}
+
+	.learning-hint,
+	.learning-lock {
+		margin: 0 0 0.85rem;
+		font-size: 0.8125rem;
 		color: var(--text-muted);
 	}
 

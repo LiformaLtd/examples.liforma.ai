@@ -36,7 +36,7 @@ The embed is **not** mounted until the user taps **Start practice**. That way `e
 ```tsx
 // app/TutorApp.tsx — pattern to preserve
 {sessionActive ? (
-  <Experience experienceId={experienceId} language="es" onClose={handleEmbedClose} />
+  <Experience experienceId={experienceId} learningLocale={learningLocale} onClose={handleEmbedClose} />
 ) : (
   <Placeholder />
 )}

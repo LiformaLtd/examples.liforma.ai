@@ -1,4 +1,9 @@
 import { fallbackLessons } from './lessons.js';
+import {
+	DEFAULT_LEARNING_LOCALE,
+	LEARNING_LANGUAGE_OPTIONS,
+	learningLanguageLabel
+} from './learningLanguages.js';
 import { loadLessons } from './lessonsLoader.js';
 
 const lessonListEl = document.getElementById('lesson-list');
@@ -11,6 +16,10 @@ const sessionBtnEl = document.getElementById('session-btn');
 const embedRegionEl = document.getElementById('embed-region');
 const experiencePlaceholderEl = document.getElementById('experience-placeholder');
 const experienceIdLabelEl = document.getElementById('experience-id-label');
+const learningLocaleSelectEl = document.getElementById('learning-locale');
+const learningLocaleLabelEl = document.getElementById('learning-locale-label');
+const learningHintEl = document.getElementById('learning-hint');
+const learningLockEl = document.getElementById('learning-lock');
 const transcriptListEl = document.getElementById('transcript-list');
 
 /** @type {import('./lessons.js').Lesson[]} */
@@ -18,6 +27,7 @@ let lessons = [...fallbackLessons];
 
 /** @type {string | null} */
 let selectedLessonId = lessons[0]?.id ?? null;
+let learningLocale = DEFAULT_LEARNING_LOCALE;
 let sessionActive = false;
 /** @type {HTMLElement | null} */
 let activeEmbed = null;
@@ -41,6 +51,18 @@ function setCatalogNote(message) {
 	}
 	catalogNoteEl.textContent = message;
 	catalogNoteEl.classList.remove('hidden');
+}
+
+function renderLearningOptions() {
+	if (!learningLocaleSelectEl) return;
+	learningLocaleSelectEl.innerHTML = '';
+	for (const option of LEARNING_LANGUAGE_OPTIONS) {
+		const el = document.createElement('option');
+		el.value = option.locale;
+		el.textContent = option.label;
+		if (option.locale === learningLocale) el.selected = true;
+		learningLocaleSelectEl.appendChild(el);
+	}
 }
 
 function renderLessonList() {
@@ -83,10 +105,19 @@ function updateGoalCard() {
 	lessonTitleEl.textContent = lesson.title;
 	lessonGoalEl.textContent = lesson.goal;
 	experienceIdLabelEl.textContent = lesson.experienceId;
+	if (learningLocaleLabelEl) {
+		learningLocaleLabelEl.textContent = learningLocale;
+	}
 }
 
 function updateSessionControls() {
 	if (!statusPillEl || !sessionBtnEl || !lockNoteEl) return;
+
+	if (learningLocaleSelectEl) {
+		learningLocaleSelectEl.disabled = sessionActive;
+	}
+	learningHintEl?.classList.toggle('hidden', sessionActive);
+	learningLockEl?.classList.toggle('hidden', !sessionActive);
 
 	if (sessionActive) {
 		statusPillEl.textContent = 'Session active';
@@ -123,7 +154,7 @@ function mountEmbed() {
 
 	const embed = document.createElement('liforma-experience');
 	embed.setAttribute('experience-id', lesson.experienceId);
-	embed.setAttribute('language', 'es');
+	embed.setAttribute('learning-locale', learningLocale);
 	embed.className = 'liforma-embed';
 	embed.addEventListener('close', handleEmbedClose);
 	embedRegionEl.appendChild(embed);
@@ -134,7 +165,11 @@ function startSession() {
 	const lesson = getSelectedLesson();
 	if (!lesson || sessionActive) return;
 	sessionActive = true;
+	const learningLabel = learningLanguageLabel(learningLocale);
 	addTranscriptLine(`Session started for “${lesson.title}”.`);
+	addTranscriptLine(
+		`Learning language: ${learningLabel} (Experience learningLocale="${learningLocale}").`
+	);
 	addTranscriptLine('Allow microphone access when prompted to speak with your tutor.');
 	mountEmbed();
 	updateUi();
@@ -180,6 +215,13 @@ async function bootstrapLessons() {
 	}
 	updateUi();
 }
+
+renderLearningOptions();
+learningLocaleSelectEl?.addEventListener('change', () => {
+	if (sessionActive) return;
+	learningLocale = learningLocaleSelectEl.value || DEFAULT_LEARNING_LOCALE;
+	updateGoalCard();
+});
 
 sessionBtnEl?.addEventListener('click', handleSessionButtonClick);
 

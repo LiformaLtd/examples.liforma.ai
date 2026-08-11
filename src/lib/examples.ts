@@ -70,7 +70,7 @@ export const examples: ExampleMetadata[] = [
 		slug: 'spanish-tutor',
 		title: 'Spanish Tutor',
 		description:
-			'Practise Spanish with an animated AI tutor. Lesson-based app pattern with close-before-switch UX.',
+			'Lesson-based tutor app with an “I am learning” control that sets Experience learningLocale (Spanish by default; also French, German, Japanese).',
 		category: 'Education',
 		kind: 'lessons',
 		frameworks: ['sveltekit', 'vanilla', 'nextjs', 'react-vite'],

@@ -1,6 +1,6 @@
 # Spanish Tutor examples
 
-Lesson-based app pattern: the app chooses a lesson; the lesson chooses a Liforma Experience. Close the session before switching lessons.
+Lesson-based app pattern: the app chooses a lesson; the lesson chooses a Liforma Experience. An **I am learning** dropdown (default Spanish) sets Experience `learningLocale` so the same shell can demo French, German, Japanese, etc. Close the session before switching lessons or the learning language.
 
 | Framework | Folder | Local URL |
 | --- | --- | --- |

@@ -72,8 +72,6 @@ export const lessonDetailsBySlug: Record<
 	])
 );
 
-export const SPANISH_TUTOR_LANGUAGE = 'es' as const;
-
 export function getLesson(lessons: readonly Lesson[], id: string): Lesson | undefined {
 	return lessons.find((lesson) => lesson.id === id);
 }

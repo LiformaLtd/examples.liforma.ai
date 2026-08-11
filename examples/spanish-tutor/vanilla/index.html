@@ -56,6 +56,22 @@
 							<p id="lesson-goal"></p>
 						</div>
 
+						<label class="learning-row">
+							<span class="learning-label">I am learning:</span>
+							<select
+								id="learning-locale"
+								class="learning-select"
+								aria-label="I am learning"
+							></select>
+						</label>
+						<p id="learning-hint" class="learning-hint">
+							Passed to <code>&lt;liforma-experience learning-locale&gt;</code>. Your browser
+							language stays the native/user locale.
+						</p>
+						<p id="learning-lock" class="learning-lock hidden" role="status">
+							End the session before changing the learning language.
+						</p>
+
 						<div class="status-row">
 							<span id="status-pill" class="status-pill">Ready to practise</span>
 							<button type="button" id="session-btn" class="btn primary">Start practice</button>
@@ -68,9 +84,10 @@
 
 						<div id="embed-region" class="embed-region">
 							<div id="experience-placeholder" class="experience-placeholder">
-								<p>Select a lesson and start practice to load your Spanish tutor experience.</p>
+								<p>Select a lesson and start practice to load your tutor experience.</p>
 								<p class="muted">
 									Experience ID: <code id="experience-id-label"></code>
+									· learningLocale: <code id="learning-locale-label"></code>
 								</p>
 							</div>
 						</div>

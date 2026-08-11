@@ -40,6 +40,7 @@ Each lesson includes: `id`, `title`, `description`, `level`, `goal`, `experience
 
 - Lesson selection panel
 - Selected lesson summary / learning goal card
+- **I am learning** dropdown (default Spanish; also French, German, Japanese) → `learningLocale`
 - Liforma experience embed region
 - Session status (idle / active)
 - Start / End session controls
@@ -51,10 +52,13 @@ Each lesson includes: `id`, `title`, `description`, `level`, `goal`, `experience
 
 ```html
 <script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
-<liforma-experience experience-id="EXP_ID_FROM_LESSON"></liforma-experience>
+<liforma-experience
+  experience-id="EXP_ID_FROM_LESSON"
+  learning-locale="es-ES"
+></liforma-experience>
 ```
 
-Listen for `close` on the custom element to return to idle.
+Omit `locale` so the SDK uses the browser language as the native/user locale. Listen for `close` on the custom element to return to idle. Disable the learning-language control while a session is active (same close-before-switch rule as lessons).
 
 ## Experience IDs
 
