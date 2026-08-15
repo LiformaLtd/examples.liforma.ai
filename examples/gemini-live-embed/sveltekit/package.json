@@ -13,7 +13,7 @@
 		"verify": "npm run verify:commit && npm run build"
 	},
 	"dependencies": {
-		"@liforma/client": "^0.4.1",
+		"@liforma/client": "^0.4.2",
 		"ws": "^8.18.3"
 	},
 	"devDependencies": {

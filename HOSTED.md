@@ -67,7 +67,7 @@ Do **not** use the `*.vercel.app` preview URL for mint tests — those origins a
 
 ### SDK version
 
-Hosted demos need `@liforma/client` **≥ 0.4.1** (`POST /v1/browser-sessions`). `0.4.0` still called removed `/v1/public-sessions` and failed CORS preflight.
+Hosted demos need `@liforma/client` **≥ 0.4.2** (nested Session Launch capabilities). `0.4.1` rejects nested `capabilities` from current `api.liforma.ai`. `0.4.0` still called removed `/v1/public-sessions` and failed CORS preflight.
 
 ## Gallery
 
