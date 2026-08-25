@@ -1,0 +1,22 @@
+{
+	"name": "@liforma-examples/programmatic-publish-node",
+	"private": true,
+	"version": "0.0.1",
+	"type": "module",
+	"description": "Local-only Node CLI that publishes an experience with @liforma/publisher (port reserved: 4011)",
+	"scripts": {
+		"start": "tsx publish.ts",
+		"typecheck": "tsc -p tsconfig.json --noEmit"
+	},
+	"engines": {
+		"node": ">=20"
+	},
+	"dependencies": {
+		"@liforma/publisher": "file:../../../../api.liforma.ai/packages/publisher"
+	},
+	"devDependencies": {
+		"@types/node": "^25.9.3",
+		"tsx": "^4.21.0",
+		"typescript": "^6.0.3"
+	}
+}
