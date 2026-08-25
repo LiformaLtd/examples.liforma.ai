@@ -1,16 +1,17 @@
-# Programmatic publish (Node)
+# Programmatic publish (Node) — alpha
 
-Local-only CLI that uses `@liforma/publisher` to upload images, create a location/place/clothes/hair/character, and publish an experience.
+Unlisted local-only CLI for `@liforma/publisher`. Not part of the public examples gallery, `./start`, or hosted demos.
 
-Reserved example port: **4011** (CLI only — no HTTP server).
+Path: `_alpha/examples/programmatic-publish/node`  
+Reserved port: **4011** (CLI only — no HTTP server).
 
 ## Setup
 
 ```bash
 # From the Liforma meta workspace, build the unpublished package once:
-(cd ../../../../api.liforma.ai/packages/publisher && npm run build)
+(cd ../../../../../api.liforma.ai/packages/publisher && npm run build)
 
-cd examples/programmatic-publish/node
+cd _alpha/examples/programmatic-publish/node
 npm install
 ```
 

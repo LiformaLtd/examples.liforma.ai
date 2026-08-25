@@ -12,7 +12,7 @@
 		"node": ">=20"
 	},
 	"dependencies": {
-		"@liforma/publisher": "file:../../../../api.liforma.ai/packages/publisher"
+		"@liforma/publisher": "file:../../../../../api.liforma.ai/packages/publisher"
 	},
 	"devDependencies": {
 		"@types/node": "^25.9.3",
