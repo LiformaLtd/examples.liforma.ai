@@ -43,7 +43,7 @@ const publisher = createPublisher(projectId, {
 	baseUrl: process.env.LIFORMA_API_URL?.trim() || undefined
 });
 
-const avatars = await publisher.listAvatars();
+const avatars = await publisher.avatars.list();
 const avatar = avatars[0];
 if (!avatar) {
 	throw new Error('No costume avatars available on this project.');
@@ -55,13 +55,15 @@ const clothesBytes = readFileSync(path.resolve(clothesPath));
 const hairBytes = readFileSync(path.resolve(hairPath));
 
 const background = await publisher.uploadImage(lobbyBytes, { contentType: 'image/png' });
-const backdrop = await publisher.createBackdrop({
-	name: 'Hotel lobby',
-	image: background,
-	externalId: `example-bdrop-${stamp}`,
-	onProgress: (job) => console.log('backdrop job', job.status, job.stage ?? '')
-});
-const set = await publisher.createSet({
+const backdrop = await publisher.backdrops.create(
+	{
+		name: 'Hotel lobby',
+		image: background,
+		externalId: `example-bdrop-${stamp}`
+	},
+	{ onProgress: (job) => console.log('backdrop job', job.status, job.stage ?? '') }
+);
+const set = await publisher.sets.create({
 	name: 'Hotel lobby',
 	backdropId: backdrop.id,
 	externalId: `example-set-${stamp}`
@@ -70,13 +72,13 @@ const set = await publisher.createSet({
 const clothesImage = await publisher.uploadImage(clothesBytes, { contentType: 'image/png' });
 const hairImage = await publisher.uploadImage(hairBytes, { contentType: 'image/png' });
 const [clothes, hair] = await Promise.all([
-	publisher.createClothes({
+	publisher.clothes.create({
 		avatarId: avatar.id,
 		image: clothesImage,
 		backgroundMode: 'remove',
 		externalId: `example-clothes-${stamp}`
 	}),
-	publisher.createHair({
+	publisher.hair.create({
 		avatarId: avatar.id,
 		image: hairImage,
 		backgroundMode: 'remove',
@@ -84,7 +86,7 @@ const [clothes, hair] = await Promise.all([
 	})
 ]);
 
-const character = await publisher.createCharacter({
+const character = await publisher.characters.create({
 	avatarId: avatar.id,
 	name: 'Front desk',
 	voice: avatar.defaultVoiceId,
@@ -94,7 +96,7 @@ const character = await publisher.createCharacter({
 	externalId: `example-char-${stamp}`
 });
 
-const experience = await publisher.createExperience({
+const experience = await publisher.experiences.create({
 	title,
 	characterId: character.id,
 	setId: set.id,
