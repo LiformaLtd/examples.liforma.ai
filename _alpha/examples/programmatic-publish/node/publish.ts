@@ -55,16 +55,16 @@ const clothesBytes = readFileSync(path.resolve(clothesPath));
 const hairBytes = readFileSync(path.resolve(hairPath));
 
 const background = await publisher.uploadImage(lobbyBytes, { contentType: 'image/png' });
-const location = await publisher.createLocation({
+const backdrop = await publisher.createBackdrop({
 	name: 'Hotel lobby',
 	image: background,
-	externalId: `example-loc-${stamp}`,
-	onProgress: (job) => console.log('location job', job.status, job.stage ?? '')
+	externalId: `example-bdrop-${stamp}`,
+	onProgress: (job) => console.log('backdrop job', job.status, job.stage ?? '')
 });
-const place = await publisher.createPlace({
+const set = await publisher.createSet({
 	name: 'Hotel lobby',
-	locationId: location.id,
-	externalId: `example-place-${stamp}`
+	backdropId: backdrop.id,
+	externalId: `example-set-${stamp}`
 });
 
 const clothesImage = await publisher.uploadImage(clothesBytes, { contentType: 'image/png' });
@@ -97,7 +97,7 @@ const character = await publisher.createCharacter({
 const experience = await publisher.createExperience({
 	title,
 	characterId: character.id,
-	placeId: place.id,
+	setId: set.id,
 	publish: true,
 	externalId: `example-exp-${stamp}`
 });
@@ -109,8 +109,8 @@ console.log(
 			slug: experience.slug,
 			published: experience.published,
 			characterId: character.id,
-			placeId: place.id,
-			locationId: location.id
+			setId: set.id,
+			backdropId: backdrop.id
 		},
 		null,
 		2
