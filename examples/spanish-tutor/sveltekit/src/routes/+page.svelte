@@ -6,7 +6,9 @@
 		learningLanguageLabel
 	} from '$lib/learningLanguages';
 	import { getLesson } from '$lib/lessons';
+	import { isPlayerFullWindowMessage } from '$lib/playerFullWindow';
 	import { Experience } from '@liforma/client/svelte';
+	import { on } from 'svelte/events';
 	import type { PageData } from './$types';
 
 	type SessionStatus = 'idle' | 'active';
@@ -17,6 +19,7 @@
 	let learningLocale = $state(DEFAULT_LEARNING_LOCALE);
 	let sessionStatus = $state<SessionStatus>('idle');
 	let transcriptNotes = $state<string[]>([]);
+	let embedFullWindow = $state(false);
 
 	const effectiveSelectedLessonId = $derived(
 		selectedLessonId ?? data.lessons[0]?.id ?? null
@@ -50,6 +53,7 @@
 
 	function endSession(): void {
 		sessionStatus = 'idle';
+		embedFullWindow = false;
 		transcriptNotes = [...transcriptNotes, 'Session ended. Choose another lesson or start again.'];
 	}
 
@@ -58,6 +62,22 @@
 			endSession();
 		}
 	}
+
+	$effect(() => {
+		return on(window, 'message', (event) => {
+			if (!isPlayerFullWindowMessage(event)) return;
+			embedFullWindow = event.data.payload.active;
+		});
+	});
+
+	$effect(() => {
+		if (!embedFullWindow) return;
+		const previous = document.body.style.overflow;
+		document.body.style.overflow = 'hidden';
+		return () => {
+			document.body.style.overflow = previous;
+		};
+	});
 </script>
 
 <div class="layout">
@@ -129,7 +149,7 @@
 			</div>
 
 			{#if sessionActive}
-				<div class="embed-shell">
+				<div class="embed-shell" class:full-window={embedFullWindow}>
 					<Experience
 						experienceId={experienceId}
 						learningLocale={learningLocale}
@@ -312,6 +332,22 @@
 		overflow: hidden;
 		box-shadow: var(--shadow-sm);
 		margin-bottom: 1rem;
+	}
+
+	.embed-shell.full-window {
+		position: fixed;
+		inset: 0;
+		z-index: 2147483000;
+		width: 100vw;
+		width: 100dvw;
+		height: 100vh;
+		height: 100dvh;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		border: 0;
+		border-radius: 0;
+		box-shadow: none;
 	}
 
 	.experience-placeholder {
