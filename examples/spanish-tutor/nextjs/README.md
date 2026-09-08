@@ -14,7 +14,7 @@ Open http://localhost:4003
 | File | Role |
 | --- | --- |
 | `app/TutorApp.tsx` | **Start here.** Liforma mount, session state, close-before-switch rules |
-| `lib/lessons.ts` | Static lesson list and `experienceId` values (`exp_01EXAMPLES_*`) |
+| `lib/lessons.ts` | Static lesson list and `experienceId` values (opaque `exp_…` ids) |
 | `lib/loadLessons.ts` | Server-side catalog loader (optional) |
 | `lib/liformaCatalog.ts` | Authenticated project catalog API client |
 | `components/LessonList.tsx` | Demo UI — lesson picker |

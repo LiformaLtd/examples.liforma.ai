@@ -10,6 +10,6 @@ Lesson-based app pattern: the app chooses a lesson; the lesson chooses a Liforma
 | React (Vite) | `react-vite/` | http://localhost:4003 |
 
 **Read first in React/Next:** `TutorApp.tsx` — mount rules + close-before-switch.  
-**Lesson IDs:** `lib/lessons.ts` (use `exp_01EXAMPLES_*`).
+**Lesson IDs:** `lib/lessons.ts` (opaque `exp_…` experience ids).
 
 From the repo root: `./start`, `./start sveltekit`, `./start nextjs`, or `./start react-vite`.
