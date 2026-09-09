@@ -10,7 +10,7 @@ SvelteKit marketing-page demo of **`ExperienceWidget`** as a bottom-right site l
 </script>
 
 <ExperienceWidget
-  experienceId="exp_01EXAMPLES_COFFEE_BARISTA"
+  experienceId="exp_T0I7ACMQLBMPG6K"
   alt="Talk to our coffee barista"
   position="bottom-right"
   offset={16}

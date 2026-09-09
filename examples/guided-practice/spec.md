@@ -20,7 +20,7 @@ Demonstrate **scripted practice** (Marvely-style): the experience speaks predete
 
 ```js
 const experience = await Experience.startSession({
-  experienceId: 'exp_01EXAMPLES_COFFEE_BARISTA',
+  experienceId: 'exp_T0I7ACMQLBMPG6K',
   mode: 'presenter',
   speechInputMode: 'manual',
   startButton: {
@@ -50,7 +50,7 @@ const utterance = await experience.stopListening();
 
 ## Experience
 
-Default: `exp_01EXAMPLES_COFFEE_BARISTA` (Examples project coffee barista clone). Presenter mode does not require an opening message in the experience definition.
+Default: `exp_T0I7ACMQLBMPG6K` (Examples project coffee barista clone). Presenter mode does not require an opening message in the experience definition.
 
 ## Frameworks
 

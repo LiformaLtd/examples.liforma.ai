@@ -19,7 +19,7 @@ The hello-world Liforma integration: mount a single experience with no host-side
   import { Experience } from '@liforma/client/svelte';
 </script>
 
-<Experience experienceId="exp_01EXAMPLES_COFFEE_BARISTA" />
+<Experience experienceId="exp_T0I7ACMQLBMPG6K" />
 ```
 
 ### Next.js / React (Vite)
@@ -30,7 +30,7 @@ The hello-world Liforma integration: mount a single experience with no host-side
 import { Experience } from '@liforma/client/react';
 
 export function Demo() {
-  return <Experience experienceId="exp_01EXAMPLES_COFFEE_BARISTA" />;
+  return <Experience experienceId="exp_T0I7ACMQLBMPG6K" />;
 }
 ```
 
@@ -40,7 +40,7 @@ Import from `@liforma/client/react` (not `/next` — that export is the authenti
 
 ```html
 <script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
-<liforma-experience experience-id="exp_01EXAMPLES_COFFEE_BARISTA"></liforma-experience>
+<liforma-experience experience-id="exp_T0I7ACMQLBMPG6K"></liforma-experience>
 ```
 
 ## Required UI
@@ -50,7 +50,7 @@ Import from `@liforma/client/react` (not `/next` — that export is the authenti
 
 ## Experience
 
-Default: `exp_01EXAMPLES_COFFEE_BARISTA` (Examples project coffee barista).
+Default: `exp_T0I7ACMQLBMPG6K` (Examples project coffee barista).
 
 ## Frameworks
 

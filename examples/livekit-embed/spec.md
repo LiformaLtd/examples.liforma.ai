@@ -71,7 +71,7 @@ const bridge = await startByoSpeech(experience, {
 
 ## Experience
 
-Default: `exp_01EXAMPLES_COFFEE_BARISTA`
+Default: `exp_T0I7ACMQLBMPG6K`
 
 ## Frameworks
 

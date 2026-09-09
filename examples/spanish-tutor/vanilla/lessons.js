@@ -20,7 +20,7 @@ export const fallbackLessons = [
 		description: 'Order coffee and a pastry at a London café.',
 		level: 'Beginner',
 		goal: 'Practise greeting the barista, ordering a drink and snack, and paying.',
-		experienceId: 'exp_01EXAMPLES_COFFEE_BARISTA'
+		experienceId: 'exp_T0I7ACMQLBMPG6K'
 	},
 	{
 		id: 'gp-doctor',
@@ -28,7 +28,7 @@ export const fallbackLessons = [
 		description: 'Describe a mild health concern at the doctor.',
 		level: 'Beginner',
 		goal: 'Practise explaining symptoms and understanding simple medical advice.',
-		experienceId: 'exp_01EXAMPLES_GP_DOCTOR'
+		experienceId: 'exp_3QMATO3T48QY7KY'
 	},
 	{
 		id: 'hotel-reception',
@@ -36,7 +36,7 @@ export const fallbackLessons = [
 		description: 'Check into a boutique hotel at reception.',
 		level: 'Beginner',
 		goal: 'Practise giving your name, confirming a reservation, and asking about your room.',
-		experienceId: 'exp_01EXAMPLES_HOTEL_RECEPTIONIST'
+		experienceId: 'exp_HWN0IEIGOXSC8LS'
 	},
 	{
 		id: 'airport-checkin',
@@ -44,7 +44,7 @@ export const fallbackLessons = [
 		description: 'Check in for a flight at the airport desk.',
 		level: 'Beginner',
 		goal: 'Practise stating your destination, baggage, and seat preference.',
-		experienceId: 'exp_01EXAMPLES_AIRPORT_CHECKIN'
+		experienceId: 'exp_J4VK54TLEN33Q3V'
 	},
 	{
 		id: 'spanish-cafe',
@@ -52,7 +52,7 @@ export const fallbackLessons = [
 		description: 'Order food and drinks at a Spanish café.',
 		level: 'Beginner',
 		goal: 'Practise ordering a drink and snack and asking for the bill.',
-		experienceId: 'exp_01EXAMPLES_SPANISH_CAFE_WAITRESS'
+		experienceId: 'exp_1DH814CAPBJ1G18'
 	},
 	{
 		id: 'practice-nurse',
@@ -60,6 +60,6 @@ export const fallbackLessons = [
 		description: 'Book an appointment at the doctor’s surgery.',
 		level: 'Beginner',
 		goal: 'Practise describing why you came in and arranging a GP appointment.',
-		experienceId: 'exp_01EXAMPLES_PRACTICE_NURSE'
+		experienceId: 'exp_CIBQRPYYCPUR3ZX'
 	}
 ];

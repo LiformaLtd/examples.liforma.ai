@@ -7,7 +7,7 @@
 		This example shows a simple Experience embedded in a div on a web page.
 	</p>
 	<div class="experience">
-		<Experience experienceId="exp_01EXAMPLES_COFFEE_BARISTA" />
+		<Experience experienceId="exp_T0I7ACMQLBMPG6K" />
 	</div>
 </div>
 

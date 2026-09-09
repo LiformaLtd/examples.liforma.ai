@@ -4,7 +4,7 @@
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */
-export const EXPERIENCE_ID = 'exp_01EXAMPLES_COFFEE_BARISTA';
+export const EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
 
 /** Default Realtime model for this example (override with OPENAI_REALTIME_MODEL). */
 export const DEFAULT_REALTIME_MODEL = 'gpt-realtime-2.1';

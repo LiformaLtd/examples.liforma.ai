@@ -13,7 +13,7 @@ Open http://localhost:4001
 import { Experience } from '@liforma/client/react';
 
 export function Demo() {
-  return <Experience experienceId="exp_01EXAMPLES_COFFEE_BARISTA" />;
+  return <Experience experienceId="exp_T0I7ACMQLBMPG6K" />;
 }
 ```
 

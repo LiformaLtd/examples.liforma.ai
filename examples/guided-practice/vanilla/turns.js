@@ -1,5 +1,5 @@
 /** Scripted practice turns — host-owned lines the experience speaks via `speak()`. */
-export const PRACTICE_EXPERIENCE_ID = 'exp_01EXAMPLES_COFFEE_BARISTA';
+export const PRACTICE_EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
 
 export const practiceScenario = {
 	title: 'Café ordering',

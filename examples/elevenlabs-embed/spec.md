@@ -53,7 +53,7 @@ Critical: the helper calls `conversation.setVolume({ volume: 0 })` so only the a
 
 ## Experience
 
-Default: `exp_01EXAMPLES_COFFEE_BARISTA`
+Default: `exp_T0I7ACMQLBMPG6K`
 
 ## Frameworks
 

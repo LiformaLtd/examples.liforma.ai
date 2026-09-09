@@ -1,4 +1,4 @@
-export const SPEAK_EXPERIENCE_ID = 'exp_01EXAMPLES_COFFEE_BARISTA';
+export const SPEAK_EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
 
 export const DEMO_LINES = [
 	'Hello there!',
