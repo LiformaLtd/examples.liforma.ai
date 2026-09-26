@@ -682,6 +682,7 @@ export function Demo() {
   position="bottom-right"
   offset={16}
   prefetch="idle"
+  websiteAssistant={true}
 />`;
 	}
 
@@ -697,6 +698,7 @@ export function Demo() {
       position="bottom-right"
       offset={16}
       prefetch="idle"
+      websiteAssistant
     />
   );
 }`;
@@ -711,6 +713,7 @@ export function Demo() {
   position="bottom-right"
   offset="16"
   prefetch="idle"
+  website-assistant="true"
 ></liforma-experience-widget>`;
 	}
 

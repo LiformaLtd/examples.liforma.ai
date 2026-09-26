@@ -19,6 +19,8 @@ Plan: `docs/plans/2026/08/hosted-examples-demos.plan.md` (meta repo).
 
 Hosted builds use **npm** `@liforma/client` (`^0.4.0+`, includes BYO subpaths).
 
+When a new `@liforma/client` is published to npm, bump the dependency in every example `package.json` that lists it, commit, and push. Vercel republishes `*.examples.liforma.ai` from that push. The npm release alone does not update the hosted demos.
+
 For unpublished monorepo SDK work:
 
 ```bash

@@ -24,6 +24,7 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
   position="bottom-right"
   offset="16"
   prefetch="idle"
+  website-assistant="true"
 ></liforma-experience-widget>
 ```
 
@@ -40,6 +41,7 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
   position="bottom-right"
   offset={16}
   prefetch="idle"
+  websiteAssistant={true}
 />
 ```
 
@@ -54,6 +56,7 @@ import { ExperienceWidget } from '@liforma/client/react';
   position="bottom-right"
   offset={16}
   prefetch="idle"
+  websiteAssistant
 />
 ```
 

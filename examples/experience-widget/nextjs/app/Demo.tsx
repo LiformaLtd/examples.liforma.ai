@@ -11,6 +11,7 @@ export default function Demo() {
 			position="bottom-right"
 			offset={16}
 			prefetch="idle"
+			websiteAssistant
 		/>
 	);
 }
