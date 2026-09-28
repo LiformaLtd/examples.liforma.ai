@@ -165,7 +165,6 @@ async function initExperience() {
 	experience = await Experience.startSession({
 		experienceId: PRACTICE_EXPERIENCE_ID,
 		mode: 'presenter',
-		speechInputMode: 'manual',
 		onUserTranscript: (update) => {
 			if (phase === 'recording' && update.text.trim() && transcriptTextEl) {
 				transcriptTextEl.textContent = update.text.trim();
@@ -211,6 +210,7 @@ async function initExperience() {
 
 	await experience.attach({
 		container: experienceHostEl,
+		microphoneActivation: 'tap_to_talk',
 		startButton: {
 			label: 'Begin lesson',
 			ariaLabel: 'Begin guided practice lesson',

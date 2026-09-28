@@ -30,7 +30,7 @@
 	let showTranscript = $state(false);
 	let feedback = $state<PracticeFeedback | null>(null);
 	let recordingActive = $state(false);
-	let modeLabel = $state('presenter / manual / manual');
+	let modeLabel = $state('presenter / manual / auto');
 
 	const currentTurn = $derived(practiceTurns[turnIndex]);
 	const turnTitle = $derived(
@@ -220,7 +220,7 @@
 					bind:this={experience}
 					experienceId={PRACTICE_EXPERIENCE_ID}
 					mode="presenter"
-					speechInputMode="manual"
+					microphoneActivation="tap_to_talk"
 					{startButton}
 					onReady={handleReady}
 					onStarted={handleStarted}

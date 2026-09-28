@@ -49,7 +49,7 @@ export default function PracticeApp() {
 	const [showTranscript, setShowTranscript] = useState(false);
 	const [feedback, setFeedback] = useState<PracticeFeedback | null>(null);
 	const [recordingActive, setRecordingActive] = useState(false);
-	const [modeLabel, setModeLabel] = useState('presenter / manual / manual');
+	const [modeLabel, setModeLabel] = useState('presenter / manual / auto');
 
 	const currentTurn = practiceTurns[turnIndex];
 
@@ -261,7 +261,7 @@ export default function PracticeApp() {
 							ref={experienceRef}
 							experienceId={PRACTICE_EXPERIENCE_ID}
 							mode="presenter"
-							speechInputMode="manual"
+							microphoneActivation="tap_to_talk"
 							startButton={startButton}
 							onReady={handleReady}
 							onStarted={handleStarted}

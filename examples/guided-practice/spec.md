@@ -6,7 +6,7 @@ Demonstrate **scripted practice** (Marvely-style): the experience speaks predete
 
 ## User flow
 
-1. Page loads SDK and attaches a presenter/manual session.
+1. Page loads SDK and attaches a presenter session locked to tap-to-talk.
 2. User taps the player-owned **Begin lesson** button, which unlocks audio and emits `started`.
 3. For each turn:
    - User taps **Play tutor line** → `speak({ text })`.
@@ -22,7 +22,6 @@ Demonstrate **scripted practice** (Marvely-style): the experience speaks predete
 const experience = await Experience.startSession({
   experienceId: 'exp_t0i7acmq',
   mode: 'presenter',
-  speechInputMode: 'manual',
   startButton: {
     label: 'Begin lesson',
     placement: 'bottom-center'
@@ -33,7 +32,10 @@ const experience = await Experience.startSession({
 experience.on('started', async () => {
   await experience.speak({ text: 'Welcome! What would you like?' });
 });
-await experience.attach({ container });
+await experience.attach({
+  container,
+  microphoneActivation: 'tap_to_talk'
+});
 await experience.startListening();
 const utterance = await experience.stopListening();
 // utterance.text → host feedback API (not speak())
