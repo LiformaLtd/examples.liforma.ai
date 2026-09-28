@@ -4,7 +4,7 @@
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */
-export const EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
+export const EXPERIENCE_ID = 'exp_t0i7acmq';
 
 /**
  * Suggested ElevenLabs Agent first message — matches Liforma `barista_b1` startingMessage.

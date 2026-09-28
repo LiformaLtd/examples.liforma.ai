@@ -43,7 +43,7 @@ await experienceRef.current.speech.speak({
 
 ## Experience
 
-Default: `exp_T0I7ACMQLBMPG6K` (Examples project coffee barista clone).
+Default: `exp_t0i7acmq` (Examples project coffee barista clone).
 
 ## Frameworks
 

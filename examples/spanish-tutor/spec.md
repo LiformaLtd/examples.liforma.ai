@@ -29,10 +29,10 @@ Each lesson maps to its own Liforma Experience (scenario, location, and tutor pr
 
 | ID | Title | Experience ID |
 | --- | --- | --- |
-| cafe-conversation | Café Conversation | `exp_01DEMO1SPANISHCAFE` |
-| hotel-check-in | Hotel Check-in | `exp_01DEMO1SPANISHHOTEL` |
-| asking-directions | Asking for Directions | `exp_01DEMO1SPANISHDIRECTIONS` |
-| shopping-clothes | Shopping for Clothes | `exp_01DEMO1SPANISHSHOP` |
+| cafe-conversation | Café Conversation | `exp_01demo1sAFE` |
+| hotel-check-in | Hotel Check-in | `exp_01demo1sOTEL` |
+| asking-directions | Asking for Directions | `exp_01demo1sIRECTIONS` |
+| shopping-clothes | Shopping for Clothes | `exp_01demo1sHOP` |
 
 Each lesson includes: `id`, `title`, `description`, `level`, `goal`, `experienceId`.
 

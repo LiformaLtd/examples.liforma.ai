@@ -12,7 +12,7 @@ const experienceRef = useRef<ExperienceHandle | null>(null);
 
 <Experience
   ref={experienceRef}
-  experienceId="exp_T0I7ACMQLBMPG6K"
+  experienceId="exp_t0i7acmq"
   mode="presenter"
   speechInputMode="off"
   startButton={{ label: 'Start experience', ... }}

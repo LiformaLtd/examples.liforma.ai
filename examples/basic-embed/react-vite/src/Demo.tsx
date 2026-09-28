@@ -10,7 +10,7 @@ export function Demo() {
 				This example shows a simple Experience embedded in a div on a web page.
 			</p>
 			<div className="experience">
-				<Experience experienceId="exp_T0I7ACMQLBMPG6K" />
+				<Experience experienceId="exp_t0i7acmq" />
 			</div>
 		</div>
 	);

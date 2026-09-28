@@ -12,5 +12,5 @@ Open http://localhost:4001
   import { Experience } from '@liforma/client/svelte';
 </script>
 
-<Experience experienceId="exp_T0I7ACMQLBMPG6K" />
+<Experience experienceId="exp_t0i7acmq" />
 ```

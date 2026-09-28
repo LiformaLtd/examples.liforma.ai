@@ -1,4 +1,4 @@
-export const PRACTICE_EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
+export const PRACTICE_EXPERIENCE_ID = 'exp_t0i7acmq';
 
 export type PracticeTurn = {
 	readonly id: string;

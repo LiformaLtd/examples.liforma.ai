@@ -6,7 +6,7 @@
  */
 
 /** Meet coffee barista — same demo experience as basic embed. */
-export const EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
+export const EXPERIENCE_ID = 'exp_t0i7acmq';
 
 /**
  * Optional Deepgram Voice Agent `Settings.agent` defaults for this demo.

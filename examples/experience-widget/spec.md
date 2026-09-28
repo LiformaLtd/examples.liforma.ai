@@ -19,7 +19,7 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
 <script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
 
 <liforma-experience-widget
-  experience-id="exp_T0I7ACMQLBMPG6K"
+  experience-id="exp_t0i7acmq"
   alt="Talk to our barista"
   position="bottom-right"
   offset="16"
@@ -36,7 +36,7 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
 </script>
 
 <ExperienceWidget
-  experienceId="exp_T0I7ACMQLBMPG6K"
+  experienceId="exp_t0i7acmq"
   alt="Talk to our barista"
   position="bottom-right"
   offset={16}
@@ -51,7 +51,7 @@ Demo `<liforma-experience-widget>` / `ExperienceWidget` as a bottom-right site l
 import { ExperienceWidget } from '@liforma/client/react';
 
 <ExperienceWidget
-  experienceId="exp_T0I7ACMQLBMPG6K"
+  experienceId="exp_t0i7acmq"
   alt="Talk to our barista"
   position="bottom-right"
   offset={16}
@@ -64,7 +64,7 @@ Default `position` is `static` (fill the host). Use `bottom-right` / `bottom-lef
 
 ## Experience
 
-`exp_T0I7ACMQLBMPG6K`
+`exp_t0i7acmq`
 
 ## Frameworks
 

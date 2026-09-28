@@ -1,6 +1,6 @@
 export const GITHUB_REPO = 'https://github.com/LiformaLtd/examples.liforma.ai';
 
-export const DEMO_EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
+export const DEMO_EXPERIENCE_ID = 'exp_t0i7acmq';
 
 export const externalLinks = {
 	www: 'https://www.liforma.ai',

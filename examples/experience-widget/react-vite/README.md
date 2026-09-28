@@ -10,7 +10,7 @@ import { ExperienceWidget } from '@liforma/client/react';
 export function Demo() {
   return (
     <ExperienceWidget
-      experienceId="exp_T0I7ACMQLBMPG6K"
+      experienceId="exp_t0i7acmq"
       alt="Talk to our coffee barista"
       position="bottom-right"
       offset={16}

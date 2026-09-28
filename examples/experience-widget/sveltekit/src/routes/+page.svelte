@@ -7,7 +7,7 @@
 	 */
 	import { ExperienceWidget } from '@liforma/client/svelte';
 
-	const EXPERIENCE_ID = 'exp_T0I7ACMQLBMPG6K';
+	const EXPERIENCE_ID = 'exp_t0i7acmq';
 </script>
 
 <main class="page">

@@ -9,10 +9,10 @@ This app is a **separate Vercel project** from the main `examples.liforma.ai` ga
 1. `api.liforma.ai` deployed with platform seed (`npm run db:seed` in `api.liforma.ai`)
 2. Spanish Tutor project origins seeded (includes this hostname) — see `api.liforma.ai/src/lib/server/platform/seedPlatform.ts`
 3. Public experience ids (used by lessons):
-   - `exp_01DEMO1SPANISHCAFE`
-   - `exp_01DEMO1SPANISHHOTEL`
-   - `exp_01DEMO1SPANISHDIRECTIONS`
-   - `exp_01DEMO1SPANISHSHOP`
+   - `exp_01demo1sAFE`
+   - `exp_01demo1sOTEL`
+   - `exp_01demo1sIRECTIONS`
+   - `exp_01demo1sHOP`
 
 ## Vercel setup
 
