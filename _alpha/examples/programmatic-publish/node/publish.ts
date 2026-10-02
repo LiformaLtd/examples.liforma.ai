@@ -38,7 +38,8 @@ const clothesPath = requireArg('clothes');
 const hairPath = requireArg('hair');
 const title = arg('title')?.trim() || 'Hotel check-in';
 
-const publisher = createPublisher(projectId, {
+const publisher = createPublisher({
+	projectId,
 	apiKey,
 	baseUrl: process.env.LIFORMA_API_URL?.trim() || undefined
 });
