@@ -18,3 +18,13 @@ PORT=4002 node scripts/serve-example.mjs examples/experience-widget/vanilla
 ```
 
 Uses production Liforma by default. Demo experiences allow `http://localhost:4002` via the Examples project `4000-4010` origin range.
+
+
+## Website assistant
+
+Open **http://localhost:4002/website-assistant.html** to test the opt-in
+`website-assistant="true"` mode. That page includes facts the avatar can answer from and a
+`data-liforma-ignore` section that must not be included in page context.
+
+The normal `index.html` intentionally remains a plain ExperienceWidget example and does not load
+the website-assistant extractor.
