@@ -4,6 +4,32 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		%sveltekit.head%
+		<script>
+			(function () {
+				var host = location.hostname;
+				var name = '';
+				if (host === 'localhost' || host === '127.0.0.1' || host === '[::1]') name = 'favicon-local.svg';
+				else if (host.indexOf('staging-') === 0) name = 'favicon-staging.svg';
+				if (!name) return;
+				var links = document.querySelectorAll('link[rel="icon"], link[rel="shortcut icon"]');
+				var href = '/' + name;
+				if (links.length && (links[0].getAttribute('href') || '').indexOf('/content-assets/') !== -1) {
+					href = '/content-assets/' + name;
+				}
+				if (!links.length) {
+					var created = document.createElement('link');
+					created.rel = 'icon';
+					created.type = 'image/svg+xml';
+					created.href = href;
+					document.head.appendChild(created);
+					return;
+				}
+				links[0].setAttribute('href', href);
+				links[0].setAttribute('type', 'image/svg+xml');
+				links[0].removeAttribute('sizes');
+				for (var i = 1; i < links.length; i++) links[i].remove();
+			})();
+		</script>
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
