@@ -1,0 +1,22 @@
+---
+description: Search sibling Liforma repos outside this workspace
+alwaysApply: true
+---
+
+# Cross-repo search
+
+This workspace is one checkout in the Liforma meta-repo. Sibling checkouts are the directories next to this one. Meta-repo docs and plans are in `../docs`.
+
+Grep and Glob only see this workspace. A search whose `path` is outside it returns no matches.
+
+Search this repo with Grep or Glob, with `path` set to the subdirectory you mean.
+
+Search another repo with Shell `rg`, passing that directory as the path:
+
+```bash
+rg -n --glob '!**/node_modules/**' --glob '!**/.svelte-kit/**' --glob '!**/.venv/**' 'PATTERN' ../player.liforma.ai
+```
+
+Do not pipe `rg` to `head` or `tail`. The matches print immediately, then the agent shell waits until that pipeline closes. Run `rg` on its own.
+
+Siblings: `api.liforma.ai`, `app.liforma.ai`, `www.liforma.ai`, `player.liforma.ai`, `my.liforma.ai`, `labs.liforma.ai`, `docs.liforma.ai`, `cdn.liforma.ai`, `examples.liforma.ai`, `agent-skills`, `liforma-content`, `liforma-code-search`, `diagnose.liforma.ai`, `investor.liforma.ai`, `models.liforma.ai`, `sandbox`, `tools`.
