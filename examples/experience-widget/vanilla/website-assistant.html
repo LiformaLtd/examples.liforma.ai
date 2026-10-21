@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Website assistant widget — Liforma example</title>
+		<meta
+			name="description"
+			content="ExperienceWidget website-assistant demo using the visible content of the current page."
+		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+			rel="stylesheet"
+		/>
+		<link rel="icon" href="data:," />
+		<link rel="stylesheet" href="./styles.css" />
+		<script src="https://cdn.liforma.ai/sdk/v2/client.js"></script>
+	</head>
+	<body>
+		<main class="page">
+			<p class="eyebrow">Liforma website assistant example</p>
+			<h1>Acme Plus pricing</h1>
+			<p class="lede">
+				The Acme Plus plan includes twelve seats, priority email support, and 250 GB of shared
+				storage. It costs £49 per month when billed monthly.
+			</p>
+			<p>
+				The Starter plan includes three seats and 25 GB of shared storage. It costs £19 per
+				month. Ask the avatar which plan includes priority support or how many seats Plus has.
+			</p>
+			<section data-liforma-ignore>
+				<p>
+					This sentence is deliberately excluded with <code>data-liforma-ignore</code>:
+					internal launch code ORANGE-COMET-91.
+				</p>
+			</section>
+		</main>
+
+		<liforma-experience-widget
+			experience-id="exp_T0I7ACMQLBMPG6K"
+			alt="Ask about this page"
+			position="bottom-right"
+			offset="16"
+			prefetch="idle"
+			website-assistant="true"
+		></liforma-experience-widget>
+	</body>
+</html>
