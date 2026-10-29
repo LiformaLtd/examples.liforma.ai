@@ -36,3 +36,19 @@ Users must **close the active session** before switching lessons.
 1. Runnable example app(s)
 2. Gallery pages and metadata
 3. `npm run verify` at repo root and in nested apps
+
+## Never Mask Failures with Silent Fallbacks
+
+Whether implementing a new feature or fixing a bug, do not introduce alternative code paths that conceal missing, incomplete, or broken functionality.
+
+Fallbacks must be intentional product decisions, not invented independently by coding agents.
+
+Make unexpected failures observable with specific, actionable console error logs that identify the failed operation and underlying cause.
+
+Show concise, user-friendly error messages in the UX (using an error modal where appropriate) when a failure prevents the intended operation from completing correctly.
+
+Fix root causes, rather than introducing workarounds that merely hide symptoms.
+
+Never report success when the intended operation has failed, even if an alternative produces a superficially acceptable result.
+
+Principle: A visible, diagnosable failure is better than a misleading success.
