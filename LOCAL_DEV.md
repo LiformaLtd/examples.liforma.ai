@@ -43,7 +43,7 @@ Check status:
 | --- | --- |
 | `?stack=local` on the example URL | SDK host-page opt-in (any framework) |
 | `LIFORMA_STACK=local PORT=4004 node scripts/serve-example.mjs examples/guided-practice/vanilla` | Single vanilla example |
-| `node ../../../../scripts/dev-with-local-stack.mjs` | From a SvelteKit / React-Vite example dir |
+| `node ../../../scripts/dev-with-local-stack.mjs` | From a SvelteKit / React-Vite example dir |
 | DevTools: `window.__LIFORMA_STACK = 'local'` then reload | Ad-hoc debugging |
 
 Local endpoints: API `:3001`, player `:3002`, CDN SDK preview `:3010`.
@@ -55,5 +55,5 @@ Local endpoints: API `:3001`, player `:3002`, CDN SDK preview `:3010`.
 The meta workspace `./start --only api,player,cdn,guided-practice` still serves guided practice on **3013** with local stack for monorepo-only workflows. Prefer `./start --local` in the examples repo on **4004** instead.
 
 ```bash
-LIFORMA_STACK=local PORT=3013 node ../../../../scripts/serve-liforma-example.mjs
+LIFORMA_STACK=local PORT=3013 node ../../../../../scripts/serve-liforma-example.mjs
 ```

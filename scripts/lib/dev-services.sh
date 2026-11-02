@@ -86,7 +86,7 @@ print_platform_stack_status() {
 find_meta_root() {
 	local dir="$1"
 	while [[ "$dir" != "/" ]]; do
-		if [[ -x "$dir/start" && -d "$dir/api.liforma.ai" && -d "$dir/player.liforma.ai" ]]; then
+		if [[ -x "$dir/start" && -d "$dir/application/api.liforma.ai" && -d "$dir/application/player.liforma.ai" ]]; then
 			META_ROOT="$dir"
 			return 0
 		fi

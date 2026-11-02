@@ -1,22 +1,17 @@
 ---
-description: Search sibling Liforma repos outside this workspace
+description: Scoped cross-repository search in the current Liforma workspace
 alwaysApply: true
 ---
 
-# Cross-repo search
+This checkout has an independent Git history. Implement changes only in your own dedicated worktree. Read the meta workspace's `../../AGENTS.md` and this repo's own guidance before editing.
 
-This workspace is one checkout in the Liforma meta-repo. Sibling checkouts are the directories next to this one. Meta-repo docs and plans are in `../docs`.
+Paths relative to this checkout's root:
 
-Grep and Glob only see this workspace. A search whose `path` is outside it returns no matches.
+- Shared architecture/plans: `../../docs/`; tooling: `../../scripts/`.
+- The seven application repos: `../../application/{app,www,api,player,cdn,docs,examples}.liforma.ai/`.
+- Apple Silicon workflows: `../../ai-workflows/apple-silicon/` (tracked by the parent Git repo).
+- Independent CUDA workflow repos: `../../ai-workflows/cuda/<repo>/`.
+- Supporting repos such as Labs: `../../labs.liforma.ai/`.
+- Obsolete my app: `../../legacy/my.liforma.ai/` (historical/migration work only).
 
-Search this repo with Grep or Glob, with `path` set to the subdirectory you mean.
-
-Search another repo with Shell `rg`, passing that directory as the path:
-
-```bash
-rg -n --glob '!**/node_modules/**' --glob '!**/.svelte-kit/**' --glob '!**/.venv/**' 'PATTERN' ../player.liforma.ai
-```
-
-Do not pipe `rg` to `head` or `tail`. The matches print immediately, then the agent shell waits until that pipeline closes. Run `rg` on its own.
-
-Siblings: `api.liforma.ai`, `app.liforma.ai`, `www.liforma.ai`, `player.liforma.ai`, `my.liforma.ai`, `labs.liforma.ai`, `docs.liforma.ai`, `cdn.liforma.ai`, `examples.liforma.ai`, `agent-skills`, `liforma-content`, `liforma-code-search`, `diagnose.liforma.ai`, `investor.liforma.ai`, `models.liforma.ai`, `sandbox`, `tools`.
+Scope each search to the repo/subdirectory involved. If editor search cannot see another checkout, use Shell `rg` with its explicit path. Do not pipe `rg` to `head` or `tail`. Never edit another agent's primary checkout or share a writable dependency directory.
