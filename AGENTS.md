@@ -52,3 +52,7 @@ Fix root causes, rather than introducing workarounds that merely hide symptoms.
 Never report success when the intended operation has failed, even if an alternative produces a superficially acceptable result.
 
 Principle: A visible, diagnosable failure is better than a misleading success.
+
+## Application worktrees
+
+This repo lives under `application/` beside SDK/API/player/Studio/docs. Every implementing agent must use its own Git worktree, not just a branch. Use the meta root's `scripts/application-worktree.py` to create all seven application worktrees. Meta docs/tooling are in `../../docs/` and `../../scripts/`. Keep runnable demos aligned with SDK/API changes; record all affected repo branches and PRs on the issue.
