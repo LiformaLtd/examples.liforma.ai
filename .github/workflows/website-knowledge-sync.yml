@@ -1,0 +1,94 @@
+name: Website knowledge sync
+
+# Keeps the "Talk with Liforma" avatar's website knowledge up to date. After a push to main changes what this site
+# publishes in /knowledge.json, wait until the staging site serves that commit, then ask the Liforma API to refresh the
+# website knowledge pack. The API publishes only the pages that changed, and nothing when none did.
+#
+# Off until configured. In the repo's "staging" GitHub environment set:
+#   variable SITE_KNOWLEDGE_URL      this site's knowledge file on staging, for example https://staging-examples.liforma.ai/knowledge.json
+#   variable LIFORMA_API_BASE_URL    the staging API, https://staging-api.liforma.ai
+#   secret   SITE_KNOWLEDGE_SYNC_SECRET   the same value as the API's SITE_KNOWLEDGE_SYNC_SECRET
+on:
+  push:
+    branches: [main]
+    paths:
+      - examples/**
+      - src/lib/server/knowledge.ts
+      - src/routes/knowledge.json/**
+      - .github/workflows/website-knowledge-sync.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: website-knowledge-sync
+  cancel-in-progress: true
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: staging
+    steps:
+      # A job-level if cannot read the staging environment's variables, so the on/off check is a step.
+      - name: Check the sync is set up
+        id: setup
+        env:
+          SITE_KNOWLEDGE_URL: ${{ vars.SITE_KNOWLEDGE_URL }}
+        run: |
+          if [ -n "$SITE_KNOWLEDGE_URL" ]; then
+            echo "on=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "::notice::Website knowledge sync is off: SITE_KNOWLEDGE_URL is not set in the staging environment."
+            echo "on=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - if: steps.setup.outputs.on == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Wait until staging serves this commit
+        if: steps.setup.outputs.on == 'true'
+        env:
+          SITE_KNOWLEDGE_URL: ${{ vars.SITE_KNOWLEDGE_URL }}
+        run: |
+          # The site writes its deployed commit into knowledge.json. A newer commit also counts: it includes this one.
+          for attempt in $(seq 1 60); do
+            served=$(curl -fsS --max-time 30 "$SITE_KNOWLEDGE_URL" | jq -r '.commit // empty' || true)
+            if [ -n "$served" ]; then
+              git cat-file -e "$served^{commit}" 2>/dev/null || git fetch --quiet origin "$served" 2>/dev/null || true
+              if git merge-base --is-ancestor "$GITHUB_SHA" "$served" 2>/dev/null; then
+                echo "Staging serves $served."
+                exit 0
+              fi
+            fi
+            sleep 15
+          done
+          echo "::error::$SITE_KNOWLEDGE_URL still serves ${served:-no commit} after 15 minutes, not $GITHUB_SHA. Check the staging deployment."
+          exit 1
+
+      - name: Refresh the website knowledge pack
+        if: steps.setup.outputs.on == 'true'
+        env:
+          LIFORMA_API_BASE_URL: ${{ vars.LIFORMA_API_BASE_URL }}
+          SITE_KNOWLEDGE_SYNC_SECRET: ${{ secrets.SITE_KNOWLEDGE_SYNC_SECRET }}
+        run: |
+          if [ -z "$LIFORMA_API_BASE_URL" ] || [ -z "$SITE_KNOWLEDGE_SYNC_SECRET" ]; then
+            echo "::error::Set the LIFORMA_API_BASE_URL variable and the SITE_KNOWLEDGE_SYNC_SECRET secret in the staging environment."
+            exit 1
+          fi
+          # 409 means another site's sync is publishing the pack: wait and call again.
+          for attempt in 1 2 3 4 5 6 7 8 9 10; do
+            status=$(curl -sS --max-time 320 -o result.json -w '%{http_code}' -X POST               -H "Authorization: Bearer $SITE_KNOWLEDGE_SYNC_SECRET" "${LIFORMA_API_BASE_URL%/}/internal/knowledge/site-sync" || echo 000)
+            jq -c '{outcome, documents, characters, created: (.created // [] | length), updated: (.updated // [] | length), removed: (.removed // [] | length), revisionId, message}' result.json 2>/dev/null || cat result.json
+            if [ "$status" = 200 ]; then exit 0; fi
+            if [ "$status" != 409 ]; then
+              echo "::error::Website knowledge sync failed with HTTP $status."
+              exit 1
+            fi
+            sleep 30
+          done
+          echo "::error::The website knowledge pack stayed busy for 5 minutes."
+          exit 1
